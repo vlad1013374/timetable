@@ -9,10 +9,9 @@
 <button class="but">Показать</button>
 
 
-</form>
 
 
-<form method="POST">
+
 	<input type="submit" name="save" value="Сохранить" class="send">
 	<table cellpadding="4" cellspacing="0" border="1" class="time-t">
 			<tr>
@@ -73,4 +72,4 @@
 		?>
 
 	</table>
-</form>
+
