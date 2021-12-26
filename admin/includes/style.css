@@ -1,0 +1,131 @@
+.main{
+	width: 100%;
+	height: 100%; 
+	margin: 0px;
+	padding: 0px;
+}
+
+.day-border
+{
+	border: solid 3px black;
+	background-color: #DFC8B8;
+}
+
+.classroom
+{
+	width: 2%;
+	background-color: #E4D8A6;
+}
+.week-num
+{
+	width: 12%;
+}
+.time
+{
+	width: 5%;
+	height: 70px;
+	font-style: italic;
+	background-color: #E4D8A6;
+}
+.cls
+{
+	width: 20%;
+
+}
+.time-t
+{
+	text-align: center;
+	width: 100%;
+	
+	
+}
+
+.subject
+{
+	font-size: 20px;
+	font-weight: bold;
+	height: 30px;
+}
+.subject:hover
+{
+	
+	background-color: #C8C1D5;
+}
+.teacher
+{
+	font-size: 14px;
+	color: 	black;
+	height: 15px;
+	font-style: oblique;
+}
+
+.t-head, .cls, .date, .week-num, .day
+{
+	background: #E5E2E1;
+}
+.t-head, .cls, .week-num
+{
+	border: solid 0.5px black;
+}
+
+.day
+{
+	font-size: 20px;
+}
+
+.date
+{
+	background-color: #E4D8A6;
+	width: 5%;
+}
+
+.subject, .teacher
+{
+	background: #E2DBF0;
+}
+
+.extra-subject
+{
+	background-color: #BDBAC6;
+}
+
+.extra-subject:hover
+{
+	color: white;
+	cursor: pointer;
+}
+.date > input{
+	width: 40px;
+	border: none;
+	background-color: #E4D8A6;
+	height: 30px;
+}
+.send{
+	margin: 10px;
+	float: right;
+	
+}
+.aud{
+	width: 55px;
+	border-radius: 5px;
+	background-color: #E4D8A6;
+	height: 30px;
+	cursor: pointer;
+	
+}
+table,th,td{
+	border:1px solid black !important;
+	border-spacing: 1px !important;
+	padding:1px !important;
+	border-collapse: separate !important;
+
+}
+.sub-2{
+	display: none;
+}
+.sub-3{
+	display: none;
+}
+.add-s{
+	cursor: pointer;
+}
