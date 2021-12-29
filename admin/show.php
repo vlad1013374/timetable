@@ -11,8 +11,7 @@
 
 
 
-<form method="POST">
-	<input type="submit" name="save" value="Сохранить" class="send">
+<button class ="save">Отправить</button>
 	<table cellpadding="4" cellspacing="0" border="1" class="time-t">
 			<tr>
 				<td class="week-num" colspan = "2">10 уч. неделя</td>
@@ -72,4 +71,4 @@
 		?>
 
 	</table>
-</form>
+
