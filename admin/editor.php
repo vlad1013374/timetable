@@ -107,9 +107,9 @@
 		<div class="subject-block" data-item-id="{no}">
 					
 			<div style="display:none;" class="flags-block">
-				<div style="display:none;" class="flg f-online"><?= $config['positionFlagsLeft'] == "1" ? 'On':'Online' ?></div>
-				<div style="display:none;" class="flg f-optional"><?= $config['positionFlagsLeft'] == "1" ? 'Фа':'Факульт' ?></div>
-				<div style="display:none;" class="flg f-olimp"><?= $config['positionFlagsLeft'] == "1" ? 'Ол':'Олимп' ?></div>	
+				<div style="display:none;" title="Online" class="flg f-online"><?= $config['positionFlagsLeft'] == "1" ? 'On':'Online' ?></div>
+				<div style="display:none;" title="Факультатив" class="flg f-optional"><?= $config['positionFlagsLeft'] == "1" ? 'Фа':'Факульт' ?></div>
+				<div style="display:none;" title="Олимпиада" class="flg f-olimp"><?= $config['positionFlagsLeft'] == "1" ? 'Ол':'Олимп' ?></div>	
 			</div>			
 			<div class="dl" style="margin-bottom:5px;"><input id="is_{no}" style="width:100%;" type="text" class="isubject"></div>
 			<div style="width:90px; float:right;"><input id="ir_{no}" style="width:90px;" type="text" class="iroom"></div>
