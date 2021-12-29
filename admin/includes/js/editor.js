@@ -11,6 +11,13 @@ const emptyItem = {
 	"flags":"0"
 };
 
+const flagList = {
+	online: 1,	
+	optional: 2,
+	olimp: 4,
+	
+}
+
 function calcHash(){
 	for(let i=0; i< timetable.length; i++){
 		if(!timetable_hash.hasOwnProperty(timetable[i]['day'])){
@@ -36,6 +43,7 @@ function getDefaultId(){
 function init(){
 	let defaultId = getDefaultId();
 	const tpl = $("#tpl").text();
+	const tpl2 = $("#tpl-flags").text();
 	
 	$("td.subject").each(function(){
 		const $el = $(this);
@@ -46,13 +54,12 @@ function init(){
 		if(timetable_hash[day] && timetable_hash[day][lessonId] && timetable_hash[day][lessonId][classId]){
 			for(let id in timetable_hash[day][lessonId][classId]){
 				const tt = timetable_hash[day][lessonId][classId][id];
-				console.log(tt);
 				$el.append(tpl.replaceAll("{no}",id));
-				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day);
+				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags);
 			}
 		} else {
 			$el.append(tpl.replaceAll("{no}",defaultId));
-			initItem(defaultId++, null, null, null, classId, lessonId, day);				
+			initItem(defaultId++, null, null, null, classId, lessonId, day, 0);				
 		}
 		
 		
@@ -76,8 +83,9 @@ function init(){
 	}).data("kendoNotification");
 }
 
-function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day){
-	$("#is_" + id).kendoComboBox({
+function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flags){
+	var $subj = $("#is_" + id);
+	$subj.kendoComboBox({
 		dataSource: subjects,
 		dataTextField: "name",
 		dataValueField: "id",
@@ -138,8 +146,59 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day){
 			//console.log(b);
 			//console.log(e.sender.dataSource.data().length);
 		  }					
-	});				
+	});	
+
+	let f = parseInt(flags);
 	
+	if(f > 0){
+		let block = $subj.parents(".subject-block");
+		block.addClass(config.flagsClass);
+		block.find(".flags-block").show();
+		
+		if((f & flagList.online) == flagList.online)
+			block.find(".f-online").show();
+			
+		if((f & flagList.optional) == flagList.optional)
+			block.find(".f-optional").show();		
+			
+		if((f & flagList.olimp) == flagList.olimp)
+			block.find(".f-olimp").show();			
+	} 
+	
+}
+
+function addOrRemoveFlag(block, flag){
+	const $td = block.parent();
+	const classId = $td.data("class-id");
+	const lessonId = $td.data("lesson-id");
+	const day = $td.data("day");
+	const id = block.data("item-id");
+	createNewItemIfNeed(day, lessonId, classId, id);
+	let obj = timetable_hash[day][lessonId][classId][id];
+	obj['flags'] = parseInt(obj['flags']) ^ flag;
+	
+	if(obj['flags'] > 0){
+		block.addClass(config.flagsClass);
+		block.find(".flags-block").show();
+		
+		if((obj['flags'] & flagList.online) == flagList.online)
+			block.find(".f-online").show();
+		else
+			block.find(".f-online").hide();
+			
+		if((obj['flags'] & flagList.optional) == flagList.optional)
+			block.find(".f-optional").show();
+		else
+			block.find(".f-optional").hide();
+			
+		if((obj['flags'] & flagList.olimp) == flagList.olimp)
+			block.find(".f-olimp").show();
+        else
+			block.find(".f-olimp").hide();
+	} else {
+		block.removeClass(config.flagsClass);
+		block.find(".flags-block").hide();
+	}
 }
 
 function createNewItemIfNeed(day, lessonId, classId, id){
@@ -175,7 +234,7 @@ function addSubject($td){
 	var defaultId = getDefaultId();
 	
 	$td.append(tpl.replaceAll("{no}",defaultId));
-	initItem(defaultId, null, null, null, classId, lessonId, day);	
+	initItem(defaultId, null, null, null, classId, lessonId, day, 0);	
 }
 
 function copy($td, isfromright){
@@ -206,25 +265,31 @@ function copy($td, isfromright){
 	const day = $td.data("day");
 	var defaultId = getDefaultId();
 	
+	let fromClassId = $from.data("class-id");
+	
 	$from.find(".subject-block").each(function(){
-		$td.append(tpl.replaceAll("{no}",defaultId));
-		initItem(defaultId, null, null, null, classId, lessonId, day);
-		
+		let flags = 0;
 		let sid = this.getAttribute("data-item-id");
-		let fromClassId = $from.data("class-id");
-		$("#is_" + defaultId).data("kendoComboBox").value($("#is_" + sid).data("kendoComboBox").value());
-		$("#ir_" + defaultId).data("kendoComboBox").value($("#ir_" + sid).data("kendoComboBox").value());
-		$("#it_" + defaultId).data("kendoComboBox").value($("#it_" + sid).data("kendoComboBox").value());
-		
 		if(timetable_hash[day] && timetable_hash[day][lessonId] && timetable_hash[day][lessonId][fromClassId] && timetable_hash[day][lessonId][fromClassId][sid]){
 			let newObj = Object.assign({}, timetable_hash[day][lessonId][fromClassId][sid]);
+			flags = newObj['flags'];
 			newObj['id'] = defaultId;
 			newObj['class_id'] = classId;
 			timetable.push(newObj);
 			if(!timetable_hash[day][lessonId][classId])
 				timetable_hash[day][lessonId][classId] = {};
 			timetable_hash[day][lessonId][classId][defaultId] = newObj;
-		}	
+		}
+		
+		$td.append(tpl.replaceAll("{no}",defaultId));
+		initItem(defaultId, null, null, null, classId, lessonId, day, flags);
+		
+		
+		$("#is_" + defaultId).data("kendoComboBox").value($("#is_" + sid).data("kendoComboBox").value());
+		$("#ir_" + defaultId).data("kendoComboBox").value($("#ir_" + sid).data("kendoComboBox").value());
+		$("#it_" + defaultId).data("kendoComboBox").value($("#it_" + sid).data("kendoComboBox").value());
+		
+			
 		
 		defaultId++;
 	});	
@@ -233,21 +298,36 @@ function copy($td, isfromright){
 function initContextMenu(){
 	$("#menu").kendoContextMenu({
 		target: "table",
+		filter: "div.subject-block",
+		animation: {
+			open: { effects: "fadeIn" },
+			duration: 500
+		},
+		select: function(e, t) {
+			console.log(e)
+			switch(e.item.getAttribute("data-command")){
+				case 'add': addSubject($(e.target).parent()); break;
+				case 'copy:left': copy($(e.target).parent()); break;
+				case 'copy:right': copy($(e.target).parent(), true); break;
+				case 'mark:online': addOrRemoveFlag($(e.target), flagList.online); break;
+				case 'mark:optional': addOrRemoveFlag($(e.target), flagList.optional); break;
+				case 'mark:olimp': addOrRemoveFlag($(e.target), flagList.olimp); break;
+			}
+		}
+	});
+	$("#menutd").kendoContextMenu({
+		target: "table",
 		filter: "td.subject",
 		animation: {
 			open: { effects: "fadeIn" },
 			duration: 500
 		},
 		select: function(e, t) {
-			console.log(e);
+			console.log(e)
 			switch(e.item.getAttribute("data-command")){
 				case 'add': addSubject($(e.target)); break;
 				case 'copy:left': copy($(e.target)); break;
-				case 'copy:right': copy($(e.target), true); break;
-				case 'mark:online': break;
-				case 'mark:optional': break;
-				case 'mark:olympiad': break;
-				case 'hi': alert("Привет!"); break;
+				case 'copy:right': copy($(e.target), true); break;				
 			}
 		}
 	});

@@ -50,13 +50,13 @@ body {
 .subject
 {
 	/*font-size: 20px;*/
-	font-weight: bold;
+	/*font-weight: bold;*/
 	min-height: 30px;
 
 }
 
 .subject .subject-block {
-	margin:5px;
+	padding:5px;
 }
 
 /*.subject:hover
@@ -181,3 +181,46 @@ th,td{
 	color: #fff;
 	background-color: #d51923;
 }
+
+.flg {
+	display:inline-block;
+	margin-right:5px;
+	padding:2px 5px;
+}
+
+.f-online {
+	background:#3e80ed;
+	color:white;
+}
+
+.f-optional {
+	background:#55b22d;
+	color:white;
+}
+
+.f-olimp {
+	background:#aa46be;
+	color:white;
+}
+
+.flags-block {
+	padding-bottom:2px;
+}
+
+.flags-left .dl {
+	margin-left:30px;
+}
+
+.flags-left .flags-block {
+	float:left;
+	width:25px;
+	padding-bottom:0px;
+}
+
+.flags-left .flg {
+	display:inline-block;
+	padding:1px 3px 2px 3px;
+	float:left;
+	margin-bottom:2px;
+}
+
