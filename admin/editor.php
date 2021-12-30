@@ -48,7 +48,7 @@
 
 </head>
 <body>
-	<button class="but">Save</button>
+	<button class="but-save" style="float:right; background: #E5E2E1; margin:5px; padding:5px; border-radius:5px; cursor:pointer;">Сохранить</button>
 	<script>
 		$(".but").click(function() {
 			var dt = JSON.stringify(timetable);
