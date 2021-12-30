@@ -29,7 +29,7 @@
   <div class="offcanvas-body">
   	
     <div class="add-week-block">
-     	<div><div class="w-label">Номер недели</div> <input type="text"  class="week-num"></div>
+     	<div><div class="w-label">Номер недели</div> <input type="text" class="week-num"></div>
      	<div>
 			<div class="w-label">Дата понедельника</div> 
 			<input type="text" class ="week-start" value="<? echo date('d.m.Y', strtotime('monday next week')) ?>" >
@@ -50,6 +50,7 @@
 
   
 </div>
+
 </div>
 
  <a href="settings.php"><button class="btn btn-primary" style="float: right; margin:10px;">Настройки</button></a>

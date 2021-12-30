@@ -2,10 +2,12 @@
 function add_week($week_json)
 {
 	$week = json_decode($week_json);
-	$week_is = R::find('weeks', 'number = ?', [$week->number]);
-	if($week_is){
+	$week_is_num = R::find('weeks', 'number = ?', [$week->number]);
+	$week_is_mon = R::find('weeks', 'start = ?', [$week->start]);
+	if($week_is_num){
 		return false; 
-
+	}elseif($week_is_mon){
+		return false; 
 	}else{
 		$week_db = R::dispense('weeks');
 		$week_db->number = $week->number;
