@@ -1,0 +1,1 @@
+﻿ALTER TABLE `teachers` ADD `flags` INT NOT NULL AFTER `name`;
