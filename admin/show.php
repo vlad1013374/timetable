@@ -1,6 +1,6 @@
-<div>
+<div style="float:left; margin: 10px;">
 	Изменение расписания:
-</div>
+
 <ul>
 <?php
 	foreach ($weeks as $week) {
@@ -50,3 +50,6 @@
 
   
 </div>
+</div>
+
+ <a href="settings.php"><button class="btn btn-primary" style="float: right; margin:10px;">Настройки</button></a>
