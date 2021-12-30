@@ -37,6 +37,12 @@
 			flagsClass: "<?= $config['positionFlagsLeft'] == "1" ? 'flags-left':'' ?>",
 			
 		}
+		const flagList = {
+			online: 1,	
+			optional: 2,
+			olimp: 4,
+			
+		}
 	</script>
 	<script src="includes/js/editor.js"></script>
 

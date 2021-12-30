@@ -11,7 +11,7 @@ const emptyItem = {
 	"flags":"0"
 };
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 =======
 const flagList = {
 	online: 1,	
@@ -19,7 +19,7 @@ const flagList = {
 	olimp: 4,
 	
 }
->>>>>>> 98b1b28a5525657e00f49d8383f0c40c3c18e0ff
+>>>>>>> 98b1b28a5525657e00f49d8383f0c40c3c18e0ff*/
 
 function calcHash(){
 	for(let i=0; i< timetable.length; i++){
