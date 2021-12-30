@@ -33,7 +33,9 @@
      	Дата понедельника <input type="text" class ="week-start" value="<? echo date('Y-m-d', strtotime('monday next week')) ?>" placeholder="YYYY-MM-DD"><br>
      	Дата пятницы <input type="text" class ="week-stop" value="<? echo date('Y-m-d', strtotime('friday next week')) ?>" placeholder="YYYY-MM-DD">
     </div>
-   	<button class="add-week">Добавить</button>
+   	<button class="add-week ">Добавить</button>
    
   </div>
+
+  
 </div>
