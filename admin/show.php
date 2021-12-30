@@ -30,8 +30,8 @@
   	
     <div >
      	Номер недели <input type="text" class="week-num"><br>
-     	Дата понедельника <input type="text" class ="week-start" value="<? echo date('Y-m-d', strtotime('monday next week')) ?>"><br>
-     	Дата пятницы <input type="text" class ="week-stop" value="<? echo date('Y-m-d', strtotime('friday next week')) ?>">
+     	Дата понедельника <input type="text" class ="week-start" value="<? echo date('Y-m-d', strtotime('monday next week')) ?>" placeholder="YYYY-MM-DD"><br>
+     	Дата пятницы <input type="text" class ="week-stop" value="<? echo date('Y-m-d', strtotime('friday next week')) ?>" placeholder="YYYY-MM-DD">
     </div>
    	<button class="add-week">Добавить</button>
    
