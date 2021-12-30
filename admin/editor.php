@@ -34,6 +34,8 @@
 		const config = {
 			weekId: <?= $weekId ?>,
 			autosavePeriodInMinutes: <?= $config['autosavePeriodInMinutes'] ?>,
+			flagsClass: "<?= $config['positionFlagsLeft'] == "1" ? 'flags-left':'' ?>",
+			
 		}
 	</script>
 	
@@ -47,10 +49,15 @@
         <li data-command="add">Добавить еще предмет</li>
         <li data-command="copy:left">Скопировать слева</li>
         <li data-command="copy:right">Скопировать справа</li>
-        <li data-command="mark:online">Метка: Онлайн</li>
-        <li data-command="mark:optional">Метка: Факультатив</li>
-        <li data-command="mark:olympiad">Метка: Олимпиада</li>
+        <li style="background:#3e80ed;color:white;" data-command="mark:online">Метка: Онлайн</li>
+        <li style="background:#55b22d;color:white;" data-command="mark:optional">Метка: Факультатив</li>
+        <li style="background:#aa46be;color:white;" data-command="mark:olimp">Метка: Олимпиада</li>
         <li data-command="hi">Сказать привет!</li>
+	</ul>
+	<ul style="display:none;" id="menutd">
+        <li data-command="add">Добавить еще предмет</li>
+        <li data-command="copy:left">Скопировать слева</li>
+        <li data-command="copy:right">Скопировать справа</li>
 	</ul>
 	<span style="display:none;" id="note"></span>
 	
@@ -103,9 +110,15 @@
 	</table>
 	<script id="tpl" type="text/x-template">
 		<div class="subject-block" data-item-id="{no}">
-			<div style="margin-bottom:5px;"><input id="is_{no}" style="width:100%;" type="text" class="isubject"></div>
+					
+			<div style="display:none;" class="flags-block">
+				<div style="display:none;" title="Online" class="flg f-online"><?= $config['positionFlagsLeft'] == "1" ? 'On':'Online' ?></div>
+				<div style="display:none;" title="Факультатив" class="flg f-optional"><?= $config['positionFlagsLeft'] == "1" ? 'Фа':'Факульт' ?></div>
+				<div style="display:none;" title="Олимпиада" class="flg f-olimp"><?= $config['positionFlagsLeft'] == "1" ? 'Ол':'Олимп' ?></div>	
+			</div>			
+			<div class="dl" style="margin-bottom:5px;"><input id="is_{no}" style="width:100%;" type="text" class="isubject"></div>
 			<div style="width:90px; float:right;"><input id="ir_{no}" style="width:90px;" type="text" class="iroom"></div>
-			<div style="margin-right:95px;"><input id="it_{no}" style="width:100%;" type="text" class="iteacher"></div>
+			<div class="dl" style="margin-right:95px;"><input id="it_{no}" style="width:100%;" type="text" class="iteacher"></div>
 		</div>
 	</script>
 	
