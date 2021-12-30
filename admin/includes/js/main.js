@@ -16,3 +16,9 @@ $(".add-week").click(function () {
 	  })
 	
 })
+
+$(".week-start, .week-stop").kendoDatePicker();
+$(".week-num").kendoNumericTextBox({
+	min:1,
+	format:"n0"
+});

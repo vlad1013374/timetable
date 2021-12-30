@@ -28,12 +28,23 @@
   </div>
   <div class="offcanvas-body">
   	
-    <div >
-     	Номер недели <input type="text" class="week-num"><br>
-     	Дата понедельника <input type="text" class ="week-start" value="<? echo date('Y-m-d', strtotime('monday next week')) ?>" placeholder="YYYY-MM-DD"><br>
-     	Дата пятницы <input type="text" class ="week-stop" value="<? echo date('Y-m-d', strtotime('friday next week')) ?>" placeholder="YYYY-MM-DD">
+    <div class="add-week-block">
+     	<div><div class="w-label">Номер недели</div> <input type="text"  class="week-num"></div>
+     	<div>
+			<div class="w-label">Дата понедельника</div> 
+			<input type="text" class ="week-start" value="<? echo date('d.m.Y', strtotime('monday next week')) ?>" >
+		</div>
+     	<div>
+			<div class="w-label">Дата воскресенья</div>
+			<input type="text" class ="week-stop" value="<? echo date('d.m.Y', strtotime('sunday next week')) ?>">
+		</div>
+		
+		<div>
+			<div class="w-label">&nbsp;</div>
+			<button class="add-week k-button">Добавить</button>
+		</div>
     </div>
-   	<button class="add-week ">Добавить</button>
+   	
    
   </div>
 

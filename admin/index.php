@@ -10,8 +10,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Admin</title>
+	<link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
+	<link rel="stylesheet" href="includes/kendo/kendo.custom.css">
 	<link rel="stylesheet"  type="text/css" href="includes/style.css">
 	<script src="includes/js/jquery-3.6.0.js"></script>
+	<script src="includes/kendo/kendo.all.min.js"></script>
+	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
+	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
+	<script>kendo.culture("ru-RU");</script>
 	
 
 	

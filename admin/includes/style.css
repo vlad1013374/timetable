@@ -17,7 +17,7 @@
 }
 .week-num
 {
-	width: 12%;
+	/*width: 12%;*/
 }
 .time
 {
@@ -39,6 +39,15 @@
 	
 }
 
+.w-label {
+	display:inline-block;
+	width:160px;
+}
+
+.add-week-block > div {
+	margin-bottom:15px;
+}
+
 .subject
 {
 	font-size: 20px;
@@ -58,11 +67,11 @@
 	font-style: oblique;
 }
 
-.t-head, .cls, .date, .week-num, .day
+.t-head, .cls, .date, /*.week-num,*/ .day
 {
 	background: #E5E2E1;
 }
-.t-head, .cls, .week-num
+.t-head, .cls/*, .week-num*/
 {
 	border: solid 0.5px black;
 }
