@@ -11,6 +11,7 @@ const emptyItem = {
 	"flags":"0"
 };
 
+
 function calcHash(){
 	for(let i=0; i< timetable.length; i++){
 		if(!timetable_hash.hasOwnProperty(timetable[i]['day'])){
@@ -268,4 +269,19 @@ setInterval(function(){
 		alert( "error" );
 	  })
 }, config.autosavePeriodInMinutes * 60 * 1000);
+
+
+
+$(".but").click(function() {
+	var dt = JSON.stringify(timetable);
+	$.post( "editor-save.php", {data: dt})
+	  .done(function(ev, a, b) {
+		var r = JSON.parse(ev);
+		note.show({message: r.message}, r.status);
+		
+	  })
+	  .fail(function() {
+		alert( "error" );
+	  })
+})
 

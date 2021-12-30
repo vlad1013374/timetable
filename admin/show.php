@@ -1,74 +1,39 @@
-Изменение расписания:
-<br>
-Неделя:
-<label ><input type="radio" name="week" value="this">Эта</label>
-<label ><input type="radio" name="week" value="next">Следущая</label>
-<br>
+<div>
+	Изменение расписания:
+</div>
+<ul>
+<?php
+	foreach ($weeks as $week) {
+		if (date('Y-m-d', strtotime('monday this week')) == $week['start']) {
+			echo '<li><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(текущая неделя)</label></a></li>';
+		}elseif (date('Y-m-d', strtotime('monday next week')) == $week['start']) {
+			echo '<li><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(следущая неделя)</label></a></li>';
+		}else{
+			echo '<li><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a></li>';
+		}
+		
+	}
+?>
 
+</ul>
 
-<button class="but">Показать</button>
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+  Добавить неделю
+</button>
 
-
-
-
-<button class ="save">Отправить</button>
-	<table cellpadding="4" cellspacing="0" border="1" class="time-t">
-			<tr>
-				<td class="week-num" colspan = "2">10 уч. неделя</td>
-
-				<?php
-					foreach ($classes as  $class) {
-						echo '<td class="cls" colspan="2">'.$class.'</td>';
-					}
-				?>
-				
-				
-			</tr>
-			
-			
-			
-		<?php
-			foreach ($days as $day) {
-				echo '<tr>
-				<td class = "day-border" colspan = "'.$colspan_day.'">'.$day.'</td>
-				</tr>
-				<tr>
-
-				<tr>
-				<td class = "date" rowspan="5"><input type="text" placeholder="Дата" value="'.date('d M', strtotime($days_en[$n].' '.$week.' week')).'"></td>
-				</tr>';
-				for ($i=1; $i <= 4; $i++) { 
-					$day_sub = R::getAll( 'SELECT `subject`,`teacher`, `audithory` FROM timetable where  `time` = ? and  `date`=?', [$i, date('d.m', strtotime($days_en[$n].' '.$week.' week'))]);
-					
-					
-					echo '<td class = "time" >'.$time[$i - 1].'</td>';
-					foreach ($day_sub as  $value) {
-						echo '<td class = "subject">
-						<select class="js-selectize">';
-						if(!empty($value['subject'])){
-							echo '<option selected>'.$value['subject'].'/'.$value['teacher'].'</option>';
-						}
-						foreach ($subjects as $subject) {
-							echo '<option >'.$subject.'</option>';
-						}'
-						</select>
-						</td>';
-						
-						echo '<td class="classroom">
-						<select class="aud">';
-						echo '<option selected>'.$value['audithory'].'</option>';
-						foreach ($audithories as $value) {
-							echo '<option>'.$value.'</option>';
-						}
-						echo '</td>';
-					
-					}
-					echo '</tr>';
-					
-				}
-				$n = $n+1;
-			}
-		?>
-
-	</table>
-
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Добавление недели</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+  	
+    <div >
+     	Номер недели <input type="text" class="week-num"><br>
+     	Дата понедельника <input type="text" class ="week-start" value="<? echo date('Y-m-d', strtotime('monday next week')) ?>"><br>
+     	Дата пятницы <input type="text" class ="week-stop" value="<? echo date('Y-m-d', strtotime('friday next week')) ?>">
+    </div>
+   	<button class="add-week">Добавить</button>
+   
+  </div>
+</div>

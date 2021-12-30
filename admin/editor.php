@@ -1,7 +1,7 @@
 ﻿<?php
 	require '../connection/db.php';
 	require 'model.php';
-	$weekId = 4;
+	$weekId = $_GET['weekId'];
 	$lessons = R::getAll( 'SELECT * FROM lessons');
 	$week = R::getAssocRow( 'SELECT * FROM weeks where id = ?', [$weekId] ); // $_GET['week'];
 	$week_model = new WeekEditModel($week[0], $lessons);
@@ -36,9 +36,13 @@
 			autosavePeriodInMinutes: <?= $config['autosavePeriodInMinutes'] ?>,
 		}
 	</script>
-	<script src="includes/js/editor.js"></script>
+	
+
 </head>
 <body>
+	<button class="but">Save</button>
+	<script src="includes/js/editor.js"></script>
+
 	<ul style="display:none;" id="menu">
         <li data-command="add">Добавить еще предмет</li>
         <li data-command="copy:left">Скопировать слева</li>
@@ -49,6 +53,7 @@
         <li data-command="hi">Сказать привет!</li>
 	</ul>
 	<span style="display:none;" id="note"></span>
+	
 	
 	<table cellpadding="4" cellspacing="0" border="1" class="time-t">
 			<col width="60">

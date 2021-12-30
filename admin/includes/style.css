@@ -4,7 +4,6 @@
 	margin: 0px;
 	padding: 0px;
 }
-
 .day-border
 {
 	border: solid 3px black;
@@ -120,12 +119,14 @@ table,th,td{
 	border-collapse: separate !important;
 
 }
-.sub-2{
-	display: none;
+.week-list{
+	color:#9A9A9A;
 }
-.sub-3{
-	display: none;
+a:link{
+	color:#00147A;
+	text-decoration:none;
 }
-.add-s{
-	cursor: pointer;
+a:visited{
+	color:#00147A;
+	text-decoration:none;
 }

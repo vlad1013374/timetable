@@ -1,10 +1,72 @@
 <?php
-
-
-
-function save()
+function add_week($week_json)
 {
+	$week = json_decode($week_json);
+	$week_is = R::find('weeks', 'number = ?', [$week->number]);
+	if($week_is){
+		return false; 
+
+	}else{
+		$week_db = R::dispense('weeks');
+		$week_db->number = $week->number;
+		$week_db->start = $week->start;
+		$week_db->stop = $week->stop;
+		R::store($week_db);
+		return true;
+	}
 	
+}
+
+
+function save($datas)
+{
+	foreach ($datas as $data) {
+		$timetable = R::load('timetables', $data->id);
+		if (empty($timetable)) {
+			$timetable = R::dispense('timetables');
+		}
+		if(empty($data->subject_id)){
+			R::trash($timetable);
+		}else{
+		$timetable->week_id = $data->week_id;
+		$timetable->day = $data->day;
+		$timetable->lesson_id =  $data->lesson_id;
+		$timetable->class_id = $data->class_id;
+		$timetable->subject_id = $data->subject_id;
+		$timetable->room_id = $data->room_id;
+		$timetable->teacher_id = $data->teacher_id;
+		$timetable->comment = $data->comment;
+		$timetable->flags = $data->flags;
+		R::store($timetable);
+		}
+	}
+	
+		
+}
+function auto_save($datas)
+{
+	foreach ($datas as $data) {
+		$timetable = R::load('timetables_autosave', $data->id);
+		if (empty($timetable)) {
+			$timetable = R::dispense('timetables_autosave');
+		}
+		if(empty($data->subject_id)){
+			R::trash($timetable);
+		}else{
+		$timetable->week_id = $data->week_id;
+		$timetable->day = $data->day;
+		$timetable->lesson_id =  $data->lesson_id;
+		$timetable->class_id = $data->class_id;
+		$timetable->subject_id = $data->subject_id;
+		$timetable->room_id = $data->room_id;
+		$timetable->teacher_id = $data->teacher_id;
+		$timetable->comment = $data->comment;
+		$timetable->flags = $data->flags;
+		R::store($timetable);
+		}
+	}
+	
+		
 }
 
 const DAY_NAMES = array('', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье');
@@ -80,6 +142,9 @@ class ItemEditModel {
 }
 
 
+
+
+
+
+
 ?>
-
-
