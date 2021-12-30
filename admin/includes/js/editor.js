@@ -354,16 +354,5 @@ setInterval(function(){
 
 
 
-$(".but").click(function() {
-	var dt = JSON.stringify(timetable);
-	$.post( "editor-save.php", {data: dt})
-	  .done(function(ev, a, b) {
-		var r = JSON.parse(ev);
-		note.show({message: r.message}, r.status);
-		
-	  })
-	  .fail(function() {
-		alert( "error" );
-	  })
-})
+
 

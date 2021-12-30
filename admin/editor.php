@@ -38,12 +38,25 @@
 			
 		}
 	</script>
-	
+	<script src="includes/js/editor.js"></script>
 
 </head>
 <body>
 	<button class="but">Save</button>
-	<script src="includes/js/editor.js"></script>
+	<script>
+		$(".but").click(function() {
+			var dt = JSON.stringify(timetable);
+			$.post( "editor-save.php", {data: dt})
+			  .done(function(ev, a, b) {
+				var r = JSON.parse(ev);
+				note.show({message: r.message}, r.status);
+				
+			  })
+			  .fail(function() {
+				alert( "error" );
+			  })
+		})
+	</script>
 
 	<ul style="display:none;" id="menu">
         <li data-command="add">Добавить еще предмет</li>
