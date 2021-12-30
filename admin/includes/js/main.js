@@ -1,9 +1,21 @@
 
 
+
+
 $(".add-week").click(function () {
-	var number =   $(".week-num").val();
-	var week_start =   $(".week-start").val();
-	var week_stop =  $(".week-stop").val();
+
+	var week_start = $(".week-start.k-input").val();
+	var week_stop = $(".week-stop.k-input").val();
+	
+	var pieces = week_start.split('.');
+	pieces.reverse();
+	var week_start = pieces.join('-');
+	var pieces = week_stop.split('.');
+	pieces.reverse();
+	var week_stop = pieces.join('-');
+	
+
+	var number = $(".k-formatted-value.week-num.k-input").attr("aria-valuenow");
 	let obj = {number: number, start : week_start , stop : week_stop};
 	var dt = JSON.stringify(obj);
 	$.post("admin.php", {week: dt})
@@ -16,6 +28,7 @@ $(".add-week").click(function () {
 	  })
 	
 })
+
 
 $(".week-start, .week-stop").kendoDatePicker();
 $(".week-num").kendoNumericTextBox({
