@@ -342,7 +342,7 @@ hashCode = function(s){
 
 setInterval(function(){
 	var dt = JSON.stringify(timetable);
-	$.post( "editor-auto-save.php", {data: dt})
+	$.post( "editor-auto-save.php", {dataauto: dt})
 	  .done(function(ev, a, b) {
 		var r = JSON.parse(ev);
 		note.show({message: r.message}, r.status);
