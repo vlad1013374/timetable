@@ -48,9 +48,13 @@
 
 </head>
 <body>
-	<button class="but-save" style="float:right; background: #E5E2E1; margin:5px; padding:5px; border-radius:5px; cursor:pointer;">Сохранить</button>
+	<div>
+		<div id="toolbar"></div>
+		<button class="but-save k-button" style="float:right;">Сохранить</button>
+	</div>
+	
 	<script>
-		$(".but").click(function() {
+		$(".but-save").click(function() {
 			var dt = JSON.stringify(timetable);
 			$.post( "editor-save.php", {data: dt})
 			  .done(function(ev, a, b) {
