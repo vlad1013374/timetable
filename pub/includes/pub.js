@@ -1,8 +1,7 @@
-console.log(timetable);
+
 
 
 for (var i = 0; i <= timetable.length - 1; i++){
-	console.log(timetable[i].room_id);
 	$("tbody td").each(function() {
 		if($(this).attr("data-class-id") == timetable[i].class_id && 
 		   $(this).attr("data-lesson-id") == timetable[i].lesson_id && 
