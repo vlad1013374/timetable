@@ -49,23 +49,11 @@
 </head>
 <body>
 	<div>
-		<div id="toolbar"></div>
-		<button class="but-save k-button" style="float:right;">Сохранить</button>
+		<div id="toolbar" style=""></div>
 	</div>
 	
 	<script>
-		$(".but-save").click(function() {
-			var dt = JSON.stringify(timetable);
-			$.post( "editor-save.php", {data: dt})
-			  .done(function(ev, a, b) {
-				var r = JSON.parse(ev);
-				note.show({message: r.message}, r.status);
-				
-			  })
-			  .fail(function() {
-				alert( "error" );
-			  })
-		})
+
 	</script>
 
 	<ul style="display:none;" id="menu">
@@ -75,7 +63,7 @@
         <li style="background:#3e80ed;color:white;" data-command="mark:online">Метка: Онлайн</li>
         <li style="background:#55b22d;color:white;" data-command="mark:optional">Метка: Факультатив</li>
         <li style="background:#aa46be;color:white;" data-command="mark:olimp">Метка: Олимпиада</li>
-        <li data-command="hi">Сказать привет!</li>
+        <li data-command="delete">Удалить</li>
 	</ul>
 	<ul style="display:none;" id="menutd">
         <li data-command="add">Добавить еще предмет</li>
@@ -93,8 +81,8 @@
 				 echo '<col width="',$col_size,'">'; 			
 			?>
 			
-			<tr>
-				<td class="week-num time-col" colspan=1><?= $week_model->number; ?> уч. неделя</td>
+			<tr class="hhh">
+				<td width="59" class="week-num time-col" colspan=1><?= $week_model->number; ?> уч. неделя</td>
 
 				<?php
 					foreach ($classes as  $class) {
@@ -146,7 +134,9 @@
 	</script>
 	
 	<script>
-		$("col:not(:first)").attr("width", ($("body").width() - 60 - <?= count($classes)+1 ?> )/ <?= count($classes)?>);
+		let w = ($("body").width() - 60 - 9 )/ 8;
+		$("col:not(:first)").attr("width", w);
+		$(".hhh td:not(:first)").css("width", w+"px");
 		
 		let subjects = <?php echo json_encode($subjects); ?>;
 		let classes = <?php echo json_encode($classes); ?>;
@@ -158,6 +148,105 @@
 		calcHash();			
 		init();	
 		initContextMenu();
+		
+		$("#toolbar").kendoToolBar({
+                        items: [
+                            /*{ type: "button", text: "Button" },
+                            { type: "button", text: "Toggle Button", togglable: true },*/
+                            {
+                                type: "splitButton",
+                                text: "Очистить",
+                                menuButtons: [
+                                    { text: "Все"/*, icon: "insert-up"*/ },
+                                    { text: "Понедельник"/*, icon: "insert-up"*/ },
+                                    { text: "Вторник"/*, icon: "insert-up"*/ },
+                                    { text: "Среду"/*, icon: "insert-up"*/ },
+                                    { text: "Четверг"/*, icon: "insert-up"*/ },
+                                    { text: "Пятницу"/*, icon: "insert-up"*/ },
+                                    { text: "Субботу"/*, icon: "insert-up"*/ },
+                                    { text: "10-е классы"/*, icon: "insert-up"*/ },
+                                    { text: "11-е классы"/*, icon: "insert-up"*/ },
+                                    { text: "10A"/*, icon: "insert-up"*/ },
+                                    { text: "10Б"/*, icon: "insert-up"*/ },
+                                    { text: "11А"/*, icon: "insert-up"*/ },
+                                    { text: "11Б"/*, icon: "insert-up"*/ },
+                                    { text: "11В"/*, icon: "insert-up"*/ }
+                                ]
+                            },
+							 { type: "separator" },
+							{
+                                type: "splitButton",
+                                text: "Добавить метку <span style='color:#3e80ed;'>&nbsp;Online</span>",
+                                menuButtons: [
+                                    { text: "Для всех"/*, icon: "insert-up"*/ },
+                                    { text: "Понедельнику"/*, icon: "insert-up"*/ },
+                                    { text: "Вторнику"/*, icon: "insert-up"*/ },
+                                    { text: "Среде"/*, icon: "insert-up"*/ },
+                                    { text: "Четвергу"/*, icon: "insert-up"*/ },
+                                    { text: "Пятнице"/*, icon: "insert-up"*/ },
+                                    { text: "Субботе"/*, icon: "insert-up"*/ },
+                                    { text: "10-ым классам"/*, icon: "insert-up"*/ },
+                                    { text: "11-ым классам"/*, icon: "insert-up"*/ },
+                                    { text: "10A"/*, icon: "insert-up"*/ },
+                                    { text: "10Б"/*, icon: "insert-up"*/ },
+                                    { text: "11А"/*, icon: "insert-up"*/ },
+                                    { text: "11Б"/*, icon: "insert-up"*/ },
+                                    { text: "11В"/*, icon: "insert-up"*/ }
+                                ]
+                            },
+							{ type: "button", text: "Сохранить", click: function() {
+									var dt = JSON.stringify(timetable);
+									$.post( "editor-save.php", {data: dt})
+									  .done(function(ev, a, b) {
+										var r = JSON.parse(ev);
+										note.show({message: r.message}, r.status);
+										
+									  })
+									  .fail(function() {
+										alert( "error" );
+									  })
+								} 
+							}
+                            /*{ type: "separator" },
+                            { template: "<label for='dropdown'>Format:</label>" },
+                            {
+                                template: "<input id='dropdown' style='width: 150px;' />",
+                                overflow: "never"
+                            },
+                            { type: "separator" },
+                            {
+                                type: "buttonGroup",
+                                buttons: [
+                                    { icon: "align-left", text: "Left", togglable: true, group: "text-align" },
+                                    { icon: "align-center", text: "Center", togglable: true, group: "text-align" },
+                                    { icon: "align-right", text: "Right", togglable: true, group: "text-align" }
+                                ]
+                            },
+                            {
+                                type: "buttonGroup",
+                                buttons: [
+                                    { icon: "bold", text: "Bold", togglable: true },
+                                    { icon: "italic", text: "Italic", togglable: true },
+                                    { icon: "underline", text: "Underline", togglable: true }
+                                ]
+                            },
+                            {
+                                type: "button",
+                                text: "Action",
+                                overflow: "always"
+                            },
+                            {
+                                type: "button",
+                                text: "Another Action",
+                                overflow: "always"
+                            },
+                            {
+                                type: "button",
+                                text: "Something else here",
+                                overflow: "always"
+                            }*/
+                        ]
+                    });
 		
 		
 	</script>

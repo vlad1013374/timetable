@@ -20,28 +20,31 @@ function add_week($week_json)
 }
 
 
-function save($datas)
+function save($data_json)
 {
-	foreach ($datas as $data) {
-		$timetable = R::load('timetables', $data->id);
-		if (empty($timetable)) {
+	$datas = json_decode($data_json);
+	
+	$log = R::dispense('logs');
+	$log->data = $data_json;
+	$log->type = 'manual';
+	R::store($log);
+	R::exec( 'delete from timetables where week_id = ?', [$datas[0]->week_id] );
+	if(count($datas) > 0)	
+		foreach ($datas as $data) {			
+			
 			$timetable = R::dispense('timetables');
+			$timetable->week_id = $data->week_id;
+			$timetable->day = $data->day;
+			$timetable->lesson_id =  $data->lesson_id;
+			$timetable->class_id = $data->class_id;
+			$timetable->subject_id = $data->subject_id;
+			$timetable->room_id = $data->room_id;
+			$timetable->teacher_id = $data->teacher_id;
+			$timetable->comment = $data->comment;
+			$timetable->flags = $data->flags;
+			R::store($timetable);
+			
 		}
-		if(empty($data->subject_id)){
-			R::trash($timetable);
-		}else{
-		$timetable->week_id = $data->week_id;
-		$timetable->day = $data->day;
-		$timetable->lesson_id =  $data->lesson_id;
-		$timetable->class_id = $data->class_id;
-		$timetable->subject_id = $data->subject_id;
-		$timetable->room_id = $data->room_id;
-		$timetable->teacher_id = $data->teacher_id;
-		$timetable->comment = $data->comment;
-		$timetable->flags = $data->flags;
-		R::store($timetable);
-		}
-	}
 	
 		
 }

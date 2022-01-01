@@ -37,11 +37,11 @@ function calcHash(){
 }
 
 function getDefaultId(){
-	return Math.round(new Date().getTime() / 100) - 16100000000;
+	return window.globalId++;
 }
 
 function init(){
-	let defaultId = getDefaultId();
+	window.globalId = Math.round(new Date().getTime() / 100) - 16100000000;	
 	const tpl = $("#tpl").text();
 	const tpl2 = $("#tpl-flags").text();
 	
@@ -58,8 +58,9 @@ function init(){
 				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags);
 			}
 		} else {
+			let defaultId = getDefaultId();
 			$el.append(tpl.replaceAll("{no}",defaultId));
-			initItem(defaultId++, null, null, null, classId, lessonId, day, 0);				
+			initItem(defaultId, null, null, null, classId, lessonId, day, 0);				
 		}
 		
 		
@@ -85,11 +86,12 @@ function init(){
 
 function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flags){
 	var $subj = $("#is_" + id);
+	var $it = $("#it_" + id);
 	$subj.kendoComboBox({
 		dataSource: subjects,
 		dataTextField: "name",
 		dataValueField: "id",
-		filter: "contains",
+		filter: "startswith",
 		value: subjectId,
 		autoWidth: true,
 		change: function(e){
@@ -102,12 +104,22 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 				timetable_hash[day][lessonId][classId][id]['teacher_id'] = null;
 				timetable_hash[day][lessonId][classId][id]['subject_id'] = null;
 			}
+			
+			if(val){
+				let teacher = $it.data("kendoComboBox");
+				let view = teacher.dataSource.view();
+				if(view.length == 1){
+					teacher.value(view[0]['id']);
+					timetable_hash[day][lessonId][classId][id]['teacher_id'] = view[0]['id'];
+				}
+			}
 		}
 	});
 	$("#ir_" + id).kendoComboBox({
 		dataSource: rooms,
 		dataTextField: "name",
 		value: roomId,
+		filter: "startswith",
 		dataValueField: "id",
 		change: function(e){
 			let val = e.sender.value();
@@ -121,12 +133,13 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 		}
 	});
 	
-	$("#it_" + id).kendoComboBox({
+	$it.kendoComboBox({
 		cascadeFrom: "is_" + id,
 		cascadeFromField: "subject_id",
 		dataSource: teachers,
 		dataTextField: "name",
 		clearButton: false,
+		filter: "startswith",
 		value: teacherId,
 		dataValueField: "id",
 		autoWidth: true,
@@ -237,6 +250,18 @@ function addSubject($td){
 	initItem(defaultId, null, null, null, classId, lessonId, day, 0);	
 }
 
+function deleteSubject($block){
+	let delId = $block.data("item-id");
+	let newArr = [];
+	for(let i=0; i < timetable.length; i++){
+		if(timetable[i]['id'] != delId){
+			newArr.push(timetable[i]);
+		}
+	}
+	timetable = newArr;
+	$block.remove()
+}
+
 function copy($td, isfromright){
 	let $from;
 	if(isfromright)
@@ -263,11 +288,11 @@ function copy($td, isfromright){
 	const classId = $td.data("class-id");
 	const lessonId = $td.data("lesson-id");
 	const day = $td.data("day");
-	var defaultId = getDefaultId();
 	
 	let fromClassId = $from.data("class-id");
 	
 	$from.find(".subject-block").each(function(){
+		let defaultId = getDefaultId();
 		let flags = 0;
 		let sid = this.getAttribute("data-item-id");
 		if(timetable_hash[day] && timetable_hash[day][lessonId] && timetable_hash[day][lessonId][fromClassId] && timetable_hash[day][lessonId][fromClassId][sid]){
@@ -282,16 +307,12 @@ function copy($td, isfromright){
 		}
 		
 		$td.append(tpl.replaceAll("{no}",defaultId));
-		initItem(defaultId, null, null, null, classId, lessonId, day, flags);
-		
+		initItem(defaultId, null, null, null, classId, lessonId, day, flags);		
 		
 		$("#is_" + defaultId).data("kendoComboBox").value($("#is_" + sid).data("kendoComboBox").value());
 		$("#ir_" + defaultId).data("kendoComboBox").value($("#ir_" + sid).data("kendoComboBox").value());
 		$("#it_" + defaultId).data("kendoComboBox").value($("#it_" + sid).data("kendoComboBox").value());
 		
-			
-		
-		defaultId++;
 	});	
 }
 
@@ -312,6 +333,7 @@ function initContextMenu(){
 				case 'mark:online': addOrRemoveFlag($(e.target), flagList.online); break;
 				case 'mark:optional': addOrRemoveFlag($(e.target), flagList.optional); break;
 				case 'mark:olimp': addOrRemoveFlag($(e.target), flagList.olimp); break;
+				case 'delete': deleteSubject($(e.target)); break;
 			}
 		}
 	});

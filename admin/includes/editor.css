@@ -43,8 +43,20 @@ body {
 {
 	text-align: center;
 	width: 100%;
+	margin-top:78px;
 
 	
+}
+
+.hhh {
+	position:fixed;
+	top:40px;
+	left:0px;
+	z-index:9999;
+}
+.hhh td {
+	padding:1px 0px;
+	height:33px;
 }
 
 .subject
@@ -70,6 +82,14 @@ body {
 	color: 	black;
 	height: 15px;
 	font-style: oblique;
+}
+
+#toolbar {
+	position:fixed;
+	top:0px;
+	left:0px;
+	z-index:9999;
+	width:100%;
 }
 
 .t-head, .cls, .date, .week-num, .day
