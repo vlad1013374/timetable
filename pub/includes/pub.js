@@ -7,17 +7,20 @@ for (var i = 0; i <= timetable.length - 1; i++){
 		   $(this).attr("data-lesson-id") == timetable[i].lesson_id && 
 		   $(this).attr("data-day") == timetable[i].day){
 		   	if($(this).hasClass("teacher")){
-		   		$(this).append(timetable[i].name);
+		   		$(this).append('<div>'+timetable[i].name+'</div>');
 		   		
 		   	}else if($(this).hasClass("subject")){
-		   		$(this).append(timetable[i].short_name);
+		   		$(this).append('<div>'+timetable[i].short_name+'</div>');
+		   		
 
 		   	}else if($(this).hasClass("classroom")){
-		   		$(this).append(timetable[i].room_id);
+		   		$(this).append('<div>'+timetable[i].room_id+'</div>');
+		   		
 		   	}
 			$(this).addClass("flag-"+timetable[i].flags);
 		}
 	})
 }
+
 
 
