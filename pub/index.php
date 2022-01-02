@@ -5,9 +5,14 @@
 
 
 	
+	$is_active = $_GET['is_active'];
 	$weekId = $_GET['weekId'];
 	$lessons = R::getAll( 'SELECT * FROM lessons');
-	$week = R::getAssocRow( 'SELECT * FROM weeks where id = ?', [$weekId] ); // $_GET['week'];
+	if(isset($is_active)){
+		$week = R::getAssocRow( 'SELECT * FROM weeks where is_active = "1"' );
+	}else{
+		$week = R::getAssocRow( 'SELECT * FROM weeks where id = ?', [$weekId] ); // $_GET['week'];
+	}
 	$week_model = new WeekEditModel($week[0], $lessons);
 	//print_r($week_model);
 
