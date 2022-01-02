@@ -111,6 +111,9 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 				if(view.length == 1){
 					teacher.value(view[0]['id']);
 					timetable_hash[day][lessonId][classId][id]['teacher_id'] = view[0]['id'];
+				} else if(links[val+'-'+classId]) {
+					teacher.value(links[val+'-'+classId]);
+					timetable_hash[day][lessonId][classId][id]['teacher_id'] = links[val+'-'+classId];
 				}
 			}
 		}
