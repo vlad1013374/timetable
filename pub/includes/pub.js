@@ -6,7 +6,7 @@ for (var i = 0; i <= timetable.length - 1; i++){
 		   $(this).attr("data-lesson-id") == timetable[i].lesson_id && 
 		   $(this).attr("data-day") == timetable[i].day){
 		   	if($(this).hasClass("teacher")){
-		   		$(this).append('<div class="flag-'+timetable[i].flags+'">'+timetable[i].name+'</div>');
+		   		$(this).append('<div class="flag-'+timetable[i].flags+'">'+timetable[i].sub_name+'</div>');
 		   	
 		   		
 		   	}else if($(this).hasClass("subject")){
