@@ -10,8 +10,17 @@
 	$lessons = R::getAll( 'SELECT * FROM lessons');
 	if(isset($is_active)){
 		$week = R::getAssocRow( 'SELECT * FROM weeks where is_active = "1"' );
+		$timetable = R::getAll( 'SELECT *,s.name as sub_name FROM timetables t 
+		join subjects s on t.subject_id=s.id 
+		join teachers teach on t.teacher_id=teach.id 
+		join weeks w on week_id = w.id
+		where w.is_active = "1" ');
 	}else{
 		$week = R::getAssocRow( 'SELECT * FROM weeks where id = ?', [$weekId] ); // $_GET['week'];
+		$timetable = R::getAll( 'SELECT *,s.name as sub_name FROM timetables t 
+		join subjects s on t.subject_id=s.id 
+		join teachers teach on t.teacher_id=teach.id 
+		where t.week_id =? ', [$weekId]);
 	}
 	$week_model = new WeekEditModel($week[0], $lessons);
 	//print_r($week_model);
