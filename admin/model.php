@@ -48,16 +48,16 @@ function save($data_json)
 	
 		
 }
-function auto_save($datas)
+function auto_save($data_json_auto)
 {
-	foreach ($datas as $data) {
-		$timetable = R::load('timetables_autosave', $data->id);
-		if (empty($timetable)) {
-			$timetable = R::dispense('timetables_autosave');
-		}
-		if(empty($data->subject_id)){
-			R::trash($timetable);
-		}else{
+	$datas = json_decode($data_json_auto);
+		
+	$log = R::dispense('logs');
+	$log->data = $data_json_auto;
+	$log->type = 'auto';
+	R::store($log); 
+	foreach ($datas as $data) {		
+		$timetable = R::dispense('autosave');		
 		$timetable->week_id = $data->week_id;
 		$timetable->day = $data->day;
 		$timetable->lesson_id =  $data->lesson_id;
@@ -67,11 +67,8 @@ function auto_save($datas)
 		$timetable->teacher_id = $data->teacher_id;
 		$timetable->comment = $data->comment;
 		$timetable->flags = $data->flags;
-		R::store($timetable);
-		}
-	}
-	
-		
+		R::store($timetable);		
+	}		
 }
 
 const DAY_NAMES = array('', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье');

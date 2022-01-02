@@ -180,6 +180,21 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 	
 }
 
+function paint(type){
+	if(!type){
+		type = "chess";
+	}
+	
+	$t = $("table.time-t");
+	$t.removeClass("colors-by-class colors-by-week colors-chess");
+	switch(type){
+		case 'class': $t.addClass("colors-by-class"); break;
+		case 'week': $t.addClass("colors-by-week"); break;
+		case 'chess': $t.addClass("colors-by-week colors-chess"); break;
+	}
+	localStorage.setItem("color_type", type);
+}
+
 function addOrRemoveFlag(block, flag){
 	const $td = block.parent();
 	const classId = $td.data("class-id");
@@ -361,6 +376,13 @@ hashCode = function(s){
 
 setInterval(function(){
 	var dt = JSON.stringify(timetable);
+
+	if(window.timetable_hash == dt){
+		return;
+	}
+	
+	window.timetable_hash = dt;
+	
 	$.post( "editor-auto-save.php", {dataauto: dt})
 	  .done(function(ev, a, b) {
 		var r = JSON.parse(ev);

@@ -14,8 +14,9 @@ body {
 
 .day-border
 {
-	border: solid 3px black;
-	background-color: #DFC8B8;
+	border: solid 2px black;
+	padding:5px;
+	background-color: #dedad2;
 }
 
 .classroom
@@ -114,7 +115,7 @@ body {
 
 .subject, .teacher
 {
-	background: #E2DBF0;
+	/*background: #E2DBF0;*/
 }
 
 .extra-subject
@@ -236,3 +237,119 @@ th,td{
 	margin-bottom:2px;
 }
 
+#loader {
+	position:fixed;
+	z-index:9999999;
+	width:100%;
+	height:100vh;
+	background:white;
+	left:0;
+	top:0;
+}
+
+#loader div {
+	text-align:center;
+	padding-top:47vh;
+	font-size:18px;
+}
+
+.colors-by-class tr td:nth-child(2) {background:#54bebe;}
+.colors-by-class tr td:nth-child(3) {background:#76c8c8;}
+.colors-by-class tr td:nth-child(4) {background:#98d1d1;}
+.colors-by-class tr td:nth-child(5) {background:#badbdb;}
+.colors-by-class tr td:nth-child(6) {background:#dedad2;}
+.colors-by-class tr td:nth-child(7) {background:#e4bcad;}
+.colors-by-class tr td:nth-child(8) {background:#df979e;}
+.colors-by-class tr td:nth-child(9) {background:#d7658b;}
+.colors-by-class tr td:nth-child(10) {background:#c80064;}
+
+/*
+.colors-by-week tr:nth-child(3) {background:#fd7f6f;}
+.colors-by-week tr:nth-child(4) {background:#fd7f6f;}
+.colors-by-week tr:nth-child(5) {background:#fd7f6f;}
+.colors-by-week tr:nth-child(6) {background:#fd7f6f;}
+
+.colors-by-week tr:nth-child(8) {background:#7eb0d5;}
+.colors-by-week tr:nth-child(9) {background:#7eb0d5;}
+.colors-by-week tr:nth-child(10) {background:#7eb0d5;}
+.colors-by-week tr:nth-child(11) {background:#7eb0d5;}
+
+.colors-by-week tr:nth-child(13) {background:#b2e061;}
+.colors-by-week tr:nth-child(41) {background:#b2e061;}
+.colors-by-week tr:nth-child(15) {background:#b2e061;}
+.colors-by-week tr:nth-child(16) {background:#b2e061;}
+
+.colors-by-week tr:nth-child(18) {background:#bd7ebe;}
+.colors-by-week tr:nth-child(19) {background:#bd7ebe;}
+.colors-by-week tr:nth-child(20) {background:#bd7ebe;}
+.colors-by-week tr:nth-child(21) {background:#bd7ebe;}
+
+.colors-by-week tr:nth-child(23) {background:#ffb55a;}
+.colors-by-week tr:nth-child(24) {background:#ffb55a;}
+.colors-by-week tr:nth-child(25) {background:#ffb55a;}
+.colors-by-week tr:nth-child(26) {background:#ffb55a;}
+
+.colors-by-week tr:nth-child(28) {background:#8bd3c7;}
+.colors-by-week tr:nth-child(29) {background:#8bd3c7;}
+.colors-by-week tr:nth-child(30) {background:#8bd3c7;}
+.colors-by-week tr:nth-child(31) {background:#8bd3c7;}
+*/
+/*
+.colors-by-week tr:nth-child(3) {background:#badbdb;}
+.colors-by-week tr:nth-child(4) {background:#badbdb;}
+.colors-by-week tr:nth-child(5) {background:#badbdb;}
+.colors-by-week tr:nth-child(6) {background:#badbdb;}
+
+.colors-by-week tr:nth-child(8) {background:#e4bcad;}
+.colors-by-week tr:nth-child(9) {background:#e4bcad;}
+.colors-by-week tr:nth-child(10) {background:#e4bcad;}
+.colors-by-week tr:nth-child(11) {background:#e4bcad;}
+
+.colors-by-week tr:nth-child(13) {background:#98d1d1;}
+.colors-by-week tr:nth-child(41) {background:#98d1d1;}
+.colors-by-week tr:nth-child(15) {background:#98d1d1;}
+.colors-by-week tr:nth-child(16) {background:#98d1d1;}
+
+.colors-by-week tr:nth-child(18) {background:#df979e;}
+.colors-by-week tr:nth-child(19) {background:#df979e;}
+.colors-by-week tr:nth-child(20) {background:#df979e;}
+.colors-by-week tr:nth-child(21) {background:#df979e;}
+
+.colors-by-week tr:nth-child(23) {background:#76c8c8;}
+.colors-by-week tr:nth-child(24) {background:#76c8c8;}
+.colors-by-week tr:nth-child(25) {background:#76c8c8;}
+.colors-by-week tr:nth-child(26) {background:#76c8c8;}
+
+.colors-by-week tr:nth-child(28) {background:#a7d5ed;}
+.colors-by-week tr:nth-child(29) {background:#a7d5ed;}
+.colors-by-week tr:nth-child(30) {background:#a7d5ed;}
+.colors-by-week tr:nth-child(31) {background:#a7d5ed;}
+*/
+
+.colors-by-week tr:nth-child(10n + 3) {background:#badbdb;}
+.colors-by-week tr:nth-child(10n + 4) {background:#badbdb;}
+.colors-by-week tr:nth-child(10n + 5) {background:#badbdb;}
+.colors-by-week tr:nth-child(10n + 6) {background:#badbdb;}
+
+.colors-by-week tr:nth-child(10n + 8) {background:#e4bcad;}
+.colors-by-week tr:nth-child(10n + 9) {background:#e4bcad;}
+.colors-by-week tr:nth-child(10n + 10) {background:#e4bcad;}
+.colors-by-week tr:nth-child(10n + 11) {background:#e4bcad;}
+
+.colors-chess tr:nth-child(10n + 3) td:nth-child(2n + 3) {background-color:#edffff;}
+.colors-chess tr:nth-child(10n + 4) td:nth-child(2n + 3) {background-color:#edffff;}
+.colors-chess tr:nth-child(10n + 5) td:nth-child(2n + 3) {background-color:#edffff;}
+.colors-chess tr:nth-child(10n + 6) td:nth-child(2n + 3) {background-color:#edffff;}
+
+.colors-chess tr:nth-child(10n + 8) td:nth-child(2n + 3) {background-color:#ffdccf;}
+.colors-chess tr:nth-child(10n + 9) td:nth-child(2n + 3) {background-color:#ffdccf;}
+.colors-chess tr:nth-child(10n + 10) td:nth-child(2n + 3) {background-color:#ffdccf;}
+.colors-chess tr:nth-child(10n + 11) td:nth-child(2n + 3) {background-color:#ffdccf;}
+/*.colors-by-week tr:nth-child(4) {background:#badbdb;}
+.colors-by-week tr:nth-child(5) {background:#badbdb;}
+.colors-by-week tr:nth-child(6) {background:#badbdb;}
+
+.colors-by-week tr:nth-child(8) {background:#e4bcad;}
+.colors-by-week tr:nth-child(9) {background:#e4bcad;}
+.colors-by-week tr:nth-child(10) {background:#e4bcad;}
+.colors-by-week tr:nth-child(11) {background:#e4bcad;}*/

@@ -48,6 +48,7 @@
 
 </head>
 <body>
+<div id="loader"><div>Загрузка данных</div></div> 
 	<div>
 		<div id="toolbar" style=""></div>
 	</div>
@@ -137,18 +138,7 @@
 		let w = ($("body").width() - 60 - 9 )/ 8;
 		$("col:not(:first)").attr("width", w);
 		$(".hhh td:not(:first)").css("width", w+"px");
-		
-		let subjects = <?php echo json_encode($subjects); ?>;
-		let classes = <?php echo json_encode($classes); ?>;
-		let rooms = <?php echo json_encode($rooms); ?>;
-		let lessons = <?php echo json_encode($lessons); ?>;
-		let teachers = <?php echo json_encode($teachers); ?>;
-		let timetable = <?php echo json_encode($timetable); ?>;
-		let timetable_hash = {};
-		calcHash();			
-		init();	
-		initContextMenu();
-		
+				
 		$("#toolbar").kendoToolBar({
                         items: [
                             /*{ type: "button", text: "Button" },
@@ -194,6 +184,18 @@
                                     { text: "11В"/*, icon: "insert-up"*/ }
                                 ]
                             },
+							 { type: "separator" },
+							{
+                                type: "splitButton",
+                                text: "Расскраска",
+                                menuButtons: [
+									{ text: "Однотонная", click: function() {paint('none');}},
+                                    { text: "По классам", click: function() {paint('class');}},                     
+                                    { text: "По дням", click: function() {paint('week');}},            
+                                    { text: "В шахматном порядке", click: function() {paint('chess');}},                                   
+                                ]
+                            },
+							{ type: "separator" },
 							{ type: "button", text: "Сохранить", click: function() {
 									var dt = JSON.stringify(timetable);
 									$.post( "editor-save.php", {data: dt})
@@ -247,6 +249,23 @@
                             }*/
                         ]
                     });
+		
+		let subjects = <?php echo json_encode($subjects); ?>;
+		let classes = <?php echo json_encode($classes); ?>;
+		let rooms = <?php echo json_encode($rooms); ?>;
+		let lessons = <?php echo json_encode($lessons); ?>;
+		let teachers = <?php echo json_encode($teachers); ?>;
+		let timetable = <?php echo json_encode($timetable); ?>;
+		let timetable_hash = {};
+		
+		setTimeout(function(){
+			calcHash();			
+			init();	
+			initContextMenu();
+			paint(localStorage.getItem("color_type"));	
+			window.timetable_hash = JSON.stringify(timetable);
+			$("#loader").hide();
+		},10);
 		
 		
 	</script>
