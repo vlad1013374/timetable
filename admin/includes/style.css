@@ -131,6 +131,9 @@ table,th,td{
 .week-list{
 	color:#9A9A9A;
 }
+.is-active{
+	color:#3DBD2C;
+}
 a:link{
 	color:#00147A;
 	text-decoration:none;

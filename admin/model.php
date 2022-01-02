@@ -18,7 +18,14 @@ function add_week($week_json)
 	}
 	
 }
-
+function add_active_week($week_id)
+{
+	R::exec('UPDATE weeks set is_active = "0"');
+	$week_db = R::load('weeks', $week_id);
+	$week_db->is_active = "1";
+	R::store($week_db);
+	return true;
+}
 
 function save($data_json)
 {

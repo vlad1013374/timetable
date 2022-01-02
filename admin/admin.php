@@ -11,4 +11,9 @@ if (isset($json_week)) {
 		echo "Уже существует"; die();
 	}
 	
+}elseif(isset($week_active)){
+	if(add_active_week($week_active)){
+		echo "Всё ок"; die();
+	}
+	
 }

@@ -1,3 +1,33 @@
+$("ul li").each(function () {
+	if($(this).attr("data-active") == 0){
+		$(this).append("<button class='but-act'>Активировать</button>");
+	}else{
+		$(this).append("<label class='is-active'>(активная)</label>");
+	}
+});
+
+
+$(".but-act").click(function(){
+	var value = $(this).parent().attr("data-week");
+	$.post("admin.php", {weekActive: value})
+	  .done(function(ev) {
+	 
+		$("ul li").each(function() {
+			if($(this).attr("data-week") == value){
+				$(this).find("button").remove();
+				$(this).append("<label class='is-active'>(активная)</label>");
+				$(this).attr("data-active", "1");
+			}else if($(this).attr("data-active") == 1){
+				$(this).find(".is-active").remove();
+				$(this).append("<button class='but-act'>Активировать</button>");
+				$(this).attr("data-active", "0");
+			}
+		})
+	  })
+	  .fail(function() {
+		alert( "error" );
+	  })
+})
 
 
 

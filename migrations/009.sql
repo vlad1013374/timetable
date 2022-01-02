@@ -1,0 +1,1 @@
+ALTER TABLE `weeks` ADD `is_active` ENUM("0", "1") NOT NULL AFTER `stop`;

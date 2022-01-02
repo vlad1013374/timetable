@@ -5,11 +5,19 @@
 <?php
 	foreach ($weeks as $week) {
 		if (date('Y-m-d', strtotime('monday this week')) == $week['start']) {
-			echo '<li><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(текущая неделя)</label></a></li>';
+			
+				echo '<li data-week="'.$week['id'].'"  data-active="'.$week['is_active'].'"><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(текущая неделя)</label></a></li>';
+
 		}elseif (date('Y-m-d', strtotime('monday next week')) == $week['start']) {
-			echo '<li><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(следущая неделя)</label></a></li>';
+			
+				echo '<li data-week="'.$week['id'].'"  data-active="'.$week['is_active'].'"><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(следущая неделя)</label></a></li>';
+			
 		}else{
-			echo '<li><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a></li>';
+			
+				echo '<li data-week="'.$week['id'].'" data-active="'.$week['is_active'].'"><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a></li>';
+		
+				
+			
 		}
 		
 	}
