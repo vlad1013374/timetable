@@ -11,7 +11,7 @@
 	$subjects = R::getAll( 'SELECT * FROM subjects order by name');
 	$classes = R::getAll( 'SELECT * FROM classes');
 	$rooms = R::getAll( 'SELECT * FROM rooms');
-	$timetable = R::getAll( 'SELECT * FROM timetables');
+	$timetable = R::getAll( 'SELECT * FROM timetables where week_id = ?', [$weekId]);
 	$teachers = R::getAll( 'SELECT t.*, subject_id  FROM teachers t join teacher_subjects s on t.id=s.teacher_id order by t.name');
     
 	
