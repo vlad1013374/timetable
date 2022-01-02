@@ -131,7 +131,7 @@ table,th,td{
 .week-list{
 	color:#9A9A9A;
 }
-.is-active{
+.is-active-week{
 	color:#3DBD2C;
 }
 a:link{
@@ -142,4 +142,26 @@ a:visited{
 	color:#00147A;
 	text-decoration:none;
 }
+
+.week-li > div {
+	display:inline-block;
+	min-height:35px;
+}
+
+.week-li.k-listview-item {
+	padding-left:20px;
+	border-bottom:1px solid grey;
+}
+
+.but-act {
+	position:relative;
+	top:-3px;
+	display:none;
+}
+.week-li:hover {background:#eee;}
+.week-li:hover .but-act {
+	display:block;
+}
+
+
 

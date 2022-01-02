@@ -1,33 +1,45 @@
-<div style="float:left; margin: 10px;">
-	Изменение расписания:
 
-<ul>
-<?php
-	foreach ($weeks as $week) {
-		if (date('Y-m-d', strtotime('monday this week')) == $week['start']) {
-			
-				echo '<li data-week="'.$week['id'].'"  data-active="'.$week['is_active'].'"><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(текущая неделя)</label></a></li>';
+<div align="right" style="margin:10px;">
+	<span style="float:left;"><b>Список недель</b></span>
+	<button class="k-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Добавить неделю</button> &nbsp;
+	<a class="k-button" href="settings.php">Настройки</a></div>
+<div id="listView" style="width:100%;"></div>
+<script type="text/x-kendo-template" id="template">
+        <div class="week-li">
+            <div style="width:100px;"><a href = "editor.php?weekId=#:id#">#:number# неделя</a></div>
+            <div style="width:250px;">#:getDates(start, stop)#</div>            
+            <div style="width:180px;">#:curMonday == start ? 'Текущая неделя':(nextMonday == start ? 'Следущая неделя':'')#</div>
+			<div style="width:100px;" class="is-active-week">#:is_active == '1' ? 'Активна':''#</div>
+            <div style="width:50px;">#=is_active == '1' ? '':'<button data-id="'+id+'" class="but-act k-button">Активировать</button>'#</div>
+        </div>
+    </script>
+<script>
+const weeks = <?= json_encode($weeks); ?>;
+const curMonday = '<?= date('Y-m-d', strtotime('monday this week')) ?>';
+const nextMonday = '<?= date('Y-m-d', strtotime('monday next week')) ?>';
+const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const w = $(window).height();
+$("#listView").kendoListView({
+                dataSource: {
+                    data: weeks,
+                    pageSize: 20
+                },
+				height: w - 55,
+				scrollable: "endless",
+                template: kendo.template($("#template").html()),
+                
+            });
 
-		}elseif (date('Y-m-d', strtotime('monday next week')) == $week['start']) {
-			
-				echo '<li data-week="'.$week['id'].'"  data-active="'.$week['is_active'].'"><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a><label class="week-list">(следущая неделя)</label></a></li>';
-			
-		}else{
-			
-				echo '<li data-week="'.$week['id'].'" data-active="'.$week['is_active'].'"><a href = "editor.php?weekId='.$week['id'].'">'.$week['number'].' неделя</a></li>';
-		
-				
-			
-		}
-		
-	}
-?>
 
-</ul>
 
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-  Добавить неделю
-</button>
+function getDates(start, stop){
+	const s = new Date(start);
+	const e = new Date(stop);
+	
+	return s.getDate() + ' ' + months[s.getMonth()] + ' - ' + e.getDate() + ' ' + months[e.getMonth()];
+}
+</script>
+
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
@@ -59,6 +71,6 @@
   
 </div>
 
-</div>
 
- <a href="settings.php"><button class="btn btn-primary" style="float: right; margin:10px;">Настройки</button></a>
+
+ 

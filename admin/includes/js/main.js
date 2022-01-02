@@ -7,22 +7,12 @@ $("ul li").each(function () {
 });
 
 
-$(".but-act").click(function(){
-	var value = $(this).parent().attr("data-week");
+$("#listView").on("click", ".but-act", function(){
+	var value = $(this).data("id");
 	$.post("admin.php", {weekActive: value})
 	  .done(function(ev) {
 	 
-		$("ul li").each(function() {
-			if($(this).attr("data-week") == value){
-				$(this).find("button").remove();
-				$(this).append("<label class='is-active'>(активная)</label>");
-				$(this).attr("data-active", "1");
-			}else if($(this).attr("data-active") == 1){
-				$(this).find(".is-active").remove();
-				$(this).append("<button class='but-act'>Активировать</button>");
-				$(this).attr("data-active", "0");
-			}
-		})
+		document.location.reload();
 	  })
 	  .fail(function() {
 		alert( "error" );
@@ -50,7 +40,7 @@ $(".add-week").click(function () {
 	var dt = JSON.stringify(obj);
 	$.post("admin.php", {week: dt})
 	  .done(function(ev) {
-		alert(ev);
+		document.location.reload();
 		
 	  })
 	  .fail(function() {

@@ -2,7 +2,7 @@
 	require '../connection/db.php';
 	require 'model.php';
 
-	$weeks = R::getAll('SELECT * from `weeks` ORDER BY `number` ASC');
+	$weeks = R::getAll('SELECT * from `weeks` ORDER BY `start` desc');
 
 ?>
 <!DOCTYPE html>
