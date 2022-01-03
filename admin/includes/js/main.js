@@ -23,10 +23,11 @@ $("#listView").on("click", ".but-act", function(){
 
 
 $(".add-week").click(function () {
-
+	var number = $(".k-formatted-value.week-num.k-input").attr("aria-valuenow");
 	var week_start = $(".week-start.k-input").val();
 	var week_stop = $(".week-stop.k-input").val();
-	
+	var number_copy = $(".copy").val();
+
 	var pieces = week_start.split('.');
 	pieces.reverse();
 	var week_start = pieces.join('-');
@@ -35,13 +36,12 @@ $(".add-week").click(function () {
 	var week_stop = pieces.join('-');
 	
 
-	var number = $(".k-formatted-value.week-num.k-input").attr("aria-valuenow");
-	let obj = {number: number, start : week_start , stop : week_stop};
+	
+	let obj = {number: number, start : week_start , stop : week_stop, copy:number_copy};
 	var dt = JSON.stringify(obj);
 	$.post("admin.php", {week: dt})
 	  .done(function(ev) {
 		document.location.reload();
-		
 	  })
 	  .fail(function() {
 		alert( "error" );

@@ -14,6 +14,33 @@ function add_week($week_json)
 		$week_db->start = $week->start;
 		$week_db->stop = $week->stop;
 		R::store($week_db);
+		if(!empty($week->copy)){
+			$week_new = R::getAll('SELECT * FROM weeks where `number` = 18');
+			$copy_week = R::getAll('SELECT * FROM weeks where id = ?', [$week->copy]);
+			$copy_week_datas = R::getAll('SELECT * FROM timetables where week_id = ?', [$week->copy]);
+			$d1 = new DateTime($copy_week['start']);
+			$d2 = new DateTime($week->start);
+			$interval = $d2->diff($d1);
+			$diff = $interval->format('%D');
+			foreach ($copy_week_datas as $copy_week_data) {
+				
+				$day = date("Y-m-d", strtotime($copy_week_data['day'].'+ '.($diff+1).' days'));
+
+				$timetable = R::dispense('timetables');
+				$timetable->week_id = $week_new['id']; /*Проблема с доставаемым id недели*/
+				$timetable->day = $day;
+				$timetable->lesson_id =  $copy_week_data['lesson_id'];
+				$timetable->class_id = $copy_week_data['class_id'];
+				$timetable->subject_id = $copy_week_data['subject_id'];
+				$timetable->room_id = $copy_week_data['room_id'];
+				$timetable->teacher_id = $copy_week_data['teacher_id'];
+				$timetable->comment = $copy_week_data['comment'];
+				$timetable->flags = $copy_week_data['flags'];
+				R::store($timetable);
+			}
+			$new_week = R::dispense('timetables');
+
+		}
 		return true;
 	}
 	

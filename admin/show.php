@@ -58,7 +58,17 @@ function getDates(start, stop){
 			<div class="w-label">Дата воскресенья</div>
 			<input type="text" class ="week-stop" value="<? echo date('d.m.Y', strtotime('sunday next week')) ?>">
 		</div>
-		
+		<div>
+			<div class="w-label">Скопировать неделю:</div>
+			<select class="copy">
+				<option selected></option>
+				<?php foreach ($weeks as $week): ?>
+
+					<option value="<?=$week['id']?>"><?=$week['number']?></option>
+				<?php endforeach ?>
+
+			</select>
+		</div>
 		<div>
 			<div class="w-label">&nbsp;</div>
 			<button class="add-week k-button">Добавить</button>
