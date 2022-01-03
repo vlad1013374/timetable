@@ -15,7 +15,7 @@ function add_week($week_json)
 		$week_db->stop = $week->stop;
 		R::store($week_db);
 		if(!empty($week->copy)){
-			$week_new = R::getAll('SELECT * FROM weeks where `number` = ?', $week->number );
+			$week_new = R::getAll('SELECT * FROM weeks where `number` = ?', [$week->number] );
 			$copy_week = R::getAll('SELECT * FROM weeks where id = ?', [$week->copy]);
 			$copy_week_datas = R::getAll('SELECT * FROM timetables where week_id = ?', [$week->copy]);
 			$d1 = new DateTime($copy_week[0]['start']);
