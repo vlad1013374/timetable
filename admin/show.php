@@ -10,7 +10,8 @@
             <div style="width:250px;">#:getDates(start, stop)#</div>            
             <div style="width:180px;">#:curMonday == start ? 'Текущая неделя':(nextMonday == start ? 'Следущая неделя':'')#</div>
 			<div style="width:100px;" class="is-active-week">#:is_active == '1' ? 'Активна':''#</div>
-            <div style="width:50px;">#=is_active == '1' ? '':'<button data-id="'+id+'" class="but-act k-button">Активировать</button>'#</div>
+            <div style="width:150px;">#=is_active == '1' ? '':'<button data-id="'+id+'" class="but-act k-button">Активировать</button>'#</div>
+			<div style="width:350px;">#:comment ? comment:''#</div>
         </div>
     </script>
 <script>
