@@ -12,7 +12,7 @@
 	$classes = R::getAll( 'SELECT * FROM classes');
 	$rooms = R::getAll( 'SELECT * FROM rooms');
 	$timetable = R::getAll( 'SELECT * FROM timetables where week_id = ?', [$weekId]);
-	$links = R::getAssoc( 'SELECT concat(`subject_id`,\'-\',`class_id`) as \'key\', `teacher_id` FROM `links`');
+	$links = R::getAssoc( "SELECT concat(`subject_id`,'-',`class_id`, '-',IFNULL(lesson_id,''),'-',IFNULL(weekDay,'')) as 'key', `teacher_id` FROM `links`");
 	$teachers = R::getAll( 'SELECT t.*, subject_id  FROM teachers t join teacher_subjects s on t.id=s.teacher_id order by t.name');
     
 	

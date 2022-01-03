@@ -108,12 +108,17 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 			if(val){
 				let teacher = $it.data("kendoComboBox");
 				let view = teacher.dataSource.view();
+				let key1 = val + '-' + classId + '--';
+				let key2 = val + '-' + classId + '-' + lessonId + '-';
 				if(view.length == 1){
 					teacher.value(view[0]['id']);
 					timetable_hash[day][lessonId][classId][id]['teacher_id'] = view[0]['id'];
-				} else if(links[val+'-'+classId]) {
-					teacher.value(links[val+'-'+classId]);
-					timetable_hash[day][lessonId][classId][id]['teacher_id'] = links[val+'-'+classId];
+				} else if(links[key1]) {
+					teacher.value(links[key1]);
+					timetable_hash[day][lessonId][classId][id]['teacher_id'] = links[key1];
+				} else if(links[key2]) {
+					teacher.value(links[key2]);
+					timetable_hash[day][lessonId][classId][id]['teacher_id'] = links[key2];
 				}
 			}
 		}
