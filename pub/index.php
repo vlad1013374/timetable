@@ -29,10 +29,7 @@
 	$subjects = R::getAll( 'SELECT * FROM subjects order by name');
 	$classes = R::getAll( 'SELECT * FROM classes where name like ?' , [$class_like]);
 	$rooms = R::getAll( 'SELECT * FROM rooms');
-	$timetable = R::getAll( 'SELECT *, s.name as sub_name FROM timetables t 
-		join subjects s on t.subject_id=s.id 
-		join teachers teach on t.teacher_id=teach.id 
-		where t.week_id =? ', [$weekId]);
+	
 	$teachers = R::getAll( 'SELECT t.*, subject_id  FROM teachers t join teacher_subjects s on t.id=s.teacher_id order by t.name');
 	
 
