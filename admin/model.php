@@ -38,7 +38,7 @@ function add_week($week_json)
 				$timetable->flags = $copy_week_data['flags'];
 				R::store($timetable);
 			}
-			$new_week = R::dispense('timetables');
+			
 
 		}
 		return true;
