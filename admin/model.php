@@ -27,7 +27,7 @@ function add_week($week_json)
 				$day = date("Y-m-d", strtotime($copy_week_data['day'].'+ '.($diff+1).' days'));
 
 				$timetable = R::dispense('timetables');
-				$timetable->week_id = $week_new['id']; /*Проблема с доставаемым id недели*/
+				$timetable->week_id = $week_new[0]['id']; /*Проблема с доставаемым id недели*/
 				$timetable->day = $day;
 				$timetable->lesson_id =  $copy_week_data['lesson_id'];
 				$timetable->class_id = $copy_week_data['class_id'];
