@@ -15,16 +15,16 @@ function add_week($week_json)
 		$week_db->stop = $week->stop;
 		R::store($week_db);
 		if(!empty($week->copy)){
-			$week_new = R::getAll('SELECT * FROM weeks where `number` = 18');
+			$week_new = R::getAll('SELECT * FROM weeks where `number` = ?', $week->number );
 			$copy_week = R::getAll('SELECT * FROM weeks where id = ?', [$week->copy]);
 			$copy_week_datas = R::getAll('SELECT * FROM timetables where week_id = ?', [$week->copy]);
-			$d1 = new DateTime($copy_week['start']);
+			$d1 = new DateTime($copy_week[0]['start']);
 			$d2 = new DateTime($week->start);
 			$interval = $d2->diff($d1);
 			$diff = $interval->format('%D');
 			foreach ($copy_week_datas as $copy_week_data) {
 				
-				$day = date("Y-m-d", strtotime($copy_week_data['day'].'+ '.($diff+1).' days'));
+				$day = date("Y-m-d", strtotime($copy_week_data['day'].'+ '.$diff.' days'));
 
 				$timetable = R::dispense('timetables');
 				$timetable->week_id = $week_new[0]['id']; /*Проблема с доставаемым id недели*/
