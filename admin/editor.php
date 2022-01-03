@@ -43,7 +43,8 @@
 			optional: 2,
 			olimp: 4,
 			advice: 8,
-			ege: 16
+			ege: 16,
+			extra: 32,
 			
 		}
 	</script>
@@ -70,6 +71,7 @@
         <li style="background:#aa46be;color:white;" data-command="mark:olimp">Метка: Олимпиада</li>
         <li style="background:#01a8c1;color:white;" data-command="mark:advice">Метка: Консультация</li>
         <li style="background:#d51923;color:white;" data-command="mark:ege">Метка: ЕГЭ</li>
+        <li style="background:#ff5c1a;color:white;" data-command="mark:extra">Метка: Доп. Занятие</li>
         <li data-command="delete">Удалить</li>
 	</ul>
 	<ul style="display:none;" id="menutd">
@@ -135,6 +137,7 @@
 				<div style="display:none;" title="Олимпиада" class="flg f-olimp"><?= $config['positionFlagsLeft'] == "1" ? 'Ол':'Олимп' ?></div>	
 				<div style="display:none;" title="Консультация" class="flg f-advice"><?= $config['positionFlagsLeft'] == "1" ? 'Ко':'Конс' ?></div>	
 				<div style="display:none;" title="Подготовка к ЕГЭ" class="flg f-ege"><?= $config['positionFlagsLeft'] == "1" ? 'ЕГ':'ЕГЭ' ?></div>	
+				<div style="display:none;" title="Дополнительное занятие" class="flg f-extra"><?= $config['positionFlagsLeft'] == "1" ? 'До':'Доп' ?></div>	
 			</div>			
 			<div class="dl" style="margin-bottom:5px;"><input placeholder="Предмет" id="is_{no}" style="width:100%;" type="text" class="isubject"></div>
 			<div style="width:90px; float:right;"><input placeholder="Каб" id="ir_{no}" style="width:90px;" type="text" class="iroom"></div>

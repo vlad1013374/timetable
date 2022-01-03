@@ -193,7 +193,10 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 			block.find(".f-advice").show();
 		
 		if((f & flagList.ege) == flagList.ege)
-			block.find(".f-ege").show();			
+			block.find(".f-ege").show();	
+
+		if((f & flagList.extra) == flagList.extra)
+			block.find(".f-extra").show();			
 	} 
 	
 }
@@ -270,6 +273,11 @@ function addOrRemoveFlag(block, flag){
 			block.find(".f-ege").show();
         else
 			block.find(".f-ege").hide();
+			
+		if((obj['flags'] & flagList.extra) == flagList.extra)
+			block.find(".f-extra").show();
+        else
+			block.find(".f-extra").hide();
 	} else {
 		block.removeClass(config.flagsClass);
 		block.find(".flags-block").hide();
@@ -398,6 +406,7 @@ function initContextMenu(){
 				case 'mark:olimp': addOrRemoveFlag($(e.target), flagList.olimp); break;
 				case 'mark:advice': addOrRemoveFlag($(e.target), flagList.advice); break;
 				case 'mark:ege': addOrRemoveFlag($(e.target), flagList.ege); break;
+				case 'mark:extra': addOrRemoveFlag($(e.target), flagList.extra); break;
 				case 'delete': deleteSubject($(e.target)); break;
 			}
 		}

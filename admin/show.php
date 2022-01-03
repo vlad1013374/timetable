@@ -62,12 +62,21 @@ function getDates(start, stop){
 			<div class="w-label">Скопировать неделю:</div>
 			<select class="copy">
 				<option selected></option>
-				<?php foreach ($weeks as $week): ?>
-
-					<option value="<?=$week['id']?>"><?=$week['number']?></option>
+				<?php 
+				$months = array('января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря');
+				foreach ($weeks as $week): 
+					$tmp_start = date_parse($week['start']);
+					$tmp_stop = date_parse($week['stop']);
+				?>
+					
+					<option value="<?=$week['id']?>"><?=$week['number']?> (<?= $tmp_start['day'].' '.$months[$tmp_start['month']-1] ?> - <?=$tmp_stop['day'].' '.$months[$tmp_stop['month']-1]?>)</option>
 				<?php endforeach ?>
 
 			</select>
+		</div>
+		<div>
+			<div class="w-label">Комментарий</div>
+			<input type="text" class ="week-comment k-textbox" value="">
 		</div>
 		<div>
 			<div class="w-label">&nbsp;</div>

@@ -1,0 +1,1 @@
+ALTER TABLE `weeks` ADD `comment` VARCHAR(250) NULL AFTER `is_active`;

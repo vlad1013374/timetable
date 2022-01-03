@@ -2,26 +2,28 @@
 function add_week($week_json)
 {
 	$week = json_decode($week_json);
-	$week_is_num = R::find('weeks', 'number = ?', [$week->number]);
+	/*$week_is_num = R::find('weeks', 'number = ?', [$week->number]);
 	$week_is_mon = R::find('weeks', 'start = ?', [$week->start]);
 	if($week_is_num){
 		return false; 
 	}elseif($week_is_mon){
 		return false; 
-	}else{
+	}else{*/
 		$week_db = R::dispense('weeks');
 		$week_db->number = $week->number;
 		$week_db->start = $week->start;
 		$week_db->stop = $week->stop;
+		$week_db->comment = $week->comment;
 		R::store($week_db);
+		$new_id = R::getInsertID();
 		if(!empty($week->copy)){
-			$week_new = R::getAll('SELECT * FROM weeks where `number` = ?', [$week->number] );
+			$week_new = R::getAll('SELECT * FROM weeks where `id` = ?', [$new_id] );
 			$copy_week = R::getAll('SELECT * FROM weeks where id = ?', [$week->copy]);
 			$copy_week_datas = R::getAll('SELECT * FROM timetables where week_id = ?', [$week->copy]);
 			$d1 = new DateTime($copy_week[0]['start']);
 			$d2 = new DateTime($week->start);
 			$interval = $d2->diff($d1);
-			$diff = $interval->format('%D');
+			$diff = $interval->days;
 			foreach ($copy_week_datas as $copy_week_data) {
 				
 				$day = date("Y-m-d", strtotime($copy_week_data['day'].'+ '.$diff.' days'));
@@ -38,11 +40,9 @@ function add_week($week_json)
 				$timetable->flags = $copy_week_data['flags'];
 				R::store($timetable);
 			}
-			
-
 		}
 		return true;
-	}
+	//}
 	
 }
 function add_active_week($week_id)

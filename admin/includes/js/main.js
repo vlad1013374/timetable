@@ -26,7 +26,7 @@ $(".add-week").click(function () {
 	var number = $(".k-formatted-value.week-num.k-input").attr("aria-valuenow");
 	var week_start = $(".week-start.k-input").val();
 	var week_stop = $(".week-stop.k-input").val();
-	var number_copy = $(".copy").val();
+	var number_copy = $("select.copy").data("kendoDropDownList").value();
 
 	var pieces = week_start.split('.');
 	pieces.reverse();
@@ -37,7 +37,7 @@ $(".add-week").click(function () {
 	
 
 	
-	let obj = {number: number, start : week_start , stop : week_stop, copy:number_copy};
+	let obj = {number: number, start : week_start , stop : week_stop, copy:number_copy, comment:$(".week-comment").val()};
 	var dt = JSON.stringify(obj);
 	$.post("admin.php", {week: dt})
 	  .done(function(ev) {
@@ -55,3 +55,4 @@ $(".week-num").kendoNumericTextBox({
 	min:1,
 	format:"n0"
 });
+$(".copy").kendoDropDownList({autoWidth: true});

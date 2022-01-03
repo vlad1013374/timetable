@@ -226,6 +226,11 @@ th,td{
 	color:white;
 }
 
+.f-extra {
+	background:#ff5c1a;
+	color:white;
+}
+
 .flags-block {
 	padding-bottom:2px;
 }
