@@ -42,6 +42,8 @@
 			online: 1,	
 			optional: 2,
 			olimp: 4,
+			advice: 8,
+			ege: 16
 			
 		}
 	</script>
@@ -62,9 +64,12 @@
         <li data-command="add">Добавить еще предмет</li>
         <li data-command="copy:left">Скопировать слева</li>
         <li data-command="copy:right">Скопировать справа</li>
+        <li data-command="comment">Добавить/Удалить комментарий</li>
         <li style="background:#3e80ed;color:white;" data-command="mark:online">Метка: Онлайн</li>
         <li style="background:#55b22d;color:white;" data-command="mark:optional">Метка: Факультатив</li>
         <li style="background:#aa46be;color:white;" data-command="mark:olimp">Метка: Олимпиада</li>
+        <li style="background:#01a8c1;color:white;" data-command="mark:advice">Метка: Консультация</li>
+        <li style="background:#d51923;color:white;" data-command="mark:ege">Метка: ЕГЭ</li>
         <li data-command="delete">Удалить</li>
 	</ul>
 	<ul style="display:none;" id="menutd">
@@ -128,10 +133,13 @@
 				<div style="display:none;" title="Online" class="flg f-online"><?= $config['positionFlagsLeft'] == "1" ? 'On':'Online' ?></div>
 				<div style="display:none;" title="Факультатив" class="flg f-optional"><?= $config['positionFlagsLeft'] == "1" ? 'Фа':'Факульт' ?></div>
 				<div style="display:none;" title="Олимпиада" class="flg f-olimp"><?= $config['positionFlagsLeft'] == "1" ? 'Ол':'Олимп' ?></div>	
+				<div style="display:none;" title="Консультация" class="flg f-advice"><?= $config['positionFlagsLeft'] == "1" ? 'Ко':'Конс' ?></div>	
+				<div style="display:none;" title="Подготовка к ЕГЭ" class="flg f-ege"><?= $config['positionFlagsLeft'] == "1" ? 'ЕГ':'ЕГЭ' ?></div>	
 			</div>			
-			<div class="dl" style="margin-bottom:5px;"><input id="is_{no}" style="width:100%;" type="text" class="isubject"></div>
-			<div style="width:90px; float:right;"><input id="ir_{no}" style="width:90px;" type="text" class="iroom"></div>
-			<div class="dl" style="margin-right:95px;"><input id="it_{no}" style="width:100%;" type="text" class="iteacher"></div>
+			<div class="dl" style="margin-bottom:5px;"><input placeholder="Предмет" id="is_{no}" style="width:100%;" type="text" class="isubject"></div>
+			<div style="width:90px; float:right;"><input placeholder="Каб" id="ir_{no}" style="width:90px;" type="text" class="iroom"></div>
+			<div class="dl" style="margin-right:95px;"><input id="it_{no}" placeholder="Преподаватель" style="width:100%;" type="text" class="iteacher"></div>
+			<div class="dl" style="margin-top:5px; display:none;"><input placeholder="Комментарий" id="ic_{no}" style="width:100%;" type="text" class="icomment k-textbox"></div>
 		</div>
 	</script>
 	

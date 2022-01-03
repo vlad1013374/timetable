@@ -11,13 +11,6 @@ const emptyItem = {
 	"flags":"0"
 };
 
-/*const flagList = {
-	online: 1,	
-	optional: 2,
-	olimp: 4,
-	
-}*/
-
 function calcHash(){
 	for(let i=0; i< timetable.length; i++){
 		if(!timetable_hash.hasOwnProperty(timetable[i]['day'])){
@@ -55,12 +48,12 @@ function init(){
 			for(let id in timetable_hash[day][lessonId][classId]){
 				const tt = timetable_hash[day][lessonId][classId][id];
 				$el.append(tpl.replaceAll("{no}",id));
-				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags);
+				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags, tt.comment);
 			}
 		} else {
 			let defaultId = getDefaultId();
 			$el.append(tpl.replaceAll("{no}",defaultId));
-			initItem(defaultId, null, null, null, classId, lessonId, day, 0);				
+			initItem(defaultId, null, null, null, classId, lessonId, day, 0, null);				
 		}
 		
 		
@@ -84,7 +77,8 @@ function init(){
 	}).data("kendoNotification");
 }
 
-function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flags){
+function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flags, comment){
+
 	var $subj = $("#is_" + id);
 	var $it = $("#it_" + id);
 	$subj.kendoComboBox({
@@ -168,6 +162,16 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 			//console.log(e.sender.dataSource.data().length);
 		  }					
 	});	
+	
+	$ic = $("#ic_" + id)
+	$ic.change(function(){
+		createNewItemIfNeed(day, lessonId, classId, id);
+		timetable_hash[day][lessonId][classId][id]['comment'] = this.value;
+	})
+	if(comment && (comment.length > 0)){
+		$ic.parent().show();
+		$ic.val(comment);
+	}
 
 	let f = parseInt(flags);
 	
@@ -183,7 +187,13 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 			block.find(".f-optional").show();		
 			
 		if((f & flagList.olimp) == flagList.olimp)
-			block.find(".f-olimp").show();			
+			block.find(".f-olimp").show();
+		
+		if((f & flagList.advice) == flagList.advice)
+			block.find(".f-advice").show();
+		
+		if((f & flagList.ege) == flagList.ege)
+			block.find(".f-ege").show();			
 	} 
 	
 }
@@ -201,6 +211,25 @@ function paint(type){
 		case 'chess': $t.addClass("colors-by-week colors-chess"); break;
 	}
 	localStorage.setItem("color_type", type);
+}
+
+function addOrRemoveComment(block){
+	const $td = block.parent();
+	const classId = $td.data("class-id");
+	const lessonId = $td.data("lesson-id");
+	const day = $td.data("day");
+	const id = block.data("item-id");
+	const $ic = $("#ic_" + id);
+	const $icp = $ic.parent();
+	if($icp.is(":visible")){
+		$icp.hide();
+		$ic.val("");
+		if(timetable_hash[day] && timetable_hash[day][lessonId] && timetable_hash[day][lessonId][classId] && timetable_hash[day][lessonId][classId][id]){
+			timetable_hash[day][lessonId][classId][id]['comment'] = null;
+		}
+	} else {
+		$icp.show();
+	}
 }
 
 function addOrRemoveFlag(block, flag){
@@ -231,6 +260,16 @@ function addOrRemoveFlag(block, flag){
 			block.find(".f-olimp").show();
         else
 			block.find(".f-olimp").hide();
+			
+		if((obj['flags'] & flagList.advice) == flagList.advice)
+			block.find(".f-advice").show();
+        else
+			block.find(".f-advice").hide();
+			
+		if((obj['flags'] & flagList.ege) == flagList.ege)
+			block.find(".f-ege").show();
+        else
+			block.find(".f-ege").hide();
 	} else {
 		block.removeClass(config.flagsClass);
 		block.find(".flags-block").hide();
@@ -270,7 +309,7 @@ function addSubject($td){
 	var defaultId = getDefaultId();
 	
 	$td.append(tpl.replaceAll("{no}",defaultId));
-	initItem(defaultId, null, null, null, classId, lessonId, day, 0);	
+	initItem(defaultId, null, null, null, classId, lessonId, day, 0, null);	
 }
 
 function deleteSubject($block){
@@ -330,7 +369,7 @@ function copy($td, isfromright){
 		}
 		
 		$td.append(tpl.replaceAll("{no}",defaultId));
-		initItem(defaultId, null, null, null, classId, lessonId, day, flags);		
+		initItem(defaultId, null, null, null, classId, lessonId, day, flags, $("#ic_" + sid).val());		
 		
 		$("#is_" + defaultId).data("kendoComboBox").value($("#is_" + sid).data("kendoComboBox").value());
 		$("#ir_" + defaultId).data("kendoComboBox").value($("#ir_" + sid).data("kendoComboBox").value());
@@ -353,9 +392,12 @@ function initContextMenu(){
 				case 'add': addSubject($(e.target).parent()); break;
 				case 'copy:left': copy($(e.target).parent()); break;
 				case 'copy:right': copy($(e.target).parent(), true); break;
+				case 'comment': addOrRemoveComment($(e.target)); break;
 				case 'mark:online': addOrRemoveFlag($(e.target), flagList.online); break;
 				case 'mark:optional': addOrRemoveFlag($(e.target), flagList.optional); break;
 				case 'mark:olimp': addOrRemoveFlag($(e.target), flagList.olimp); break;
+				case 'mark:advice': addOrRemoveFlag($(e.target), flagList.advice); break;
+				case 'mark:ege': addOrRemoveFlag($(e.target), flagList.ege); break;
 				case 'delete': deleteSubject($(e.target)); break;
 			}
 		}
