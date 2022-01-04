@@ -6,6 +6,43 @@ $("ul li").each(function () {
 	}
 });
 
+$("#listView").on("click", ".delete-week", function(){
+	var week_deleted_id = $(this).parent().attr("week-id");
+	$.post("admin.php", {weekDelete: week_deleted_id})
+	  .done(function(ev) {
+		document.location.reload();
+	  })
+	  .fail(function() {
+		alert( "error" );
+	  })
+})
+$(".edit-week").click(function () {
+	var number = $(".k-formatted-value.week-num.edit.k-input").attr("aria-valuenow");
+	var week_start = $(".week-start.edit.k-input").val();
+	var week_stop = $(".week-stop.edit.k-input").val();
+	var number_copy = $("select.copy.edit").data("kendoDropDownList").value();
+	
+
+	var pieces = week_start.split('.');
+	pieces.reverse();
+	var week_start = pieces.join('-');
+	var pieces = week_stop.split('.');
+	pieces.reverse();
+	var week_stop = pieces.join('-');
+	
+
+	
+	let obj = {number: number, start : week_start , stop : week_stop, copy:number_copy, comment:$(".week-comment.edit").val()};
+	var dt = JSON.stringify(obj);
+	$.post("admin.php", {weekEdit: dt})
+	  .done(function(ev) {
+		document.location.reload();
+	  })
+	  .fail(function() {
+		alert( "error" );
+	  })
+	
+})
 
 $("#listView").on("click", ".but-act", function(){
 	var value = $(this).data("id");

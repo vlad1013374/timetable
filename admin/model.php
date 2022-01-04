@@ -45,11 +45,28 @@ function add_week($week_json)
 	//}
 	
 }
+function edit_week($week_json)
+{
+	$week = json_decode($week_json);
+	$week_id = R::findOne('weeks', 'number =? ', [$week->number]);
+	$week_db = R::load('weeks', $week_id);
+	$week_db->start = $week->start;
+	$week_db->stop = $week->stop;
+	$week_db->comment = $week->comment;
+	R::store($week_db);
+}
+
 function add_active_week($week_id)
 {
 	R::exec('UPDATE weeks set is_active = "0"');
 	R::exec('UPDATE weeks set is_active = "1" where id= ?',[$week_id]);
 	return true;
+}
+
+function delete_week($week_id)
+{
+	$week = R::load('weeks', $week_id);
+	R::trash($week);
 }
 
 function save($data_json)
