@@ -67,6 +67,7 @@ function delete_week($week_id)
 {
 	$week = R::load('weeks', $week_id);
 	R::trash($week);
+	R::exec('delete from timetables where week_id = ?', [$week_id]);
 }
 
 function save($data_json)
