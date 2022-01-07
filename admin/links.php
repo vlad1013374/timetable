@@ -100,6 +100,7 @@
 	     <div>
 	     	Номер пары: 
 	     	<select name="lesson">
+	     	<option></option>
 	     	<?php foreach ($lessons as $lesson): ?>
 	     		
 	     			<option value="<?=$lesson['id']?>"><?=$lesson['name']?></option>
@@ -110,6 +111,7 @@
 	     <div>
 	     	День: 
 	     	<select name="day">
+	     	<option></option>
 	     	<?php $n = 1;?>
 	     	<?php foreach (DAYS as $day): ?>
 	     			
