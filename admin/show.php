@@ -12,7 +12,9 @@
             <div style="width:180px;">#:curMonday == start ? 'Текущая неделя':(nextMonday == start ? 'Следущая неделя':'')#</div>
 			<div style="width:100px;" class="is-active-week">#:is_active == '1' ? 'Активна':''#</div>
             <div style="width:130px;">#=is_active == '1' ? '':'<button data-id="'+id+'" class="but-act k-button">Активировать</button>'#</div>
+			<div style="width:200px;"><a target="_blank" href="/rasp/pub/print.php?weekId=#:id#&class=10">печать 10</a> &nbsp; <a target="_blank" href="/rasp/pub/print.php?weekId=#:id#&class=11">печать 11</a></div>
 			<div style="width:350px;">#:comment ? comment:''#</div>			
+						
 			<button type="button" style="float:right; margin:10px;" class="btn-close delete-week" aria-label="Close"></button>
         </div>
     </script>

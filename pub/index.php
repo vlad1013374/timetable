@@ -1,12 +1,12 @@
 <?php 
 	require '../connection/db.php';
 	require "model.php";
-	$class_like = $_GET['class']."%";
+	$class_like = (array_key_exists('class', $_GET) ? $_GET['class'] : '')."%";
 
 
 	
-	$is_active = $_GET['is_active'];
-	$weekId = $_GET['weekId'];
+	$is_active = array_key_exists('is_active', $_GET) ? $_GET['is_active'] : null;
+	$weekId = array_key_exists('weekId', $_GET) ? $_GET['weekId'] : null;
 	$lessons = R::getAll( 'SELECT * FROM lessons');
 	if(isset($is_active)){
 		$week = R::getAssocRow( 'SELECT * FROM weeks where is_active = "1"' );
@@ -78,10 +78,6 @@
 				<tr>
 					<td class = "day-border" colspan = "<?= (count($classes) + 1)*2 ?>"> <?= $day->date->format("d.m") ?> <?= $day->dayName ?> </td>
 				</tr>
-
-				<!-- <tr>
-					<td class = "date" rowspan="5"><input type="text" placeholder="Дата" value="'.date('d M', strtotime($days_en[$n].' '.$week.' week')).'"></td>
-				</tr> -->
 				
 				<?php foreach($day->lessons as $lesson) { ?>
 				
