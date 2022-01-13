@@ -13,14 +13,14 @@
 		$week = R::getAssocRow( 'SELECT * FROM weeks where is_active = "1"' );
 		$timetable = R::getAll( 'SELECT t.*,s.name as sname, s.short_name as sname2, teach.name as tname, room_id as rname FROM timetables t 
 		join subjects s on t.subject_id=s.id 
-		join teachers teach on t.teacher_id=teach.id 
+		left join teachers teach on t.teacher_id=teach.id 
 		join weeks w on week_id = w.id
 		where w.is_active = "1" order by sname');
 	}else{
 		$week = R::getAssocRow( 'SELECT * FROM weeks where id = ?', [$weekId] ); // $_GET['week'];
 		$timetable = R::getAll( 'SELECT t.*,s.name as sname, s.short_name as sname2, teach.name as tname, room_id as rname FROM timetables t 
 		join subjects s on t.subject_id=s.id 
-		join teachers teach on t.teacher_id=teach.id 
+		left join teachers teach on t.teacher_id=teach.id 
 		where t.week_id =? order by sname', [$weekId]);
 	}
 	
@@ -247,15 +247,23 @@
 			   background-color:#ccc;
 		   }
 		   
-		   .table-main > tbody > tr:nth-child(4n+2) {
-			   border-top:7px double black;
+		   .day-title {
+			   font-size:14px;
+			   padding-top:5px;
+			   text-align:center;
+			   padding-left:65px;
+			   border-top:2px solid black;
 		   }
 		   
-		   .table-main > tbody > tr:nth-child(4n+2) {
+		   /*.table-main > tbody > tr:nth-child(4n+2) {
 			   border-top:7px double black;
-		   }
+		   }*/
 		   
-		   .table-main > tbody > tr:nth-child(8n+6),.table-main > tbody > tr:nth-child(8n+7),.table-main > tbody > tr:nth-child(8n+8),.table-main > tbody > tr:nth-child(8n+9)
+		   /*.table-main > tbody > tr:nth-child(4n+2) {
+			   border-top:7px double black;
+		   }*/
+		   
+		   .table-main > tbody > tr:nth-child(10n+11),.table-main > tbody > tr:nth-child(10n+10),.table-main > tbody > tr:nth-child(10n+8),.table-main > tbody > tr:nth-child(10n+9),.table-main > tbody > tr:nth-child(10n+7)
 		   {
 			   background-color:#eee;
 		   }
@@ -298,9 +306,9 @@
 		<?php
 			foreach ($week_model->days as $dnum =>$day) { 
 		?>
-				<!-- <tr>
-					<td class = "day-border" colspan = "<?= (count($classes) + 1)*2 ?>"> <?= $day->date->format("d.m") ?> <?= $day->dayName ?> </td>
-				</tr> -->
+				 <tr>
+					<td class = "day-title" colspan = "3"> <?= $day->date->format("d.m") ?> <?= $day->dayName ?> </td>
+				</tr>
 				
 				<?php foreach($day->lessons as $i=>$lesson) { ?>
 				

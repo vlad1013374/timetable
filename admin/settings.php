@@ -15,7 +15,7 @@ function group_by($key, $data) {
 }
 
 require "../connection/db.php";
-$config_set = R::getAssocRow('SELECT * FROM config');
+$config_set = R::getAssocRow('SELECT * FROM config order by ordering');
 $config_group = group_by('section', $config_set);
 
 if(isset($_POST['save-settings'])){
@@ -40,7 +40,7 @@ if(isset($_POST['save-settings'])){
 	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
 	<script>kendo.culture("ru-RU");</script>
 	<style>
-		.setting-item > div {
+		.setting-item > div:first-child {
 			display:inline-block;
 			width:250px;
 			margin:20px;
@@ -67,6 +67,12 @@ foreach ($v as $config) {
 ";
 	} else if($config['type'] == 'bool'){
 		echo '<div class="setting-item"><div>'.$config['param_ru']."</div> <select style='width:400px;' id='".$config['param']."' name='".$config['param']."'><option value='1'>Да</option><option value='0'>Нет</option></select> &nbsp;<span>".$config['param_description']."</span></div><script>$('#".$config['param']."').kendoDropDownList({value:'".$config['value']."'});</script>
+";
+	} else if($config['type'] == 'color'){
+		echo '<div class="setting-item"><div>'.$config['param_ru']."</div> <input id='".$config['param']."' type='hidden' name='".$config['param']."' value='".$config['value']."'> &nbsp;<span>".$config['param_description']."</span></div><script>$('#".$config['param']."').kendoColorPicker({messages: {
+    apply: 'ОК',
+    cancel: 'Отмена'
+  }, value:'".$config['value']."'});</script>
 ";
 	}
 }

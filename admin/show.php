@@ -6,7 +6,7 @@
 	<a class="k-button" href="settings.php">Настройки</a></div>
 <div id="listView" style="width:100%;"></div>
 <script type="text/x-kendo-template" id="template">
-        <div class="week-li" week-id="#:id#">
+        <div class="week-li" week-id="#:id#" week-number="#:number#">
             <div style="width:100px;"><a href = "editor.php?weekId=#:id#">#:number# неделя</a></div>
             <div style="width:250px;">#:getDates(start, stop)#</div>            
             <div style="width:180px;">#:curMonday == start ? 'Текущая неделя':(nextMonday == start ? 'Следущая неделя':'')#</div>

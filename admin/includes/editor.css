@@ -38,6 +38,7 @@ body {
 .cls
 {
 	/*width: 20%;*/
+	cursor:pointer;
 
 }
 .time-t
@@ -45,6 +46,7 @@ body {
 	text-align: center;
 	width: 100%;
 	margin-top:78px;
+	table-layout: fixed;
 
 	
 }
@@ -266,6 +268,14 @@ th,td{
 	text-align:center;
 	padding-top:47vh;
 	font-size:18px;
+}
+
+.day-border {
+	cursor:pointer;
+}
+
+.shide > * {
+	display: none !important;
 }
 
 .colors-by-class tr td:nth-child(2) {background:#54bebe;}

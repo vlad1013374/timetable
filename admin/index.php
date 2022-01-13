@@ -12,7 +12,7 @@
 	<title>Admin</title>
 	<link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
 	<link rel="stylesheet" href="includes/kendo/kendo.custom.css">
-	<link rel="stylesheet"  type="text/css" href="includes/style.css">
+	<link rel="stylesheet"  type="text/css" href="includes/style.css?t=<?= date('Ymd'); ?>">
 	<script src="includes/js/jquery-3.6.0.js"></script>
 	<script src="includes/kendo/kendo.all.min.js"></script>
 	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
@@ -48,6 +48,6 @@
 	<script src="includes/js/selectize.js-master/dist/js/selectize.min.js"></script>
 	<link rel="stylesheet" href="includes/js/bootstrap.min.css">
 	<script src="includes/js/bootstrap.bundle.min.js"></script>
-	<script src="includes/js/main.js"></script>
+	<script src="includes/js/main.js?t=<?= date('Ymd'); ?>"></script>
 </body>
 </html>

@@ -25,12 +25,23 @@
 	<title>Admin</title>
 	<link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
 	<link rel="stylesheet" href="includes/kendo/kendo.custom.css">
-	<link rel="stylesheet" href="includes/editor.css">
+	<link rel="stylesheet" href="includes/editor.css?t=<?= date('Ymd'); ?>">
 	<script src="includes/js/jquery-3.6.0.js"></script>
 	<script src="includes/kendo/kendo.all.min.js"></script>
 	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
 	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
 	<script>kendo.culture("ru-RU");</script>
+	<style>
+		<?php if ($config['isActiveRowHover'] == 1) { ?>
+		.tr-row:hover td{
+			background: <?= $config['activeRowColor'] ?> !important;
+		}
+		<?php } ?>
+		.row-active td {background: <?= $config['activeRowColor'] ?> !important;}
+		.time {cursor:pointer;}
+		.back-error input {background:red !important;}
+		body{overflow-y:scroll;overflow-x:hidden;}
+	</style>
 	<script>
 		const config = {
 			weekId: <?= $weekId ?>,
@@ -48,7 +59,7 @@
 			
 		}
 	</script>
-	<script src="includes/js/editor.js"></script>
+	<script src="includes/js/editor.js?t=<?= date('Ymd'); ?>"></script>
 
 </head>
 <body>
@@ -105,16 +116,12 @@
 			foreach ($week_model->days as $day) {
 		?>
 				<tr>
-					<td class = "day-border" colspan = "<?= (count($classes) + 1) ?>"> <?= $day->date->format("d.m") ?> <?= $day->dayName ?> </td>
+					<td class = "day-border" colspan = "<?= (count($classes) + 1) ?>"> <span class="day-hide"><?= $day->date->format("d.m") ?> <?= $day->dayName ?></span> </td>
 				</tr>
-
-				<!-- <tr>
-					<td class = "date" rowspan="5"><input type="text" placeholder="Дата" value="'.date('d M', strtotime($days_en[$n].' '.$week.' week')).'"></td>
-				</tr> -->
 				
 				<?php foreach($day->lessons as $lesson) { ?>
 				
-				<tr>
+				<tr class="tr-row">
 					<td class="time time-col"><?= substr($lesson->start,0,5).' - '.substr($lesson->stop,0,5) ?></td>
 					
 					<?php foreach($classes as $class) { ?> 
@@ -208,6 +215,15 @@
                                 ]
                             },
 							{ type: "separator" },
+							{
+                                type: "splitButton",
+                                text: "Проверка",
+                                menuButtons: [
+									{ text: "Преподавателей", click: function() {checkTeachers();}},
+                                    { text: "Аудиторий", click: function() {checkRooms();}},                                   
+                                ]
+                            },
+							{ type: "separator" },
 							{ type: "button", text: "Сохранить", click: function() {
 									var dt = JSON.stringify(timetable);
 									$.post( "editor-save.php", {data: dt})
@@ -221,44 +237,7 @@
 									  })
 								} 
 							}
-                            /*{ type: "separator" },
-                            { template: "<label for='dropdown'>Format:</label>" },
-                            {
-                                template: "<input id='dropdown' style='width: 150px;' />",
-                                overflow: "never"
-                            },
-                            { type: "separator" },
-                            {
-                                type: "buttonGroup",
-                                buttons: [
-                                    { icon: "align-left", text: "Left", togglable: true, group: "text-align" },
-                                    { icon: "align-center", text: "Center", togglable: true, group: "text-align" },
-                                    { icon: "align-right", text: "Right", togglable: true, group: "text-align" }
-                                ]
-                            },
-                            {
-                                type: "buttonGroup",
-                                buttons: [
-                                    { icon: "bold", text: "Bold", togglable: true },
-                                    { icon: "italic", text: "Italic", togglable: true },
-                                    { icon: "underline", text: "Underline", togglable: true }
-                                ]
-                            },
-                            {
-                                type: "button",
-                                text: "Action",
-                                overflow: "always"
-                            },
-                            {
-                                type: "button",
-                                text: "Another Action",
-                                overflow: "always"
-                            },
-                            {
-                                type: "button",
-                                text: "Something else here",
-                                overflow: "always"
-                            }*/
+                            
                         ]
                     });
 		
@@ -270,6 +249,7 @@
 		let timetable = <?php echo json_encode($timetable); ?>;
 		let links = <?php echo json_encode($links); ?>;
 		let timetable_hash = {};
+		let class_hash = {};
 		
 		setTimeout(function(){
 			calcHash();			
@@ -280,6 +260,149 @@
 			$("#loader").hide();
 		},10);
 		
+		$(".day-border").click(function(){
+			let $el = $(this).parent();
+			if($el.next().is(":visible")){
+				$el.next().hide();
+				$el.next().next().hide();
+				$el.next().next().next().hide();
+				$el.next().next().next().next().hide();
+			} else {
+				$el.next().show();
+				$el.next().next().show();
+				$el.next().next().next().show();
+				$el.next().next().next().next().show();
+			}
+			
+		});
+		
+		$rows = $(".tr-row");
+		$(".cls").click(function(){			
+			let index = $(this).index();
+			if($rows.first().find('td:eq('+index+')').hasClass("shide")){
+				$rows.each(function(){
+					$(this).find('td:eq('+index+')').removeClass("shide");
+				});
+			} else {
+				$rows.each(function(){
+					$(this).find('td:eq('+index+')').addClass("shide");
+				});
+			}
+			
+			
+		});
+		
+		$("td.time").click(function(){
+			let tr = $(this).parent();
+			console.log(tr);
+			if(tr.hasClass("row-active")){
+				tr.removeClass("row-active");
+			} else {
+				tr.addClass("row-active");
+			}
+		});
+		
+		Date.prototype.getDayOfWeek = function(){   
+			return ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"][ this.getDay() ];
+		};
+		
+		function checkTeachers(isChane, str){
+			if(!str){
+				str = '';
+			}
+			
+			$(".back-error").removeClass("back-error");
+			let ret = [];
+			for(let i=0; i< timetable.length; i++){
+				let el = timetable[i];
+				if(el['subject_id'] && !el['teacher_id']){
+					console.log(el);
+					let d = new Date(el['day']);
+					ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
+					$("#it_" + el['id']).prev().addClass("back-error");
+				}
+			}
+			
+			if(ret.length > 0){
+				str = str + 'Для следующих занятий не указан преподаватель:\n	' + ret.join("\n	") + "\n\n";
+			}
+			
+			if(isChane){				
+				return str;
+			}
+			
+			if(ret.length > 0){
+				alert(str);
+			} else {
+				alert("Все преподаватели заполнены корректно");
+			}
+		}
+		
+		function checkRooms(isChane, str){
+			if(!str){
+				str = '';
+			}
+			
+			$(".back-error").removeClass("back-error");
+			let ret = [];
+			let check = {};
+			for(let i=0; i< timetable.length; i++){
+				let el = timetable[i];
+				let str = '';
+				if(el['subject_id'] && !el['room_id'] && el['subject_id'] != '8'){
+					console.log(el);
+					let d = new Date(el['day']);
+					ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
+					$("#ir_" + el['id']).prev().addClass("back-error");
+				}
+				
+				if(el['room_id']){
+					let k = el['day'] + "|" + el['lesson_id'] + "|" + el['room_id'];
+					if(check.hasOwnProperty(k)){
+						check[k].push(el);
+					} else {
+						check[k] = [el];					
+					}
+				}
+			}
+			
+			if(ret.length > 0){
+				str = str + 'Для следующих занятий не указана аудитория:\n	' + ret.join("\n	") + "\n\n";
+			}
+			
+			let ret2 = [];
+			for(let k in check){
+				if(check[k].length > 1){
+				let hash = check[k][0]['subject_id']+'|'+check[k][0]['teacher_id']+'|'+ check[k][0]['flags'];
+					for(let i = 1; i< check[k].length; i++){
+						let hash2 = check[k][i]['subject_id']+'|'+check[k][i]['teacher_id']+'|'+ check[k][i]['flags'];
+						if(hash2 != hash){
+							let d = new Date(check[k][0]['day']);
+							ret2.push(check[k][0]['room_id'] + " ("+ d.getDayOfWeek() + ", " + check[k][0]['lesson_id'] + ' пара)');
+							for(let j = 0; j< check[k].length; j++){
+								$("#ir_" + check[k][j]['id']).prev().addClass("back-error");
+							}
+							break;
+						}
+					}
+				}
+			}
+			
+			if(ret2.length > 0){
+				str = str + 'Для следующих аудиторий найдены дубли:\n	' + ret2.join("\n	") + "\n\n";
+			}
+			
+			
+			if(isChane){				
+				return str;
+			}
+			
+			if(ret.length > 0 || ret2.length > 0){
+				alert(str);
+			} else {
+				alert("Все аудитории заполнены корректно");
+			}
+		}
 		
 	</script>
 </body>

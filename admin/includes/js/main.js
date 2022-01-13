@@ -8,6 +8,12 @@ $("ul li").each(function () {
 
 $("#listView").on("click", ".delete-week", function(){
 	var week_deleted_id = $(this).parent().attr("week-id");
+	var number = $(this).parent().attr("week-number");
+	
+	if(!confirm("Удалить " + number + "-ю неделю?")){
+		return;
+	}
+	
 	$.post("admin.php", {weekDelete: week_deleted_id})
 	  .done(function(ev) {
 		document.location.reload();

@@ -27,6 +27,10 @@ function calcHash(){
 		
 		timetable_hash[timetable[i]['day']][timetable[i]['lesson_id']][timetable[i]['class_id']][timetable[i]['id']] = timetable[i];
 	}
+	
+	for(let i=0; i< classes.length; i++){
+		class_hash[classes[i]['id']] = classes[i]['name'];
+	}
 }
 
 function getDefaultId(){
@@ -126,9 +130,10 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 		change: function(e){
 			let val = e.sender.value();
 			createNewItemIfNeed(day, lessonId, classId, id);
-						
+				
 			if(val){
 				timetable_hash[day][lessonId][classId][id]['room_id'] = val;
+				e.sender.input.parent().removeClass("back-error");
 			} else {
 				timetable_hash[day][lessonId][classId][id]['room_id'] = null;
 			}
@@ -151,6 +156,7 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 						
 			if(val){
 				timetable_hash[day][lessonId][classId][id]['teacher_id'] = val;
+				e.sender.input.parent().removeClass("back-error");	
 			} else {
 				timetable_hash[day][lessonId][classId][id]['teacher_id'] = null;
 			}
