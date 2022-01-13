@@ -30,4 +30,4 @@ if (isset($json_week)) {
 	}
 	
 }
-привет
+
