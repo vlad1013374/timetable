@@ -324,7 +324,7 @@
 			}
 			
 			if(ret.length > 0){
-				str = str + 'Для следующих занятий не указан преподаватель:\n	' + ret.join("\n	") + "\n\n";
+				str = str + 'Для следующих занятий не указан преподаватель:\n  ' + ret.join("\n  ") + "\n\n";
 			}
 			
 			if(isChane){				
@@ -348,7 +348,6 @@
 			let check = {};
 			for(let i=0; i< timetable.length; i++){
 				let el = timetable[i];
-				let str = '';
 				if(el['subject_id'] && !el['room_id'] && el['subject_id'] != '8'){
 					console.log(el);
 					let d = new Date(el['day']);
@@ -367,7 +366,7 @@
 			}
 			
 			if(ret.length > 0){
-				str = str + 'Для следующих занятий не указана аудитория:\n	' + ret.join("\n	") + "\n\n";
+				str = str + 'Для следующих занятий не указана аудитория:\n  ' + ret.join("\n  ") + "\n\n";
 			}
 			
 			let ret2 = [];
@@ -389,7 +388,7 @@
 			}
 			
 			if(ret2.length > 0){
-				str = str + 'Для следующих аудиторий найдены дубли:\n	' + ret2.join("\n	") + "\n\n";
+				str = str + 'Для следующих аудиторий найдены дубли:\n  ' + ret2.join("\n  ") + "\n\n";
 			}
 			
 			
