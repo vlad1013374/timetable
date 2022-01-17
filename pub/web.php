@@ -33,7 +33,7 @@
 			$str = "";
 			$delimeter = '';
 			foreach($this->items as $v){
-				$str .= $delimeter.$v['sname'];
+				$str .= $delimeter.$v['sname2'];
 				
 				if($isIncludeFlags){
 					$text = getFlagsString($v['flags']);
@@ -52,7 +52,7 @@
 			$str = "";
 			$delimeter = '';
 			foreach($this->items as $v){
-				$str .= $delimeter.$v['rname'].', '.$v['tname'];
+				$str .= $delimeter.(empty($v['rname']) ? '' : ($v['rname'].', ')).$v['tname'];
 				$delimeter = ' / ';
 			}
 			

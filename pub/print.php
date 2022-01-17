@@ -33,7 +33,7 @@
 			$str = "";
 			$delimeter = '';
 			foreach($this->items as $v){
-				$str .= $delimeter.$v['sname'];
+				$str .= $delimeter.$v['sname2'];
 				
 				if($isIncludeFlags){
 					$text = getFlagsString($v['flags']);
@@ -52,7 +52,7 @@
 			$str = "";
 			$delimeter = '';
 			foreach($this->items as $v){
-				$str .= $delimeter.$v['rname'].', '.$v['tname'];
+				$str .= $delimeter.(empty($v['rname']) ? '' : ($v['rname'].', ')).$v['tname'];
 				$delimeter = ' / ';
 			}
 			
@@ -249,7 +249,7 @@
 		   
 		   .day-title {
 			   font-size:14px;
-			   padding-top:5px;
+			   padding-top:4px;
 			   text-align:center;
 			   padding-left:65px;
 			   border-top:2px solid black;
