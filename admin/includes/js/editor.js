@@ -106,8 +106,8 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 			if(val){
 				let teacher = $it.data("kendoComboBox");
 				let view = teacher.dataSource.view();
-				let key1 = val + '-' + classId + '--';
-				let key2 = val + '-' + classId + '-' + lessonId + '-';
+				let key2 = val + '-' + classId + '--';
+				let key1 = val + '-' + classId + '-' + lessonId + '-';
 				if(view.length == 1){
 					teacher.value(view[0]['id']);
 					timetable_hash[day][lessonId][classId][id]['teacher_id'] = view[0]['id'];
