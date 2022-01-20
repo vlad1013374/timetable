@@ -121,6 +121,7 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 			}
 		}
 	});
+	
 	$("#ir_" + id).kendoComboBox({
 		dataSource: rooms,
 		dataTextField: "name",
@@ -458,6 +459,172 @@ setInterval(function(){
 	  })
 }, config.autosavePeriodInMinutes * 60 * 1000);
 
+
+function clear(type, param){
+	if(type == 'all'){
+		for(let i=0; i< timetable.length; i++){
+			clearItem(timetable[i]);
+		}
+	} else if(type == 'byday') {
+		let dt = $("#day_num_" + param).data("date");
+		for(let i=0; i< timetable.length; i++){
+			if(timetable[i]['day'] == dt)
+				clearItem(timetable[i]);
+		}
+	} else if(type == 'byclass') {
+		for(let i=0; i< timetable.length; i++){
+			if(timetable[i]['class_id'] == param)
+				clearItem(timetable[i]);
+		}
+	}
+}
+
+function clearItem(item){
+	item['room_id'] = null; 
+	item['subject_id'] = null; 
+	item['teacher_id'] = null; 
+	item['flags'] = 0;
+	$("#ir_" + item['id']).data("kendoComboBox").value(null);
+	$("#it_" + item['id']).data("kendoComboBox").value(null);
+	$("#is_" + item['id']).data("kendoComboBox").value(null);
+	
+	let block = $("#ir_" + item['id']).parents(".subject-block");
+	block.removeClass(config.flagsClass);
+	block.find(".flags-block").hide();
+}
+
+function setOnline(type, param){
+	if(type == 'all'){
+		for(let i=0; i< timetable.length; i++){
+			setOnlineItem(timetable[i]);
+		}
+	} else if(type == 'byday') {
+		let dt = $("#day_num_" + param).data("date");
+		for(let i=0; i< timetable.length; i++){
+			if(timetable[i]['day'] == dt)
+				setOnlineItem(timetable[i]);
+		}
+	} else if(type == 'byclass') {
+		for(let i=0; i< timetable.length; i++){
+			if(timetable[i]['class_id'] == param)
+				setOnlineItem(timetable[i]);
+		}
+	}
+}
+
+function setOnlineItem(item, param){
+	let fint = parseInt(item['flags']);
+	
+	if((fint & flagList.online) == flagList.online){
+		return;
+	}
+	
+	let f = (fint | flagList.online);
+	item['flags'] = f;
+	let block = $("#ir_" + item['id']).parents(".subject-block");
+	block.addClass(config.flagsClass);
+	block.find(".flags-block").show();	
+	block.find(".f-online").show();
+}
+
+function checkTeachers(isChane, str){
+	if(!str){
+		str = '';
+	}
+	
+	$(".back-error").removeClass("back-error");
+	let ret = [];
+	for(let i=0; i< timetable.length; i++){
+		let el = timetable[i];
+		if(el['subject_id'] && !el['teacher_id']){
+			console.log(el);
+			let d = new Date(el['day']);
+			ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
+			$("#it_" + el['id']).prev().addClass("back-error");
+		}
+	}
+	
+	if(ret.length > 0){
+		str = str + 'Для следующих занятий не указан преподаватель:\n  ' + ret.join("\n  ") + "\n\n";
+	}
+	
+	if(isChane){				
+		return str;
+	}
+	
+	if(ret.length > 0){
+		alert(str);
+	} else {
+		alert("Все преподаватели заполнены корректно");
+	}
+}
+
+function checkRooms(isChane, str){
+	if(!str){
+		str = '';
+	}
+	
+	if(!isChane){
+		$(".back-error").removeClass("back-error");
+	}
+	let ret = [];
+	let check = {};
+	for(let i=0; i< timetable.length; i++){
+		let el = timetable[i];
+		if(el['subject_id'] && !el['room_id'] && el['subject_id'] != '8'){
+			console.log(el);
+			let d = new Date(el['day']);
+			ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
+			$("#ir_" + el['id']).prev().addClass("back-error");
+		}
+		
+		if(el['room_id']){
+			let k = el['day'] + "|" + el['lesson_id'] + "|" + el['room_id'];
+			if(check.hasOwnProperty(k)){
+				check[k].push(el);
+			} else {
+				check[k] = [el];					
+			}
+		}
+	}
+	
+	if(ret.length > 0){
+		str = str + 'Для следующих занятий не указана аудитория:\n  ' + ret.join("\n  ") + "\n\n";
+	}
+	
+	let ret2 = [];
+	for(let k in check){
+		if(check[k].length > 1){
+		let hash = check[k][0]['subject_id']+'|'+check[k][0]['teacher_id']+'|'+ check[k][0]['flags'];
+			for(let i = 1; i< check[k].length; i++){
+				let hash2 = check[k][i]['subject_id']+'|'+check[k][i]['teacher_id']+'|'+ check[k][i]['flags'];
+				if(hash2 != hash){
+					let d = new Date(check[k][0]['day']);
+					ret2.push(check[k][0]['room_id'] + " ("+ d.getDayOfWeek() + ", " + check[k][0]['lesson_id'] + ' пара)');
+					for(let j = 0; j< check[k].length; j++){
+						$("#ir_" + check[k][j]['id']).prev().addClass("back-error");
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	if(ret2.length > 0){
+		str = str + 'Для следующих аудиторий найдены дубли:\n  ' + ret2.join("\n  ") + "\n\n";
+	}
+	
+	
+	if(isChane){				
+		return str;
+	}
+	
+	if(ret.length > 0 || ret2.length > 0){
+		alert(str);
+	} else {
+		alert("Все аудитории заполнены корректно");
+	}
+}
 
 
 

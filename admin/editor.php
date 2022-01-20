@@ -113,10 +113,10 @@
 			
 			
 		<?php
-			foreach ($week_model->days as $day) {
+			foreach ($week_model->days as $day_index => $day) {
 		?>
 				<tr>
-					<td class = "day-border" colspan = "<?= (count($classes) + 1) ?>"> <span class="day-hide"><?= $day->date->format("d.m") ?> <?= $day->dayName ?></span> </td>
+					<td id="day_num_<?= $day_index ?>" data-date="<?= $day->date->format("Y-m-d") ?>" class = "day-border" colspan = "<?= (count($classes) + 1) ?>"> <span class="day-hide"><?= $day->date->format("d.m") ?> <?= $day->dayName ?></span> </td>
 				</tr>
 				
 				<?php foreach($day->lessons as $lesson) { ?>
@@ -166,20 +166,19 @@
                                 type: "splitButton",
                                 text: "Очистить",
                                 menuButtons: [
-                                    { text: "Все"/*, icon: "insert-up"*/ },
-                                    { text: "Понедельник"/*, icon: "insert-up"*/ },
-                                    { text: "Вторник"/*, icon: "insert-up"*/ },
-                                    { text: "Среду"/*, icon: "insert-up"*/ },
-                                    { text: "Четверг"/*, icon: "insert-up"*/ },
-                                    { text: "Пятницу"/*, icon: "insert-up"*/ },
-                                    { text: "Субботу"/*, icon: "insert-up"*/ },
-                                    { text: "10-е классы"/*, icon: "insert-up"*/ },
-                                    { text: "11-е классы"/*, icon: "insert-up"*/ },
-                                    { text: "10A"/*, icon: "insert-up"*/ },
-                                    { text: "10Б"/*, icon: "insert-up"*/ },
-                                    { text: "11А"/*, icon: "insert-up"*/ },
-                                    { text: "11Б"/*, icon: "insert-up"*/ },
-                                    { text: "11В"/*, icon: "insert-up"*/ }
+                                    { text: "Все", click: function() {clear('all');} },
+                                    { text: "Понедельник", click: function() {clear('byday',0);} },
+                                    { text: "Вторник", click: function() {clear('byday',1);} },
+                                    { text: "Среду", click: function() {clear('byday',2);} },
+                                    { text: "Четверг", click: function() {clear('byday',3);} },
+                                    { text: "Пятницу", click: function() {clear('byday',4);} },
+                                    { text: "Субботу", click: function() {clear('byday',5);} },
+									<?php
+										foreach($classes as $c) {
+											echo '{ text: "'.$c['name'].'", click: function() {clear(\'byclass\', '.$c['id'].');} },';
+										}
+									?>
+                                    //{ text: "10A"/*, icon: "insert-up"*/ },                                  
                                 ]
                             },
 							 { type: "separator" },
@@ -187,20 +186,18 @@
                                 type: "splitButton",
                                 text: "Добавить метку <span style='color:#3e80ed;'>&nbsp;Online</span>",
                                 menuButtons: [
-                                    { text: "Для всех"/*, icon: "insert-up"*/ },
-                                    { text: "Понедельнику"/*, icon: "insert-up"*/ },
-                                    { text: "Вторнику"/*, icon: "insert-up"*/ },
-                                    { text: "Среде"/*, icon: "insert-up"*/ },
-                                    { text: "Четвергу"/*, icon: "insert-up"*/ },
-                                    { text: "Пятнице"/*, icon: "insert-up"*/ },
-                                    { text: "Субботе"/*, icon: "insert-up"*/ },
-                                    { text: "10-ым классам"/*, icon: "insert-up"*/ },
-                                    { text: "11-ым классам"/*, icon: "insert-up"*/ },
-                                    { text: "10A"/*, icon: "insert-up"*/ },
-                                    { text: "10Б"/*, icon: "insert-up"*/ },
-                                    { text: "11А"/*, icon: "insert-up"*/ },
-                                    { text: "11Б"/*, icon: "insert-up"*/ },
-                                    { text: "11В"/*, icon: "insert-up"*/ }
+                                    { text: "Для всех", click: function() {setOnline('all');} },
+                                    { text: "Понедельнику", click: function() {setOnline('byday',0);} },
+                                    { text: "Вторнику", click: function() {setOnline('byday',1);} },
+                                    { text: "Среде", click: function() {setOnline('byday',2);} },
+                                    { text: "Четвергу", click: function() {setOnline('byday',3);} },
+                                    { text: "Пятнице", click: function() {setOnline('byday',4);} },
+                                    { text: "Субботе", click: function() {setOnline('byday',5);} },
+                                    <?php
+										foreach($classes as $c) {
+											echo '{ text: "'.$c['name'].'", click: function() {setOnline(\'byclass\', '.$c['id'].');} },';
+										}
+									?>
                                 ]
                             },
 							 { type: "separator" },
