@@ -47,7 +47,7 @@
 			weekId: <?= $weekId ?>,
 			autosavePeriodInMinutes: <?= $config['autosavePeriodInMinutes'] ?>,
 			flagsClass: "<?= $config['positionFlagsLeft'] == "1" ? 'flags-left':'' ?>",
-			
+			isValidateBeforeSave: <?= $config['isValidateBeforeSave'] ?>,
 		}
 		const flagList = {
 			online: 1,	
@@ -225,6 +225,13 @@
                             },
 							{ type: "separator" },
 							{ type: "button", text: "Сохранить", click: function() {
+									if(config.isValidateBeforeSave){
+										let message = checkRooms(true, checkTeachers(true, ""));
+										if(message && !confirm("Найдены возможные проблемы, все равно сохранить?\n\n" + message)){
+											return;
+										}
+									}
+								
 									var dt = JSON.stringify(timetable);
 									$.post( "editor-save.php", {data: dt})
 									  .done(function(ev, a, b) {
@@ -343,7 +350,9 @@
 				str = '';
 			}
 			
-			$(".back-error").removeClass("back-error");
+			if(!isChane){
+				$(".back-error").removeClass("back-error");
+			}
 			let ret = [];
 			let check = {};
 			for(let i=0; i< timetable.length; i++){

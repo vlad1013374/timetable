@@ -1,0 +1,1 @@
+INSERT INTO `config` (`param`, `param_ru`, `param_description`, `value`, `type`, `section`) VALUES ('isValidateBeforeSave', 'Включить проверки перед сохранением', '', '1', 'bool', 'editor');
