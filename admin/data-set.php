@@ -6,13 +6,7 @@
     $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
     $auds = R::getAll('SELECT * FROM rooms order by name ASC');
     
-    if(isset($_POST['save'])){
-      $id = $_POST['id'];
-      $name = $_POST['name'];
-      $tut = R::load('teachers', $id);
-      $tut->name = $name;
-      R::store($tut);
-    }
+    
     if(isset($_POST['add-teacher'])){
       $db_t = R::dispense('teachers');
       $db_t->name = $_POST['new-teacher-name'];
