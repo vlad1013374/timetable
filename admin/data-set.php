@@ -5,6 +5,26 @@
     $teachers = R::getAll('SELECT * FROM teachers order by name ASC');
     $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
     $auds = R::getAll('SELECT * FROM rooms order by name ASC');
+    
+    if(isset($_POST['save'])){
+      $id = $_POST['id'];
+      $name = $_POST['name'];
+      $tut = R::load('teachers', $id);
+      $tut->name = $name;
+      R::store($tut);
+    }
+    if(isset($_POST['add-teacher'])){
+      $db_t = R::dispense('teachers');
+      $db_t->name = $_POST['new-teacher-name'];
+      R::store($db_t);
+
+      $new_teacher_id = R::getInsertID();
+      foreach ($_POST['sub-new-teacher'] as $sub) {
+         R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)', [$new_teacher_id, $sub]);
+      }
+     
+      
+    }
 ?>
 
 
@@ -24,12 +44,16 @@
     .add{
       float:right;
     }
-
+    .teacher-row:hover{
+      background: #E9ECEF;
+      cursor: pointer;
+    }
   </style>
 
   <script type="text/javascript" src="includes/js/jquery-3.6.0.js"></script>
   <link rel="stylesheet" href="includes/js/bootstrap.min.css">
   <script src="includes/js/bootstrap.bundle.min.js"></script>
+  
 </head>
 <body>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -42,19 +66,38 @@
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="auds-tab" data-bs-toggle="tab" data-bs-target="#auds" type="button" role="tab" aria-controls="auds" aria-selected="false">Аудитории</button>
       </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
+      </li>
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
-        <?php add('преподавателя', 'teacher');?>
+        <?php add_header('преподавателя', 'teacher');?>
+        <?php add_teacher();?>
+        <?php edit_teacher();?>
+        <table class="table" >
           <?php foreach ($teachers as $teacher): ?>
-          
-            <div class="teacher" data-id="<?= $teacher['id']?>"><?= $teacher['name']?><button type="button"  class="btn-close delete-week" aria-label="Close"></button></div>
-            
-         
+            <?php $t_s = R::getAll('SELECT *, s.name as name_sub from teacher_subjects ts
+                    join teachers t on t.id = teacher_id
+                    join subjects s on s.id = subject_id where teacher_id =?
+                     ', [$teacher['id']]); ?>
+            <tr class="teacher-row" data-bs-toggle="offcanvas" data-bs-target="#offcanvaseditteacher" aria-controls="offcanvaseditteacher">
+              <td scope="row"  class="teacher" data-id="<?= $teacher['id']?>"><?= $teacher['name']?></td> 
+              
+                <td>
+                  <?php foreach ($t_s as  $value): ?>
+                    <div class="t-sub"><?=$value['name_sub']?></div>
+                  <?php endforeach ?>
+                </td>
+                        
+              
+             </tr>
           <?php endforeach ?>
+          </table>
       </div>
       <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
-        <?php add('предмет', 'subject');?>
+        <?php add_header('предмет', 'subject');?>
+        <?php add_sub();?>
           <?php foreach ($subjects as $subject): ?>
           
             <div class="subject" data-id="<?= $subject['id']?>"><?= $subject['name']?><button type="button"  class="btn-close delete-week" aria-label="Close"></button></div>
@@ -62,7 +105,8 @@
           <?php endforeach ?>
       </div>
       <div class="tab-pane fade" id="auds" role="tabpanel" aria-labelledby="auds-tab">
-        <?php add('кабинет', 'aud');?>
+        <?php add_header('кабинет', 'aud');?>
+        <?php add_room();?>
         <?php foreach ($auds as $aud): ?>
           
             <div class="aud" data-id="<?= $aud['id']?>"><?= $aud['name']?><button type="button"  class="btn-close delete-week" aria-label="Close"></button></div>
@@ -70,11 +114,32 @@
          
           <?php endforeach ?>
       </div>
+      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+        <?php require 'settings.php';?>
+        
+      </div>
       
     </div>
 
  
- 
+    <script src="includes/js/set.js"></script>
+    <script id = "tpl" type="text/x-template">
+      <div class="offcanvas-body" >
+        <div class="dropdown mt-3">
+          <form method="post">
+            <input type="text" id="id" name="id" value="{id}" hidden>
+            <input type="text" value="{name}" name="name">
+            
+            <div class="content-add-teacher">
+              {somecode}
+            </div>
+            <input type="submit" name="save" value="Сохранить">
+          </form>
+          <button class="add-sub-input">Добавить поле</button>
+        </div>
+      </div>
+    </script>
+   
 </body>
 </html>
 
