@@ -35,7 +35,8 @@ function add_teacher()
                  </div>
                  <div class="t-subs">
                   Предмет: 
-                  <select id="t-sub-select" name="sub-new-teacher[]">';
+                  <select id="t-sub-select" name="sub-new-teacher[]">
+                  <option value="" selected></option>';
                   	foreach ($subjects as $subject) {
                   		echo '<option value="'.$subject["id"].'">'.$subject["name"].'</option>';
                   	}
@@ -136,61 +137,11 @@ function add_room()
                
                 <div class="dropdown mt-3">
                 <form method="post">
-                 <div>
-                  Пеподаватель: 
-                  <select name="teacher">
-                  <?php foreach ($teachers as $teacher): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  Предмет: 
-                  <select name="subject">
-                  <?php foreach ($subjects as $subject): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  Класс: 
-                  <select name="class">
-                  <?php foreach ($classes as $class): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  Номер пары: 
-                  <select name="lesson">
-                    <option></option>
-                  <?php foreach ($lessons as $lesson): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  День: 
-                  <select name="day">
-                    <option></option>
-                  <?php $n = 1;?>
-                  <?php foreach (DAYS as $day): ?>
-                      
-                      <option value="<?=$n?>"><?=$day?></option>
-                      <?php $n = $n+1;?>
-                  <?php endforeach ?>
-                  </select>
-                 </div>
+                 <input type="text" placeholder="Аудитория" name="aud">
+                 <input type="text" placeholder="Вместимость" name="capacity">
+
                  
-                 <input type="submit" name="add" value="Добавить">
+                 <input type="submit" name="add-aud" value="Добавить">
                 </form>
                 </div>
               </div>
