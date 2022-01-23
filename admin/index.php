@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
 	<link rel="stylesheet" href="includes/kendo/kendo.custom.css">
 	<link rel="stylesheet"  type="text/css" href="includes/style.css?t=<?= date('Ymd'); ?>">
+	<link rel=stylesheet href="includes/menu.css">
 	<script src="includes/js/jquery-3.6.0.js"></script>
 	<script src="includes/kendo/kendo.all.min.js"></script>
 	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
@@ -23,6 +24,10 @@
 	
 </head>
 <body>
+<div class="menu">
+    <a class="a-menu-here" href="http://dada.hhos.ru/admin/index.php">Список недель</a>
+    <a class="a-menu" href="http://dada.hhos.ru/admin/data-set.php">Информация</a>
+</div>
 <?php
 
 	require 'show.php';	

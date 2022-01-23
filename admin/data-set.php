@@ -74,7 +74,7 @@
 <body>
     <div class="menu">
       <a class="a-menu" href="http://dada.hhos.ru/admin/index.php">Список недель</a>
-      <a class="a-menu" href="http://dada.hhos.ru/admin/data-set.php">Информация</a>
+      <a class="a-menu-here" href="http://dada.hhos.ru/admin/data-set.php">Информация</a>
     </div>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
