@@ -19,18 +19,28 @@ $(".teacher-row").click(function() {
 	$("#offcanvaseditteacher").children(".offcanvas-body").remove()
 	$('#offcanvaseditteacher').append(tpl.replaceAll("{id}",id).replaceAll("{name}",name)); 
 	for (var i = 0 ; i < tsub.length; i++) {
-		$(".content-add-teacher").append(tpl_sub.replaceAll("{subName}", tsub[i].name).replaceAll("{subId}",tsub[i].id));
+		$(".content-add-teacher").append(tpl_sub.replaceAll("{subName}", tsub[i].name).replaceAll("{subId}",tsub[i].id).replaceAll("{type}", "edit"));
 	}
 
 	
 
 	$(".add-sub-input").click(function() {
-		$(".content-add-teacher").append(tpl_sub.replaceAll("{subName}", "").replaceAll("{subId}",""))
+		$(".content-add-teacher").append(tpl_sub.replaceAll("{subName}", "").replaceAll("{subId}","").replaceAll("{type}", "edit"))
+		$(".delete").click(function() {
+			$(this).parent().remove();
+		})
+	})
+	$(".delete").click(function() {
+		$(this).parent().remove();
 	})
 })
 
 $(".add-t-sub-select").click(function() {
-	var clonedNode = document.getElementById("t-sub-select").cloneNode(true);
- 	
-	document.querySelector(".t-subs").appendChild(clonedNode);
+	const tpl = $("#tpl").text();
+	const tpl_sub = $("#tpl-sub").text();
+	$(".t-subs").append(tpl_sub.replaceAll("{subName}", "").replaceAll("{subId}","").replaceAll("{type}", "add"))
+	$(".delete").click(function() {
+		$(this).parent().remove();
+	})
 })
+
