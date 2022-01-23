@@ -34,13 +34,16 @@ function add_teacher()
                   <input type="text" name="new-teacher-name" placeholder="Имя">
                  </div>
                  <div class="t-subs">
-                  Предмет: 
-                  <select id="t-sub-select" name="sub-new-teacher[]">
-                  <option value="" selected></option>';
-                  	foreach ($subjects as $subject) {
-                  		echo '<option value="'.$subject["id"].'">'.$subject["name"].'</option>';
-                  	}
-                  echo '</select>
+                  <div id="t-sub-select" >
+                    Предмет: 
+                    <select  name="sub-add-teacher[]">
+                    <option value="" selected></option>';
+                    	foreach ($subjects as $subject) {
+                    		echo '<option value="'.$subject["id"].'">'.$subject["name"].'</option>';
+                    	}
+                    echo '</select>
+                    <button type="button" class="btn-close delete text-reset" aria-label="Close"></button>
+                  </div>
                  </div>
                  
                  

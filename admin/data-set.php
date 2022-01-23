@@ -18,7 +18,7 @@
       R::store($db_t);
 
       $new_teacher_id = R::getInsertID();
-      foreach ($_POST['sub-new-teacher'] as $sub) {
+      foreach ($_POST['sub-add-teacher'] as $sub) {
          R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)', [$new_teacher_id, $sub]);
       } 
     }
@@ -74,7 +74,7 @@
 <body>
     <div class="menu">
       <a class="a-menu" href="http://dada.hhos.ru/admin/index.php">Список недель</a>
-      <a class="a-menu-here" href="http://dada.hhos.ru/admin/data-set.php">Информация</a>
+      <a class="a-menu" href="http://dada.hhos.ru/admin/data-set.php">Информация</a>
     </div>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -116,9 +116,10 @@
                     <div class="t-sub" data-id="<?=$value['subject_id']?>"><?=$value['name_sub']?></div>
                   <?php endforeach ?>
                 </td>
-                        
+                   
               
              </tr>
+             
           <?php endforeach ?>
           </table>
       </div>
@@ -171,15 +172,18 @@
     </div>
 
  
-    <script src="includes/js/set.js"></script>
 
     <script type="text/x-template" id="tpl-sub">
-        <select name="sub-edit-teacher[]" id="edit-t-sub-select">
+      <div id="t-sub-select">
+        Предмет:
+        <select name="sub-{type}-teacher[]" id="t-sub-select">
           <option value="{subId}" selected>{subName}</option>
             <?php foreach ($subjects as $value_sub): ?>
               <option value="<?=$value_sub['id']?>"><?=$value_sub['name']?></option>
             <?php endforeach ?>
         </select>
+        <button type="button" class="btn-close delete text-reset" aria-label="Close"></button>
+      </div>
     </script>
 
     <script id = "tpl" type="text/x-template">
@@ -200,6 +204,7 @@
       </div>
     </script>
    
+    <script src="includes/js/set.js"></script>
 </body>
 </html>
 
