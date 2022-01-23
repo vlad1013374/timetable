@@ -38,7 +38,7 @@
       $db_s = R::dispense('subjects');
       $db_s->name= $_POST['new-subject-name'];
       $db_s->short_name= $_POST['new-subject-short-name'];
-      $db_s->default_room_id = $_POST['new-defaul-auditory'];
+      $db_s->default_room_id = $_POST['new-default-auditory'];
       R::store($db_s);
     }
 ?>

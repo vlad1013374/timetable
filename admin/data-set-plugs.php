@@ -85,7 +85,7 @@ function add_sub()
                 </div>
                 <div>
                   Аудитория по умолчанию:
-                 <select name="new-defaul-auditory">
+                 <select name="new-default-auditory">
                  <option value="" selected></option>';
 
                   foreach ($auds as $aud) {
