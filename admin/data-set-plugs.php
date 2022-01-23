@@ -65,6 +65,7 @@ function edit_teacher()
 
 function add_sub()
 {
+  global $auds;
 	echo '<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvassubject" aria-labelledby="offcanvassubject">
 		<div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvassubject">Добавить предмет</h5>
@@ -74,52 +75,26 @@ function add_sub()
                
                 <div class="dropdown mt-3">
                 <form method="post">
+                <div>
+                  Название предмета:
+                 <input type="text" name="new-subject-name">
+                </div>
+                <div>
+                  Короткое название:
+                 <input type="text" name="new-subject-short-name">
+                </div>
+                <div>
+                  Аудитория по умолчанию:
+                 <select name="new-defaul-auditory">
+                 <option value="" selected></option>';
+
+                  foreach ($auds as $aud) {
+                    echo '<option value="'.$aud['id'].'">'.$aud['name'].'</option>';
+                  }
+                echo '</select>
+                </div>
                  
-                 <div>
-                  Предмет: 
-                  <select name="subject">
-                  <?php foreach ($subjects as $subject): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  Класс: 
-                  <select name="class">
-                  <?php foreach ($classes as $class): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  Номер пары: 
-                  <select name="lesson">
-                    <option></option>
-                  <?php foreach ($lessons as $lesson): ?>
-                    
-                      <option value=""></option>
-                    
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 <div>
-                  День: 
-                  <select name="day">
-                    <option></option>
-                  <?php $n = 1;?>
-                  <?php foreach (DAYS as $day): ?>
-                      
-                      <option value="<?=$n?>"><?=$day?></option>
-                      <?php $n = $n+1;?>
-                  <?php endforeach ?>
-                  </select>
-                 </div>
-                 
-                 <input type="submit" name="add" value="Добавить">
+                 <input type="submit" name="add_subject" value="Сохранить">
                 </form>
                 </div>
               </div>
