@@ -276,6 +276,11 @@
 			   top:0;
 			   right:3px;
 		   }
+		   
+		   .cmt {
+			   font-size:12px;
+			   font-weight:normal;
+		   }
 		
 		</style>
 	</head>
@@ -349,8 +354,9 @@
 									}
 									
 									$tmp = $tt[$d][$lesson->lessonId][$class['id']]->items[0];
+									$cm = empty($tmp['comment']) ? '' : "<div class='cmt'>(".$tmp['comment'].")</div>";
 									$flag_text = getFlagsString($tmp['flags']);
-									$tr1 .= '<td'.$align.' valign=top colspan='.$colspan.'>'.$tmp['sname'].($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
+									$tr1 .= '<td'.$align.' valign=top colspan='.$colspan.'>'.$tmp['sname'].($cm).($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
 									$tr2 .= '<td'.$align.' valign=top colspan='.$colspan.'>'.($tmp['rname'] ? $tmp['rname'].', ' : '').$tmp['tname'].'</td>';
 								} else if($c == 0){
 									$tr1 .= '<td valign=top colspan=2>&nbsp;</td>';

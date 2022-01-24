@@ -9,19 +9,26 @@
 	$weekId = array_key_exists('weekId', $_GET) ? $_GET['weekId'] : null;
 	$lessons = R::getAll( 'SELECT * FROM lessons');
 	$classes = R::getAll( 'SELECT * FROM classes where name like ?' , [$class_like]);
+	$active_tid = '';
 	if(isset($is_active)){
 		$week = R::getAssocRow( 'SELECT * FROM weeks where is_active = "1"' );
-		$timetable = R::getAll( 'SELECT t.*,s.name as sname, s.short_name as sname2, teach.name as tname, room_id as rname FROM timetables t 
-		join subjects s on t.subject_id=s.id 
-		left join teachers teach on t.teacher_id=teach.id 
-		join weeks w on week_id = w.id
-		where w.is_active = "1" order by sname');
+		if(array_key_exists("teachid",$_COOKIE)){
+			$active_tid = intval($_COOKIE['teachid']);
+			$timetable = R::getAll( 'SELECT t.*, c.name as clname,s.name as sname, s.short_name as sname2, t.room_id as rname FROM timetables t 
+			join subjects s on t.subject_id=s.id 
+			join classes c on t.class_id=c.id 
+			left join teachers teach on t.teacher_id=teach.id 
+			join weeks w on week_id = w.id
+			where w.is_active = "1" and t.teacher_id= ? order by sname', array($active_tid));
+		} else {
+			$timetable =array();
+		}
 	}else{
 		$week = R::getAssocRow( 'SELECT * FROM weeks where id = ?', [$weekId] ); // $_GET['week'];
-		$timetable = R::getAll( 'SELECT t.*,s.name as sname, s.short_name as sname2, teach.name as tname, room_id as rname FROM timetables t 
+		$timetable =[];/* R::getAll( 'SELECT t.*,s.name as sname, s.short_name as sname2, teach.name as tname, room_id as rname FROM timetables t 
 		join subjects s on t.subject_id=s.id 
 		left join teachers teach on t.teacher_id=teach.id 
-		where t.week_id =? order by sname', [$weekId]);
+		where t.week_id =? order by sname', [$weekId]);*/
 	}
 	
 	$week_model = new WeekEditModel($week[0], $lessons);
@@ -76,8 +83,8 @@
 		$day = $d->date->format("Y-m-d");
 		foreach($lessons as $l) {
 			$lid = $l['id'];
-			foreach($classes as $c) {
-				$cid = $c['id'];
+			//foreach($classes as $c) {
+				//$cid = $c['id'];
 				if(!array_key_exists($day, $tt)){
 					$tt[$day] = array();
 				}
@@ -86,18 +93,18 @@
 					$tt[$day][$lid] = array();
 				}
 				
-				if(!array_key_exists($cid, $tt[$day][$lid])){
+				/*if(!array_key_exists($cid, $tt[$day][$lid])){
 					$tt[$day][$lid][$cid] = new ViewItem();
-				}
-			}
+				}*/
+			//}
 		}
 	}
 		
 	foreach($timetable as $t) {		
-		if(array_key_exists($t['class_id'],$tt[$t['day']][$t['lesson_id']]))
-			array_push($tt[$t['day']][$t['lesson_id']][$t['class_id']]->items, $t);
+		//if(array_key_exists($t['class_id'],$tt[$t['day']][$t['lesson_id']]))
+			array_push($tt[$t['day']][$t['lesson_id']], $t);
 	}
-
+	//print_r($tt); die();
  	
 	
 	//print_r($tt);
@@ -110,8 +117,8 @@
 	//$teachers = R::getAll( 'SELECT t.*, subject_id  FROM teachers t join teacher_subjects s on t.id=s.teacher_id order by t.name');
 	$teachers = R::getAll( 'SELECT * FROM teachers order by name');
 	
-	$class_width =  100 / count($classes);
-	$subj_width =  $class_width / 2;
+	$class_width =  16.666;
+	$subj_width =  16.666;
 
 	define("FL_ONLINE",1);
 	define("FL_OPTIONAL",2);
@@ -220,7 +227,7 @@
 			
 		   @page {	margin: 0.7cm;   }  
 		   
-		   .table-header tr td {border-left:1px solid black;  padding:3px 0 3px 5px;   color:white;   }
+		   .table-header tr td {border-left:1px solid black;  padding:5px 0 5px 5px;   color:white;   }
 		   
 		   .table-header tr td:first-child {border:0; }
 		   
@@ -231,13 +238,12 @@
 			   position:relative;
 		   }
 		   .table-subj tr td:first-child {border-left:0;}
-		   .table-subj tr:first-child td {border-bottom:1px solid black;}
 		   
 		   .tr-subj { font-size:20px; font-weight:bold;  }
 		   
 		   .tr-teach {   font-size:12px;   }
 		   
-		   .tr-subj td{   padding:7px 0 0 5px;  }
+		   .tr-subj td{   padding:5px; height:58px; }
 		   
 		   .tr-teach td {   padding: 1px 0 0 5px;   }
 		   
@@ -257,6 +263,8 @@
 			   top:0;
 			   right:3px;
 		   }
+		   
+		   .tr-subj-fl {font-size:12px; text-align:right;}
 		   
 		   .day-border {
 			   /*background-color:#0072c6;*/
@@ -278,6 +286,11 @@
 			   /*background-color:rgb(14,177,161);*/
 			   /*background-color:rgb(25, 132, 200);*/
 			   background-color:#3b5998;
+		   }
+		   
+		   .tr-subj-normal {
+			   font-size:14px;
+			   font-weight:normal;
 		   }
 		   
 		   span.flag-color-1 {color:black;}
@@ -310,6 +323,8 @@
 			   font-size:14px;
 			   font-weight:normal;
 		   }
+		   
+		   .table-subj {min-height:29px;}
 		
 		</style>
 	</head>
@@ -317,10 +332,9 @@
 	<div align="right" class="div-filter">
 	<span class="lbl" style="float:left; position:relative; top:7px; left:0px;"><?= $week_model->number; ?> учебная неделя</span>
 	<span class="lbl">Фильтровать по</span>
-	<input type="text" placeholder="классу" id="bySubject"> <span class="lbl">или по</span>
-	<input type="text" placeholder="преподавателю" id="byTeacher">
+	<input style="width:220px;" type="text" placeholder="преподавателю" id="byTeacher">
 	</div>
-		<table class="table-main" border=1>
+			<table class="table-main" border=1>
 			<!--<col width="30px">	-->		
 			<col width="35px">			
 			<tr class="tr-head">
@@ -329,11 +343,11 @@
 				<td>
 					<table width="100%" class="table-header">
 						<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
-						<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
+						<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
 						<tr>
 							<?php
-								foreach ($classes as  $class) {
-									echo '<td colspan=2 class="">'.$class['name'].'</td>';
+								foreach ($week_model->days as  $day) {
+									echo '<td colspan=1 class="">'.$day->date->format("d.m").'<br>'. $day->dayName.'</td>';
 								}
 							?>	
 						</tr>
@@ -341,188 +355,116 @@
 				</td>
 				
 			</tr>	
+			<?php 
+				function un($arr, $prop){
+					$ret = array();
+					foreach($arr as $a){
+						$ret[] = $a[$prop];
+					}
+					
+					return implode(', ', array_unique($ret));
+				}
 			
-			
-		<?php
-			foreach ($week_model->days as $dnum =>$day) { 
-		?>
+				foreach($week_model->days[0]->lessons as $i=>$lesson) { ?>
 				<tr>
-					<td class = "day-space" align=center colspan = "2">&nbsp;</td>
-				</tr>
-				<tr>
-					<td class = "day-border" align=center colspan = "2"> <?= $day->date->format("d.m") ?> <?= $day->dayName ?> </td>					
-				</tr>
-				
-				
-				<?php foreach($day->lessons as $i=>$lesson) { ?>
-				
-				<tr>
-					<!--<?php if($i == 0){ ?> <td class="day-td" align=center rowspan="4"><div class="day-col day-col-<?=$dnum?>"><?= $day->dayName ?></div></td><?php } ?>-->
 					<td class="td-lesson-time"><?= substr($lesson->start,0,5).'-<br>'.substr($lesson->stop,0,5) ?></td>
 					<td>
-						<table class="table-subj" width="100%">
-							<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
-							<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
+						<table width="100%" class="table-subj">
+						<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
+						<col width="<?=$subj_width.'%'?>"><col width="<?=$subj_width.'%'?>">
+						<tr class="tr-subj">
 							<?php
-							$tr1 = '';
-							$tr2 = '';
-							$d = $day->date->format("Y-m-d");
-							foreach($classes as $ind => $class) { 
-								$c = count($tt[$d][$lesson->lessonId][$class['id']]->items);
-								if($c == 1){									
-									$cur_subj = $tt[$d][$lesson->lessonId][$class['id']]->getSubjects();
-									$cur_subj_x = $tt[$d][$lesson->lessonId][$class['id']]->getSubjects(true);
-									$cur_teach = $tt[$d][$lesson->lessonId][$class['id']]->getTeachers();
-									$cur_class =  $class['id'];
-									
-									if($ind > 0 &&
-										$cur_subj_x == $tt[$d][$lesson->lessonId][$classes[$ind-1]['id']]->getSubjects(true) &&
-										$cur_teach == $tt[$d][$lesson->lessonId][$classes[$ind-1]['id']]->getTeachers()){
+							
+								foreach($week_model->days as $day) {
+									$d = $day->date->format("Y-m-d");
+									if(count($tt[$d][$lesson->lessonId]) == 0){
+										echo "<td>&nbsp;</td>";
 										continue;
 									}
 									
-									$colspan = 2;
-									$align = '';
-									for($i= $ind+1; $i < count($classes); $i++){
-										if($cur_subj_x == $tt[$d][$lesson->lessonId][$classes[$i]['id']]->getSubjects(true) &&
-											$cur_teach == $tt[$d][$lesson->lessonId][$classes[$i]['id']]->getTeachers()){
-											$colspan +=2;
-											$cur_class .= ':'.$classes[$i]['id'];
-											$align = ' align=center';
-										} else {
-											break;
-										}
-									}									
-									 
-									$tmp = $tt[$d][$lesson->lessonId][$class['id']]->items[0];
-									$cm = empty($tmp['comment']) ? '' : "<div class='cmt'>(".$tmp['comment'].")</div>";
-									$flag_text = getFlagsString($tmp['flags']);
-									$flags_cl = getFlagsClasses($tmp['flags']);
-									$tr1 .= '<td'.$align.' data-cl="'.$cur_class.'" data-teach="'.$tmp['tname'].'" class="'.$flags_cl.'" valign=top colspan='.$colspan.'>'.$tmp['sname'].($cm).($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
-									$tr2 .= '<td'.$align.' data-cl="'.$cur_class.'" data-teach="'.$tmp['tname'].'" class="'.$flags_cl.'" valign=top colspan='.$colspan.'>'.($tmp['rname'] ? $tmp['rname'].', ' : '').$tmp['tname'].'</td>';
-								} else if($c == 0){
-									$tr1 .= '<td valign=top colspan=2>&nbsp;</td>';
-									$tr2 .= '<td valign=top colspan=2>&nbsp;</td>';
-								} else if($c == 2){
-									$tmp1 = $tt[$d][$lesson->lessonId][$class['id']]->items[0];
-									$tmp2 = $tt[$d][$lesson->lessonId][$class['id']]->items[1];
-									
-									$flags_cl1 = getFlagsClasses($tmp1['flags']);
-									$flags_cl2 = getFlagsClasses($tmp2['flags']);
-									
-									if(($tmp1['sname'] == $tmp2['sname']) && ($tmp1['flags'] == $tmp2['flags'])){
-										$flag_text = getFlagsString($tmp1['flags']);
-										$tr1 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].':'.$tmp2['tname'].'" class="'.$flags_cl1.'" valign=top colspan=2>'.$tmp1['sname'].($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
-									} else {
-										$flag_text1 = getFlagsString($tmp1['flags']);
-										$flag_text2 = getFlagsString($tmp2['flags']);
-										$tr1 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].'" class="'.$flags_cl1.'" valign=top>'.$tmp1['sname2'].($flag_text1!='' ? '<span class="span-flags">'.$flag_text1.'</span>':'').'</td><td data-cl="'.$class['id'].'" data-teach="'.$tmp2['tname'].'" class="'.$flags_cl2.'" valign=top>'.$tmp2['sname2'].($flag_text2!='' ? '<span class="span-flags">'.$flag_text2.'</span>':'').'</td>';
+									$f = intval($tt[$d][$lesson->lessonId][0]["flags"]);
+									for($j=1; $j< count($tt[$d][$lesson->lessonId]); $j++){
+										$f = $f | intval($tt[$d][$lesson->lessonId][$j]["flags"]);
 									}
 									
-									$tr2 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].'" class="'.$flags_cl1.'" valign=top>'.($tmp1['rname'] ? $tmp1['rname'].', ' : '').$tmp1['tname'].'</td><td data-cl="'.$class['id'].'" data-teach="'.$tmp2['tname'].'" valign=top class="'.$flags_cl2.'">'.($tmp2['rname'] ? $tmp2['rname'].', ' : '').$tmp2['tname'].'</td>';
-								} else if($c >= 3){
-									$isFlagsEqual = $tt[$d][$lesson->lessonId][$class['id']]->isFlagsEqual();
-									//print_r($tt[$d][$lesson->lessonId][$class['id']]);
-									$cur_subj = $tt[$d][$lesson->lessonId][$class['id']]->getSubjects(!$isFlagsEqual);
-									$cur_subj_x = $tt[$d][$lesson->lessonId][$class['id']]->getSubjects(true);
-									$cur_teach = $tt[$d][$lesson->lessonId][$class['id']]->getTeachers();
-									$cur_class =  $class['id'];
-									
-									if($ind > 0 &&
-										$cur_subj_x == $tt[$d][$lesson->lessonId][$classes[$ind-1]['id']]->getSubjects(true) &&
-										$cur_teach == $tt[$d][$lesson->lessonId][$classes[$ind-1]['id']]->getTeachers()){
-										continue;
-									}
-
-									$colspan = 2;
-									for($i= $ind+1; $i < count($classes); $i++){
-										if($cur_subj_x == $tt[$d][$lesson->lessonId][$classes[$i]['id']]->getSubjects(true) &&
-											$cur_teach == $tt[$d][$lesson->lessonId][$classes[$i]['id']]->getTeachers()){
-											$cur_class .= ':'.$classes[$i]['id'];
-											$colspan +=2;
-										}
-									}
-									
-									$flags_text ='';
-									$flags_cl ='';
-									if($isFlagsEqual){
-										$ftxt = getFlagsString($tt[$d][$lesson->lessonId][$class['id']]->items[0]['flags']);
-										$flags_cl = getFlagsClasses($tt[$d][$lesson->lessonId][$class['id']]->items[0]['flags']);
-										if($ftxt != '')
-											$flags_text = '<span class="span-flags">'.$ftxt.'</span>';
-									}
-									
-									$tr1 .= '<td data-cl="'.$cur_class.'" data-teach="'.$cur_teach.'" class="'.$flags_cl.'" align=center valign=top colspan='.$colspan.'>'.$cur_subj.$flags_text.'</td>';
-									$tr2 .= '<td data-cl="'.$cur_class.'" data-teach="'.$cur_teach.'" class="'.$flags_cl.'" align=center valign=top colspan='.$colspan.'>'.$cur_teach.'</td>';
+									$flag_text = getFlagsString($f);
+									$flags_cl = getFlagsClasses($f);
+									//for ($i = 0; $i < count($tt); $i++) {
+										?>
+										<td class="<?= $flags_cl ?>" valign="top">
+										<div class="tr-subj-fl"><?= $flag_text ?></div>
+										<div><?= un($tt[$d][$lesson->lessonId], "sname2") ?></div>
+										<div class="tr-subj-normal"><?= str_replace(' - ','&nbsp;-&nbsp;',un($tt[$d][$lesson->lessonId], "clname")) ?></div>
+										<div class="tr-subj-normal"><?= un($tt[$d][$lesson->lessonId], "rname") ?></div>
+										<div class="tr-subj-normal"><?= $tt[$d][$lesson->lessonId][0]["comment"] ?></div>
+										
+										</td>
+							<?php   //}
 								}
-														
-							 } ?>
-						<tr class="tr-subj"><?= $tr1 ?></tr>
-						<tr class="tr-teach"><?= $tr2 ?></tr>
-						
+							?>	
+						</tr>
 						</table>
+					
 					</td>
+				</tr>
 			
-				</tr>	
+		<?php
+			}
+		?>
 				
-			<?php } ?>
-		<?php } ?>
+				
+			
 
 	</table>
 	
+	
+
 	<script>
-		
+		function setCookie(name, value, options = {}) {
+
+		  options = {
+			path: '/',
+			// при необходимости добавьте другие значения по умолчанию
+			...options
+		  };
+
+		  //if (options.expires instanceof Date) {
+			  let d = new Date();
+			  d.setFullYear(d.getFullYear() + 5);
+			options.expires = d.toUTCString();
+		 // }
+
+		  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+		  for (let optionKey in options) {
+			updatedCookie += "; " + optionKey;
+			let optionValue = options[optionKey];
+			if (optionValue !== true) {
+			  updatedCookie += "=" + optionValue;
+			}
+		  }
+
+		  document.cookie = updatedCookie;
+		}
 		var classes = <?php echo json_encode($classes); ?>;
 		var teachers = <?php echo json_encode($teachers); ?>;
 		$cells = $("td[data-teach]");
 		$cells2 = $("td[data-cl]");
 		
-		$("#bySubject").kendoComboBox({
-			dataSource:classes,
-			dataTextField:'name',
-			dataValueField:'id',
-			noDataTemplate: 'Ничего не нашлось',
-			filter:"startswith",
-			change: function(e){
-				$("#byTeacher").data("kendoComboBox").value('');
-				let v = e.sender.value();
-				console.log(v);
-				if(!v){
-					$cells2.css("visibility", "visible");
-				} else {
-					$cells2.each(function(){
-						if(this.dataset.cl.indexOf(v) > -1){
-							this.style.visibility = "visible";
-						} else {
-							this.style.visibility = "hidden";
-						}
-					})
-				}
-				
-			}
-		});
-		
 		$("#byTeacher").kendoComboBox({
 			dataSource:teachers,
 			dataTextField:'name',
-			dataValueField:'name',
+			dataValueField:'id',
+			value:'<?= $active_tid ?>',
 			filter:"startswith",
 			noDataTemplate: 'Ничего не нашлось',
 			change: function(e){
-				$("#bySubject").data("kendoComboBox").value('');
 				let v = e.sender.value();
-				if(!v){
-					$cells.css("visibility", "visible");
-				} else {
-					$cells.each(function(){
-						if(this.dataset.teach.indexOf(v) > -1){
-							this.style.visibility = "visible";
-						} else {
-							this.style.visibility = "hidden";
-						}
-					})
+				if(v) {
+					setCookie("teachid", v);
+					document.location.reload();
 				}
-				//$cells.first().css("visibility", "hidden");
+				
 			}
 		});
 		
