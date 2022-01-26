@@ -222,10 +222,7 @@
 				width:840px;
 				table-layout: fixed;
 				border-collapse:collapse;
-			}				
-			
-			
-		   @page {	margin: 0.7cm;   }  
+			}				  
 		   
 		   .table-header tr td {border-left:1px solid black;  padding:5px 0 5px 5px;   color:white;   }
 		   

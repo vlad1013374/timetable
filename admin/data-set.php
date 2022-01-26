@@ -72,10 +72,7 @@
   <link rel=stylesheet href="includes/menu.css">
 </head>
 <body>
-    <div class="menu">
-      <a class="a-menu" href="http://dada.hhos.ru/admin/index.php">Список недель</a>
-      <a class="a-menu" href="http://dada.hhos.ru/admin/data-set.php">Информация</a>
-    </div>
+    <?php require 'menu.php'; ?>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">

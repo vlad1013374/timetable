@@ -216,11 +216,8 @@
 				table-layout: fixed;
 				border-collapse:collapse;
 			}				
-			
-			
-		   @page {	margin: 0.7cm;   }  
 		   
-		   .table-header tr td {border-left:1px solid black;  padding:3px 0 3px 5px;   color:white;   }
+		   .table-header tr td {border-left:1px solid black;  padding:5px 0 5px 5px;   color:white;   }
 		   
 		   .table-header tr td:first-child {border:0; }
 		   
@@ -278,6 +275,10 @@
 			   /*background-color:rgb(14,177,161);*/
 			   /*background-color:rgb(25, 132, 200);*/
 			   background-color:#3b5998;
+		   }
+		   
+		   .tr-head > td {
+			   border:1px solid black;
 		   }
 		   
 		   span.flag-color-1 {color:black;}

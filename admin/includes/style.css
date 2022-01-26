@@ -134,14 +134,13 @@ table,th,td{
 .is-active-week{
 	color:#3DBD2C;
 }
-a:link{
+a{
+	text-decoration:none !important;
+}
+/*a:visited{
 	color:#00147A;
 	text-decoration:none;
-}
-a:visited{
-	color:#00147A;
-	text-decoration:none;
-}
+}*/
 
 .week-li > div {
 	display:inline-block;

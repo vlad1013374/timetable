@@ -1,40 +1,28 @@
 .menu{
+	
     margin:0px; 
 	padding:0px;
     background:#0d6efd;
     width: 100%;
-    height: 50px;
+    height: 41px;
 }
 .a-menu{
     float: left;
     margin:0px; 
 	padding:0px;
+	color: #fff;
     width: 200px;
-    line-height:50px;
+    line-height:41px;
     text-align: center;
-    font-size: 25px;
     display: inline-block;
     text-decoration: none;
-    color:#fff;
     background: #0d6efd;
 }
 .a-menu-here{
-    float: left;
-    margin:0px; 
-	padding:0px;
-    width: 200px;
-    line-height:50px;
-    text-align: center;
-    font-size: 25px;
-    display: inline-block;
-    text-decoration: none;
-    color: #ddd;
     background: #0b4cdb;
 }
-.a-menu:visited{
-    color:#fff;
-}
+
 .a-menu:hover{
-    color: #ddd;
+	color: #fff;
     background: #0b4cdb;
 }
