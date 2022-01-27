@@ -48,8 +48,7 @@ function add_week($week_json)
 function edit_week($week_json)
 {
 	$week = json_decode($week_json);
-	$week_id = R::findOne('weeks', 'number =? ', [$week->number]);
-	$week_db = R::load('weeks', $week_id);
+	$week_db = R::load('weeks', $week->id);
 	$week_db->start = $week->start;
 	$week_db->stop = $week->stop;
 	$week_db->comment = $week->comment;

@@ -23,10 +23,9 @@ $("#listView").on("click", ".delete-week", function(){
 	  })
 })
 $(".edit-week").click(function () {
-	var number = $(".k-formatted-value.week-num.edit.k-input").attr("aria-valuenow");
+	var id = $("select.week-id.edit").data("kendoDropDownList").value();
 	var week_start = $(".week-start.edit.k-input").val();
 	var week_stop = $(".week-stop.edit.k-input").val();
-	var number_copy = $("select.copy.edit").data("kendoDropDownList").value();
 	
 
 	var pieces = week_start.split('.');
@@ -38,7 +37,7 @@ $(".edit-week").click(function () {
 	
 
 	
-	let obj = {number: number, start : week_start , stop : week_stop, copy:number_copy, comment:$(".week-comment.edit").val()};
+	let obj = {id: id, start : week_start , stop : week_stop, comment:$(".week-comment.edit").val()};
 	var dt = JSON.stringify(obj);
 	$.post("admin.php", {weekEdit: dt})
 	  .done(function(ev) {
@@ -98,4 +97,5 @@ $(".week-num").kendoNumericTextBox({
 	min:1,
 	format:"n0"
 });
+$(".week-id").kendoDropDownList({autoWidth: true});
 $(".copy").kendoDropDownList({autoWidth: true});

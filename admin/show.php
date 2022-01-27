@@ -12,7 +12,7 @@
             <div style="width:180px;">#:curMonday == start ? 'Текущая неделя':(nextMonday == start ? 'Следущая неделя':'')#</div>
 			<div style="width:100px;" class="is-active-week">#:is_active == '1' ? 'Активна':''#</div>
             <div style="width:130px;">#=is_active == '1' ? '':'<button data-id="'+id+'" class="but-act k-button">Активировать</button>'#</div>
-			<div style="width:200px;"><a target="_blank" href="/rasp/pub/print.php?weekId=#:id#&class=10">печать 10</a> &nbsp; <a target="_blank" href="/rasp/pub/print.php?weekId=#:id#&class=11">печать 11</a></div>
+			<div style="width:200px;"><a target="_blank" href="../pub/print.php?weekId=#:id#&class=10">печать 10</a> &nbsp; <a target="_blank" href="../pub/print.php?weekId=#:id#&class=11">печать 11</a></div>
 			<div style="width:350px;">#:comment ? comment:''#</div>			
 						
 			<button type="button" style="float:right; margin:10px;" class="btn-close delete-week" aria-label="Close"></button>
@@ -105,18 +105,8 @@ function getDates(start, stop){
   <div class="offcanvas-body">
   	
     <div class="add-week-block">
-     	<div><div class="w-label">Номер недели</div> <input type="text" class="week-num edit"></div>
-     	<div>
-			<div class="w-label">Дата понедельника</div> 
-			<input type="text" class ="week-start edit" value="<? echo date('d.m.Y', strtotime('monday next week')) ?>" >
-		</div>
-     	<div>
-			<div class="w-label">Дата воскресенья</div>
-			<input type="text" class ="week-stop edit" value="<? echo date('d.m.Y', strtotime('sunday next week')) ?>">
-		</div>
-		<div>
-			<div class="w-label">Скопировать неделю:</div>
-			<select class="copy edit">
+     	<div><div class="w-label">Выберите неделю</div> 
+     		<select class="week-id edit">
 				<option selected></option>
 				<?php 
 				$months = array('января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря');
@@ -130,6 +120,15 @@ function getDates(start, stop){
 
 			</select>
 		</div>
+     	<div>
+			<div class="w-label">Дата понедельника</div> 
+			<input type="text" class ="week-start edit" value="<? echo date('d.m.Y', strtotime('monday next week')) ?>" >
+		</div>
+     	<div>
+			<div class="w-label">Дата воскресенья</div>
+			<input type="text" class ="week-stop edit" value="<? echo date('d.m.Y', strtotime('sunday next week')) ?>">
+		</div>
+		
 		<div>
 			<div class="w-label">Комментарий</div>
 			<input type="text" class ="week-comment k-textbox edit" value="">
