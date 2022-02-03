@@ -476,6 +476,16 @@ function clear(type, param){
 			if(timetable[i]['class_id'] == param)
 				clearItem(timetable[i]);
 		}
+	} else if(type == 'online'){
+		for(let i=0; i< timetable.length; i++){
+			let item = timetable[i];
+			item['flags'] = parseInt(item['flags']) & 1022;
+			let block = $("#ir_" + item['id']).parents(".subject-block");
+			if (item['flags'] == 0)
+				block.find(".flags-block").hide();
+			else
+				block.find(".f-online").hide();
+		}
 	}
 }
 

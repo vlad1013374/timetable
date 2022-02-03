@@ -1,10 +1,7 @@
 <?php
     require '../connection/db.php';
     require 'model.php';
-    require 'data-set-plugs.php';
-    $teachers = R::getAll('SELECT * FROM teachers order by name ASC');
-    $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
-    $auds = R::getAll('SELECT * FROM rooms order by name ASC');
+    require 'data-set-plugs.php';    
     
     if(isset($_POST['add-aud'])){
       $db_a = R::dispense('rooms');
@@ -34,6 +31,11 @@
       }
         
     }
+	
+	$teachers = R::getAll('SELECT * FROM teachers order by name ASC');
+    $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
+    $auds = R::getAll('SELECT * FROM rooms order by name ASC');	
+	
     if(isset($_POST['add_subject'])){
       $db_s = R::dispense('subjects');
       $db_s->name= $_POST['new-subject-name'];
@@ -64,12 +66,29 @@
       background: #E9ECEF;
       cursor: pointer;
     }
-  </style>
+	.w-label {
+		display:inline-block;
+		width:160px;
+	}
 
+	.add-week-block form > div {
+		margin-bottom:15px;
+	}
+	
+	#t-sub-select > div {display:inline-block;}
+	#teachers .offcanvas-start {width:450px;}
+  </style>
+  <link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
+  <link rel="stylesheet" href="includes/kendo/kendo.custom.css">
+  
   <script type="text/javascript" src="includes/js/jquery-3.6.0.js"></script>
   <link rel="stylesheet" href="includes/js/bootstrap.min.css">
   <script src="includes/js/bootstrap.bundle.min.js"></script>
   <link rel=stylesheet href="includes/menu.css">
+  <script src="includes/kendo/kendo.all.min.js"></script>
+	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
+	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
+	<script>kendo.culture("ru-RU");</script>
 </head>
 <body>
     <?php require 'menu.php'; ?>
@@ -201,6 +220,9 @@
       </div>
     </script>
    
+	<script>
+		$("#teacher-subject-select").kendoMultiSelect();
+	</script>
     <script src="includes/js/set.js"></script>
 </body>
 </html>

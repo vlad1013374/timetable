@@ -14,7 +14,7 @@ function group_by($key, $data) {
     return $result;
 }
 
-require "../connection/db.php";
+/*require "../connection/db.php";*/
 $config_set = R::getAssocRow('SELECT * FROM config order by ordering');
 $config_group = group_by('section', $config_set);
 

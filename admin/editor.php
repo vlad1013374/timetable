@@ -178,6 +178,7 @@
 											echo '{ text: "'.$c['name'].'", click: function() {clear(\'byclass\', '.$c['id'].');} },';
 										}
 									?>
+									{ text: "<span>Удалить метку <span style='color:#3e80ed;'>Online</span> у всех</span>", click: function() {clear('online');} }
                                     //{ text: "10A"/*, icon: "insert-up"*/ },                                  
                                 ]
                             },
@@ -198,6 +199,7 @@
 											echo '{ text: "'.$c['name'].'", click: function() {setOnline(\'byclass\', '.$c['id'].');} },';
 										}
 									?>
+									
                                 ]
                             },
 							 { type: "separator" },
@@ -310,104 +312,9 @@
 			return ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"][ this.getDay() ];
 		};
 		
-		function checkTeachers(isChane, str){
-			if(!str){
-				str = '';
-			}
-			
-			$(".back-error").removeClass("back-error");
-			let ret = [];
-			for(let i=0; i< timetable.length; i++){
-				let el = timetable[i];
-				if(el['subject_id'] && !el['teacher_id']){
-					console.log(el);
-					let d = new Date(el['day']);
-					ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
-					$("#it_" + el['id']).prev().addClass("back-error");
-				}
-			}
-			
-			if(ret.length > 0){
-				str = str + 'Для следующих занятий не указан преподаватель:\n  ' + ret.join("\n  ") + "\n\n";
-			}
-			
-			if(isChane){				
-				return str;
-			}
-			
-			if(ret.length > 0){
-				alert(str);
-			} else {
-				alert("Все преподаватели заполнены корректно");
-			}
-		}
 		
-		function checkRooms(isChane, str){
-			if(!str){
-				str = '';
-			}
-			
-			if(!isChane){
-				$(".back-error").removeClass("back-error");
-			}
-			let ret = [];
-			let check = {};
-			for(let i=0; i< timetable.length; i++){
-				let el = timetable[i];
-				if(el['subject_id'] && !el['room_id'] && el['subject_id'] != '8'){
-					console.log(el);
-					let d = new Date(el['day']);
-					ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
-					$("#ir_" + el['id']).prev().addClass("back-error");
-				}
-				
-				if(el['room_id']){
-					let k = el['day'] + "|" + el['lesson_id'] + "|" + el['room_id'];
-					if(check.hasOwnProperty(k)){
-						check[k].push(el);
-					} else {
-						check[k] = [el];					
-					}
-				}
-			}
-			
-			if(ret.length > 0){
-				str = str + 'Для следующих занятий не указана аудитория:\n  ' + ret.join("\n  ") + "\n\n";
-			}
-			
-			let ret2 = [];
-			for(let k in check){
-				if(check[k].length > 1){
-				let hash = check[k][0]['subject_id']+'|'+check[k][0]['teacher_id']+'|'+ check[k][0]['flags'];
-					for(let i = 1; i< check[k].length; i++){
-						let hash2 = check[k][i]['subject_id']+'|'+check[k][i]['teacher_id']+'|'+ check[k][i]['flags'];
-						if(hash2 != hash){
-							let d = new Date(check[k][0]['day']);
-							ret2.push(check[k][0]['room_id'] + " ("+ d.getDayOfWeek() + ", " + check[k][0]['lesson_id'] + ' пара)');
-							for(let j = 0; j< check[k].length; j++){
-								$("#ir_" + check[k][j]['id']).prev().addClass("back-error");
-							}
-							break;
-						}
-					}
-				}
-			}
-			
-			if(ret2.length > 0){
-				str = str + 'Для следующих аудиторий найдены дубли:\n  ' + ret2.join("\n  ") + "\n\n";
-			}
-			
-			
-			if(isChane){				
-				return str;
-			}
-			
-			if(ret.length > 0 || ret2.length > 0){
-				alert(str);
-			} else {
-				alert("Все аудитории заполнены корректно");
-			}
-		}
+		
+		
 		
 	</script>
 </body>

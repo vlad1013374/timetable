@@ -4,7 +4,7 @@ function add_header($rus, $en)
 {
 	
 	echo '
-		<button class="btn btn-primary add '.$en.'-add" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas'.$en.'" aria-controls="offcanvas'.$en.'">
+		<button class="k-button add '.$en.'-add" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas'.$en.'" aria-controls="offcanvas'.$en.'">
 			  Добавить '.$rus.'
 		</button>
 		
@@ -26,32 +26,37 @@ function add_teacher()
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
+			  <div class="add-week-block">
                
                 <div class="dropdown mt-3">
-                <form method="post">
+                <form id="utf" method="post">
                  <div>
-                  Преподаватель: 
-                  <input type="text" name="new-teacher-name" placeholder="Имя">
+                  <div class="w-label">Преподаватель:</div> 
+                  <input type="text" style="width:250px;" class="k-textbox" name="new-teacher-name" placeholder="Имя">
                  </div>
                  <div class="t-subs">
                   <div id="t-sub-select" >
-                    Предмет: 
-                    <select  name="sub-add-teacher[]">
-                    <option value="" selected></option>';
+                    <div class="w-label">Предмет:</div> 
+                    <select style="width:250px;" multiple id="teacher-subject-select" name="sub-add-teacher[]">
+                    ';
                     	foreach ($subjects as $subject) {
                     		echo '<option value="'.$subject["id"].'">'.$subject["name"].'</option>';
                     	}
                     echo '</select>
-                    <button type="button" class="btn-close delete text-reset" aria-label="Close"></button>
                   </div>
                  </div>
-                 
-                 
-                 <input type="submit" name="add-teacher" value="Добавить">
+                 <div>
+                  <div class="w-label">Блокировка:</div> 
+                  <input type="checkbox" value="1" class="k-checkbox" name="is-active">
+                 </div>
                 </form>
-                <button class="add-t-sub-select">Добавить поле</button>
+				<div>
+				<div class="w-label">&nbsp;</div>
+                <input type="submit" form="utf" class="k-button" name="add-teacher" value="Добавить">
+                </div>
                 </div>
               </div>
+			  </div>
             </div>';
 }
 
