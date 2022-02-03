@@ -85,13 +85,48 @@
   <link rel="stylesheet" href="includes/kendo/kendo.custom.css">
   
   <script type="text/javascript" src="includes/js/jquery-3.6.0.js"></script>
+
   <link rel="stylesheet" href="includes/js/bootstrap.min.css">
   <script src="includes/js/bootstrap.bundle.min.js"></script>
+
   <link rel=stylesheet href="includes/menu.css">
   <script src="includes/kendo/kendo.all.min.js"></script>
 	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
 	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
 	<script>kendo.culture("ru-RU");</script>
+  
+  
+  <script>
+    $(document).ready(function() {
+
+        $('#teachers-table').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "data-set-control.php",
+                "type": "post"
+            }, 
+            "columns": [
+                { "data": "name_teach" },
+                { "data": "name_sub" },
+
+            ],
+            paging: false,
+            searching: false,
+            ordering : false,
+            info:false,
+            "stripeClasses": ["teacher-row"],
+            createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+                $(row).attr('data-bs-toggle', "offcanvas");
+                $(row).attr('data-bs-target', "#offcanvaseditteacher");
+                $(row).attr('aria-controls', "offcanvaseditteacher");
+            }
+
+        } );
+        $('tbody tr').addClass('teacher-row');
+    } );
+  </script>
 </head>
 <body>
     <?php require 'menu.php'; ?>
@@ -115,32 +150,18 @@
         <?php add_header('преподавателя', 'teacher');?>
         <?php add_teacher();?>
         <?php edit_teacher();?>
-        <table class="table" >
+
+        <table id="teachers-table" class="display table" style="width:100%">
           <thead>
-            <tr>
-              <th scope="col">Имя</th>
-              <th scope="col">Предметы</th>
-            </tr>
+              <tr>
+                  <th>Name</th>
+                  <th>Subject</th>
+
+              </tr>
           </thead>
-          <?php foreach ($teachers as $teacher): ?>
-            <?php $t_s = R::getAll('SELECT *, s.name as name_sub from teacher_subjects ts
-                    join teachers t on t.id = teacher_id
-                    join subjects s on s.id = subject_id where teacher_id =?
-                     ', [$teacher['id']]); ?>
-            <tr class="teacher-row" data-bs-toggle="offcanvas" data-bs-target="#offcanvaseditteacher" aria-controls="offcanvaseditteacher">
-              <td scope="row"  class="teacher" data-id="<?= $teacher['id']?>"><?= $teacher['name']?></td> 
-              
-                <td>
-                  <?php foreach ($t_s as  $value): ?>
-                    <div class="t-sub" data-id="<?=$value['subject_id']?>"><?=$value['name_sub']?></div>
-                  <?php endforeach ?>
-                </td>
-                   
-              
-             </tr>
-             
-          <?php endforeach ?>
-          </table>
+          
+      </table>
+        
       </div>
       <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
         <?php add_header('предмет', 'subject');?>
@@ -228,7 +249,10 @@
 		$("#new-default-auditory").kendoDropDownList();
 		$("#capacity").kendoNumericTextBox();
 	</script>
+    
     <script src="includes/js/set.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.11.4/datatables.min.js"></script>
+    
 </body>
 </html>
 
