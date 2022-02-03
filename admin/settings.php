@@ -27,11 +27,7 @@ if(isset($_POST['save-settings'])){
 
 	header("Location: settings.php"); die();
 }
-?><!DOCTYPE html>
-<html lang="ru">
-<head>
-	<meta charset="UTF-8">
-	<title>Настройки</title>
+?>
 	<link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
 	<link rel="stylesheet" href="includes/kendo/kendo.custom.css">
 	<script src="includes/js/jquery-3.6.0.js"></script>
@@ -46,10 +42,9 @@ if(isset($_POST['save-settings'])){
 			margin:20px;
 		}
 	</style>
-</head>
-<body>
 
-<a href="index.php"><button>На главную</button></a>
+
+
 <form method="post">
 <?php
 $sections = array('editor'=> 'Редактор','web'=> 'Веб-версия','print'=> 'Распечатанная версия');
@@ -82,7 +77,3 @@ echo '<br><br>';
 <div class="setting-item"><div></div> <input type="submit" name="save-settings" class="k-button" value="Сохранить" />
 
 </form>
-
-
-</body>
-</html>

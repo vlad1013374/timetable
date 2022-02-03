@@ -3,7 +3,7 @@
 	<span style="float:left;"><b>Список недель</b></span>
 	<button class="k-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEdit" aria-controls="offcanvasEdit">Редактировать неделю</button> &nbsp;
 	<button class="k-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Добавить неделю</button> &nbsp;
-	<a class="k-button" href="data-set.php">Настройки</a></div>
+	</div>
 <div id="listView" style="width:100%;"></div>
 <script type="text/x-kendo-template" id="template">
         <div class="week-li" week-id="#:id#" week-number="#:number#">

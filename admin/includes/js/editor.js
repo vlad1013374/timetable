@@ -544,6 +544,7 @@ function checkTeachers(isChane, str){
 	
 	$(".back-error").removeClass("back-error");
 	let ret = [];
+	let check = {};
 	for(let i=0; i< timetable.length; i++){
 		let el = timetable[i];
 		if(el['subject_id'] && !el['teacher_id']){
@@ -552,17 +553,50 @@ function checkTeachers(isChane, str){
 			ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
 			$("#it_" + el['id']).prev().addClass("back-error");
 		}
+		
+		if(el['teacher_id']){
+			let k = el['day'] + "|" + el['lesson_id'] + "|" + el['teacher_id'];
+			if(check.hasOwnProperty(k)){
+				check[k].push(el);
+			} else {
+				check[k] = [el];					
+			}
+		}
+	}
+	
+	let ret2 = [];
+	for(let i in check){
+		if(check[i].length > 1){
+			let baseroom = check[i][0]['room_id'];
+			for(let j=1; j < check[i].length; j++){
+				let el = check[i][j];
+				if(baseroom != check[i][j]['room_id']){
+					let rtmp = [];
+					for(let k=0; k < check[i].length; k++){
+						rtmp.push(check[i][k]['room_id'] ? check[i][k]['room_id'] : 'н/д');
+						$("#ir_" + check[i][k]['id']).prev().addClass("back-error");
+					}
+					let d = new Date(el['day']);
+					ret2.push($("#it_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, аудитории: ' + rtmp.join(", ") + ")");
+					break;
+				}
+			}
+		}
 	}
 	
 	if(ret.length > 0){
 		str = str + 'Для следующих занятий не указан преподаватель:\n  ' + ret.join("\n  ") + "\n\n";
 	}
 	
+	if(ret2.length > 0){
+		str = str + 'Для следующих преподавателей указаны разные аудитории в рамках одной пары:\n  ' + ret2.join("\n  ") + "\n\n";
+	}
+	
 	if(isChane){				
 		return str;
 	}
 	
-	if(ret.length > 0){
+	if(ret.length > 0 || ret2.length > 0){
 		alert(str);
 	} else {
 		alert("Все преподаватели заполнены корректно");
