@@ -1,13 +1,14 @@
 <?php
     require '../connection/db.php';
     require 'model.php';
-    require 'data-set-plugs.php';    
+    require 'data-set-plugs.php'; 	
     
     if(isset($_POST['add-aud'])){
       $db_a = R::dispense('rooms');
       $db_a->name = $_POST['aud'];
       $db_a->capacity = $_POST['capacity'];
       R::store($db_a);
+	  header("Location: data-set.php"); die();
     }
     if(isset($_POST['add-teacher'])){
       $db_t = R::dispense('teachers');
@@ -18,6 +19,7 @@
       foreach ($_POST['sub-add-teacher'] as $sub) {
          R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)', [$new_teacher_id, $sub]);
       } 
+	  header("Location: data-set.php"); die();
     }
     if(isset($_POST['edit-teach-save'])){
       if (trim($_POST['edit-teacher-name']) != '') {
@@ -29,20 +31,21 @@
       foreach ($_POST['sub-edit-teacher'] as $edit_sub_id) {
           R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)',[$_POST['edit-teach-id'], $edit_sub_id] );
       }
-        
+      header("Location: data-set.php");  die();
     }
-	
-	$teachers = R::getAll('SELECT * FROM teachers order by name ASC');
-    $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
-    $auds = R::getAll('SELECT * FROM rooms order by name ASC');	
 	
     if(isset($_POST['add_subject'])){
       $db_s = R::dispense('subjects');
       $db_s->name= $_POST['new-subject-name'];
       $db_s->short_name= $_POST['new-subject-short-name'];
-      $db_s->default_room_id = $_POST['new-default-auditory'];
+      $db_s->default_room_id = empty($_POST['new-default-auditory']) ? null : $_POST['new-default-auditory'];
       R::store($db_s);
+	  header("Location: data-set.php");  die();
     }
+	
+	$teachers = R::getAll('SELECT * FROM teachers order by name ASC');
+    $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
+    $auds = R::getAll('SELECT * FROM rooms order by name ASC');	
 ?>
 
 
@@ -160,7 +163,7 @@
         </table>
       </div>
       <div class="tab-pane fade" id="auds" role="tabpanel" aria-labelledby="auds-tab">
-        <?php add_header('кабинет', 'aud');?>
+        <?php add_header('аудиторию', 'aud');?>
         <?php add_room();?>
         <table class="table" >
           <thead>
@@ -222,6 +225,8 @@
    
 	<script>
 		$("#teacher-subject-select").kendoMultiSelect();
+		$("#new-default-auditory").kendoDropDownList();
+		$("#capacity").kendoNumericTextBox();
 	</script>
     <script src="includes/js/set.js"></script>
 </body>

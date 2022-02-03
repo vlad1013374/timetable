@@ -4,7 +4,7 @@ function add_header($rus, $en)
 {
 	
 	echo '
-		<button class="k-button add '.$en.'-add" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas'.$en.'" aria-controls="offcanvas'.$en.'">
+		<br><button class="k-button add '.$en.'-add" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas'.$en.'" aria-controls="offcanvas'.$en.'">
 			  Добавить '.$rus.'
 		</button>
 		
@@ -80,20 +80,20 @@ function add_sub()
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
-               
+               <div class="add-week-block">
                 <div class="dropdown mt-3">
                 <form method="post">
                 <div>
-                  Название предмета:
-                 <input type="text" name="new-subject-name">
+                  <div class="w-label">Название предмета:</div>
+                 <input style="width:200px;" type="text" class="k-textbox" name="new-subject-name">
                 </div>
                 <div>
-                  Короткое название:
-                 <input type="text" name="new-subject-short-name">
+                  <div class="w-label">Короткое название:</div>
+                 <input style="width:200px;" type="text" class="k-textbox" name="new-subject-short-name">
                 </div>
                 <div>
-                  Аудитория по умолчанию:
-                 <select name="new-default-auditory">
+                  <div class="w-label">Аудитория по умолчанию:</div>
+                 <select style="width:200px;" id="new-default-auditory" name="new-default-auditory">
                  <option value="" selected></option>';
 
                   foreach ($auds as $aud) {
@@ -101,9 +101,12 @@ function add_sub()
                   }
                 echo '</select>
                 </div>
-                 
-                 <input type="submit" name="add_subject" value="Сохранить">
-                </form>
+                 <div>
+				<div class="w-label">&nbsp;</div>
+                 <input class="k-button" type="submit" name="add_subject" value="Сохранить">
+                </div>
+				</form>
+                </div>
                 </div>
               </div>
             </div>';
@@ -117,15 +120,23 @@ function add_room()
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
-               
+               <div class="add-week-block">
                 <div class="dropdown mt-3">
                 <form method="post">
-                 <input type="text" placeholder="Аудитория" name="aud">
-                 <input type="text" placeholder="Вместимость" name="capacity">
-
-                 
-                 <input type="submit" name="add-aud" value="Добавить">
+                 <div>
+				<div class="w-label">Номер:</div>
+				<input class="k-textbox" style="width:200px;" type="text" name="aud">
+				</div>
+                 <div>
+				<div class="w-label">Вместимость:</div>
+				<input id="capacity" type="text" style="width:200px;" name="capacity">
+</div>
+                 <div>
+				<div class="w-label">&nbsp;</div>
+                 <input type="submit" class="k-button" name="add-aud" value="Добавить">
+				 </div>
                 </form>
+                </div>
                 </div>
               </div>
             </div>';
