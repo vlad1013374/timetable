@@ -228,23 +228,27 @@
 
     <script id = "tpl" type="text/x-template">
       <div class="offcanvas-body" >
-        <div class="dropdown mt-3">
-          
+        <div class="edit-teacher-block">
+          <div class="dropdown mt-3">
+         
             <input type="text" id="id" name="edit-teach-id" value="{id}" hidden>
             <input type="text" value="{name}" name="edit-teacher-name">
             
             <div class="content-add-teacher">
-              
+           
+            
             
             </div>
-            <input type="submit" name="" value="Сохранить">
-            <button id="edit-teach-save"></button>
+            
+            <button id="edit-teach-save">Сохранить</button>
           <button class="add-sub-input">Добавить поле</button>
+          </div>
         </div>
       </div>
     </script>
    
 	<script>
+    $("#teacher-subject-select-edit").kendoMultiSelect();
 		$("#teacher-subject-select").kendoMultiSelect();
 		$("#new-default-auditory").kendoDropDownList();
 		$("#capacity").kendoNumericTextBox();

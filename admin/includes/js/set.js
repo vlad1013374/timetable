@@ -6,7 +6,7 @@ $("#teachers-table").on("click",".teacher-row",function() {
 
 	var id = $(this).attr('data-id');
 	var name = $('#teachers-table').DataTable().row( this ).data().name_teach
-	$.post("data-set-control.php", {editTeacherID: id})
+	$.post("data-set-control.php", {editModalTeacher: id})
 		.done(function (ev) {
 			var tsub =[]
 			ev = JSON.parse(ev)
@@ -32,6 +32,19 @@ $("#teachers-table").on("click",".teacher-row",function() {
 			})
 			$(".delete").click(function() {
 				$(this).parent().remove();
+			})
+			$("#edit-teach-save").click(function () {
+				let subjectsID = []
+				$("select[name='sub-edit-teacher']").each(function () {
+					subjectsID.push($(this).val())
+				})
+				let dt = {id:id, name: name, subjects: subjectsID}
+				$.post("data-set-control.php", {editTeacher: dt} )
+					.done(function () {
+						$('#teachers-table').DataTable().ajax.reload()
+						$(".btn-close").click()
+					})
+			
 			})
 			
 		})
@@ -60,4 +73,9 @@ $(".add-teacher-block").on("click", "#add-teacher",function () {
 			$('#teachers-table').DataTable().ajax.reload()
 			$(".btn-close").click()
 		})
+})
+
+$(".edit-teacher-block").on("click", "#edit-teach-save",function () {
+	
+	
 })
