@@ -216,7 +216,7 @@
     <script type="text/x-template" id="tpl-sub">
       <div id="t-sub-select">
         Предмет:
-        <select name="sub-{type}-teacher[]" id="t-sub-select">
+        <select name="sub-{type}-teacher" id="t-sub-select">
           <option value="{subId}" selected>{subName}</option>
             <?php foreach ($subjects as $value_sub): ?>
               <option value="<?=$value_sub['id']?>"><?=$value_sub['name']?></option>
@@ -229,7 +229,7 @@
     <script id = "tpl" type="text/x-template">
       <div class="offcanvas-body" >
         <div class="dropdown mt-3">
-          <form method="post">
+          
             <input type="text" id="id" name="edit-teach-id" value="{id}" hidden>
             <input type="text" value="{name}" name="edit-teacher-name">
             
@@ -237,8 +237,8 @@
               
             
             </div>
-            <input type="submit" name="edit-teach-save" value="Сохранить">
-          </form>
+            <input type="submit" name="" value="Сохранить">
+            <button id="edit-teach-save"></button>
           <button class="add-sub-input">Добавить поле</button>
         </div>
       </div>

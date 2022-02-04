@@ -40,14 +40,6 @@ $("#teachers-table").on("click",".teacher-row",function() {
 		})
 
 	
-	
-	
-
-	
-	
-
-
-	
 })
 
 $(".add-t-sub-select").click(function() {
@@ -59,3 +51,13 @@ $(".add-t-sub-select").click(function() {
 	})
 })
 
+$(".add-teacher-block").on("click", "#add-teacher",function () {
+	let name = $("#new-teacher-name").val()
+	let subjects = $("select[name='sub-add-teacher']").val()
+	let dt = {name: name, subjects : subjects}
+	$.post("data-set-control.php", {newTeacher:dt})
+		.done(function (ev) {
+			$('#teachers-table').DataTable().ajax.reload()
+			$(".btn-close").click()
+		})
+})

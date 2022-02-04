@@ -26,18 +26,18 @@ function add_teacher()
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
-			  <div class="add-week-block">
+			  <div class="add-teacher-block">
                
                 <div class="dropdown mt-3">
-                <form id="utf" method="post">
+                
                  <div>
                   <div class="w-label">Преподаватель:</div> 
-                  <input type="text" style="width:250px;" class="k-textbox" name="new-teacher-name" placeholder="Имя">
+                  <input type="text" style="width:250px;" class="k-textbox" id="new-teacher-name" placeholder="Имя">
                  </div>
                  <div class="t-subs">
                   <div id="t-sub-select" >
                     <div class="w-label">Предмет:</div> 
-                    <select style="width:250px;" multiple id="teacher-subject-select" name="sub-add-teacher[]">
+                    <select style="width:250px;" multiple id="teacher-subject-select" name="sub-add-teacher">
                     ';
                     	foreach ($subjects as $subject) {
                     		echo '<option value="'.$subject["id"].'">'.$subject["name"].'</option>';
@@ -49,10 +49,11 @@ function add_teacher()
                   <div class="w-label">Блокировка:</div> 
                   <input type="checkbox" value="1" class="k-checkbox" name="is-active">
                  </div>
-                </form>
+                
 				<div>
 				<div class="w-label">&nbsp;</div>
-                <input type="submit" form="utf" class="k-button" name="add-teacher" value="Добавить">
+                
+                <button class="k-button" id="add-teacher">Добавить</button>
                 </div>
                 </div>
               </div>
