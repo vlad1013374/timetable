@@ -10,30 +10,7 @@
       R::store($db_a);
 	  header("Location: data-set.php"); die();
     }
-    if(isset($_POST['add-teacher'])){
-      $db_t = R::dispense('teachers');
-      $db_t->name = $_POST['new-teacher-name'];
-      R::store($db_t);
 
-      $new_teacher_id = R::getInsertID();
-      foreach ($_POST['sub-add-teacher'] as $sub) {
-         R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)', [$new_teacher_id, $sub]);
-      } 
-	  header("Location: data-set.php"); die();
-    }
-    if(isset($_POST['edit-teach-save'])){
-      if (trim($_POST['edit-teacher-name']) != '') {
-        $update_name =R::load('teachers', $_POST['edit-teach-id']);
-        $update_name->name = $_POST['edit-teacher-name'];
-        R::store($update_name);
-      }
-      R::exec('DELETE FROM teacher_subjects WHERE teacher_id = ?', [$_POST['edit-teach-id']]);
-      foreach ($_POST['sub-edit-teacher'] as $edit_sub_id) {
-          R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)',[$_POST['edit-teach-id'], $edit_sub_id] );
-      }
-      header("Location: data-set.php");  die();
-    }
-	
     if(isset($_POST['add_subject'])){
       $db_s = R::dispense('subjects');
       $db_s->name= $_POST['new-subject-name'];
