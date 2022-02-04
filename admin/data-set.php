@@ -20,9 +20,11 @@
 	  header("Location: data-set.php");  die();
     }
 	
-	$teachers = R::getAll('SELECT * FROM teachers order by name ASC');
+	  $teachers = R::getAll('SELECT * FROM teachers order by name ASC');
     $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
     $auds = R::getAll('SELECT * FROM rooms order by name ASC');	
+    
+    
 ?>
 
 
@@ -97,6 +99,7 @@
             "stripeClasses": ["teacher-row"],
             createdRow: function (row, data, dataIndex) {
                 $(row).attr('data-id', data.id);
+                $(row).attr('data-sub-ids', data.sub_id);
                 $(row).attr('data-bs-toggle', "offcanvas");
                 $(row).attr('data-bs-target', "#offcanvaseditteacher");
                 $(row).attr('aria-controls', "offcanvaseditteacher");
@@ -133,8 +136,8 @@
         <table id="teachers-table" class="display table" style="width:100%">
           <thead>
               <tr>
-                  <th>Name</th>
-                  <th>Subject</th>
+                  <th>Имя</th>
+                  <th>Предметы</th>
                   
               </tr>
           </thead>
@@ -203,6 +206,7 @@
         </select>
         <button type="button" class="btn-close delete text-reset" aria-label="Close"></button>
       </div>
+
     </script>
 
     <script id = "tpl" type="text/x-template">
@@ -225,16 +229,16 @@
         </div>
       </div>
     </script>
-   
+   <script src="includes/js/set.js"></script>
+   <script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.11.4/datatables.min.js"></script>
+    
 	<script>
-    $("#teacher-subject-select-edit").kendoMultiSelect();
+    
 		$("#teacher-subject-select").kendoMultiSelect();
 		$("#new-default-auditory").kendoDropDownList();
 		$("#capacity").kendoNumericTextBox();
 	</script>
     
-    <script src="includes/js/set.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.11.4/datatables.min.js"></script>
     
 </body>
 </html>
