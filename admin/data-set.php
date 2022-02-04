@@ -56,6 +56,9 @@
 	.add-week-block form > div {
 		margin-bottom:15px;
 	}
+	.add-teacher-block .dropdown > div {
+		margin-bottom:15px;
+	}
 	
 	.t-subs > div > div {display:inline-block;}
 	#teachers .offcanvas-start {width:450px;}
