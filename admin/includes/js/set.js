@@ -32,9 +32,7 @@ $("#teachers-table").on("click",".teacher-row",function() {
 					$(this).parent().remove();
 				})
 			})
-			$(".delete").click(function() {
-				$(this).parent().remove();
-			})
+			
 			$("#edit-teach-save").click(function () {
 				let subjectsID = []
 				$("select[name='sub-edit-teacher']").each(function () {
