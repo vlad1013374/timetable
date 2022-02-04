@@ -80,7 +80,7 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "data-set-control.php",
+                "url": "data-set-control.php?dtype=teachers",
                 "type": "post"
             }, 
             "columns": [
@@ -88,6 +88,8 @@
                 { "data": "name_sub" },
 
             ],
+
+            
             paging: false,
             searching: false,
             ordering : false,
@@ -133,7 +135,7 @@
               <tr>
                   <th>Name</th>
                   <th>Subject</th>
-
+                  
               </tr>
           </thead>
           

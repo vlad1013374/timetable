@@ -1,6 +1,8 @@
 
 
 $("#teachers-table").on("click",".teacher-row",function() {
+	
+
 	const tpl = $("#tpl").text();
 	const tpl_sub = $("#tpl-sub").text();
 
