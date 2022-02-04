@@ -35,7 +35,7 @@ function add_teacher()
                   <input type="text" style="width:250px;" class="k-textbox" id="new-teacher-name" placeholder="Имя">
                  </div>
                  <div class="t-subs">
-                  <div id="t-sub-select" >
+                  <div>
                     <div class="w-label">Предмет:</div> 
                     <select style="width:250px;" multiple="multiple" id="teacher-subject-select" name="sub-add-teacher">
                     

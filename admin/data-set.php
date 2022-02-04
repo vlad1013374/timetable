@@ -57,8 +57,9 @@
 		margin-bottom:15px;
 	}
 	
-	#t-sub-select > div {display:inline-block;}
+	.t-subs > div > div {display:inline-block;}
 	#teachers .offcanvas-start {width:450px;}
+  .sub-selects > div {display: inline-block;}
   </style>
   <link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
   <link rel="stylesheet" href="includes/kendo/kendo.custom.css">
@@ -196,16 +197,9 @@
  
 
     <script type="text/x-template" id="tpl-sub">
-      <div id="t-sub-select">
-        Предмет:
-        <select name="sub-{type}-teacher" id="t-sub-select">
+      
           <option value="{subId}" selected>{subName}</option>
-            <?php foreach ($subjects as $value_sub): ?>
-              <option value="<?=$value_sub['id']?>"><?=$value_sub['name']?></option>
-            <?php endforeach ?>
-        </select>
-        <button type="button" class="btn-close delete text-reset" aria-label="Close"></button>
-      </div>
+            
 
     </script>
 
@@ -214,17 +208,26 @@
         <div class="edit-teacher-block">
           <div class="dropdown mt-3">
          
-            <input type="text" id="id" name="edit-teach-id" value="{id}" hidden>
+            
+            <div class="w-label">Преподаватель:</div>
             <input type="text" value="{name}" name="edit-teacher-name">
             
             <div class="content-add-teacher">
-           
-            
-            
+                <div class="sub-selects">
+                   <div class="w-label" style="display:inline-block;">Предмет:</div> 
+                  
+                  <select style="width:250px;" multiple="multiple" name="sub-edit-teacher" id="t-sub-select">
+                        <?php foreach ($subjects as $value_sub): ?>
+                          <option value="<?=$value_sub['id']?>"><?=$value_sub['name']?></option>
+                        <?php endforeach ?>
+                  
+                  </select>
+        
+                </div>
             </div>
             
             <button id="edit-teach-save">Сохранить</button>
-          <button class="add-sub-input">Добавить поле</button>
+
           </div>
         </div>
       </div>

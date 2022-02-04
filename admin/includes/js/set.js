@@ -13,7 +13,7 @@ $("#teachers-table").on("click",".teacher-row",function() {
 	var re = /\s*,\s*/;
 	var sub_ids = subjects_ids.split(re);
 	var subs = subjects.split(re);
-	console.log(subs, sub_ids)
+	
 	var tsub =[]
 
 	for (var i = 0; i < subs.length; i++) {
@@ -23,53 +23,36 @@ $("#teachers-table").on("click",".teacher-row",function() {
 	}	
 
 	$("#offcanvaseditteacher").children(".offcanvas-body").remove()
-	$('#offcanvaseditteacher').append(tpl.replaceAll("{id}",id).replaceAll("{name}",name)); 
+	$('#offcanvaseditteacher').append(tpl.replaceAll("{name}",name)); 
 	for (var i = 0 ; i < tsub.length; i++) {
-		$(".content-add-teacher").append(tpl_sub.replaceAll("{subName}", tsub[i].name).replaceAll("{subId}",tsub[i].id).replaceAll("{type}", "edit"));
+		$("select[name='sub-edit-teacher']").append(tpl_sub.replaceAll("{subName}", tsub[i].name).replaceAll("{subId}",tsub[i].id));
 	}
 
-	
-
-	$(".add-sub-input").click(function() {
-		$(".content-add-teacher").append(tpl_sub.replaceAll("{subName}", "").replaceAll("{subId}","").replaceAll("{type}", "edit"))
-		$(".delete").click(function() {
-			$(this).parent().remove();
-		})
-	})
+	var t_sub_select = $("#t-sub-select").kendoMultiSelect().data("kendoMultiSelect");
 	
 	$("#edit-teach-save").click(function () {
-		let subjectsID = []
-		$("select[name='sub-edit-teacher']").each(function () {
-			subjectsID.push($(this).val())
-		})
-		let dt = {id:id, name: name, subjects: subjectsID}
+		let subjects = t_sub_select.value()
+		
+		let dt = {id:id, name: name, subjects: subjects}
 		$.post("data-set-control.php", {editTeacher: dt} )
 			.done(function () {
 				$('#teachers-table').DataTable().ajax.reload()
 				$(".btn-close").click()
 			})
+		
+	})
 	
-	})
-	$(".delete").click(function() {
-		$(this).parent().remove();
-	})
+	
 
 })
 
-$(".add-t-sub-select").click(function() {
-	const tpl = $("#tpl").text();
-	const tpl_sub = $("#tpl-sub").text();
-	$(".t-subs").append(tpl_sub.replaceAll("{subName}", "").replaceAll("{subId}","").replaceAll("{type}", "add"))
-	$(".delete").click(function() {
-		$(this).parent().remove();
-	})
 
-})
+
 
 $(".add-teacher-block").on("click", "#add-teacher",function () {
 	let name = $("#new-teacher-name").val()
-	let subjects = $("select[name='sub-add-teacher']").val()
-	let dt = {name: name, subjects : subjects}
+	let subjectsIDs = $("select[name='sub-add-teacher']").val()
+	let dt = {name: name, subjects : subjectsIDs}
 	$.post("data-set-control.php", {newTeacher:dt})
 		.done(function (ev) {
 			$('#teachers-table').DataTable().ajax.reload()

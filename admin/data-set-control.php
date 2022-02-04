@@ -20,7 +20,7 @@ if($_GET['dtype'] == 'teachers'){
 	group by t.name');
 
 	$data = ["data"=>$data_teachers];
-	echo json_encode($data);
+	echo json_encode($data); die();
 }
 
 
