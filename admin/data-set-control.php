@@ -9,7 +9,12 @@ if(isset($_POST['newTeacher'])){
 }else if(isset($_POST['editTeacher'])) {
 	editTeacher($_POST['editTeacher']);
 
-	
+}else if(isset($_POST['newSubject'])) {
+	addNewSubject($_POST['newSubject']);
+
+}else if(isset($_POST['newRoom'])) {
+	addNewRoom($_POST['newRoom']);
+
 }
 
 if($_GET['dtype'] == 'teachers'){
@@ -20,6 +25,14 @@ if($_GET['dtype'] == 'teachers'){
 	group by t.name');
 
 	$data = ["data"=>$data_teachers];
+	echo json_encode($data); die();
+}else if($_GET['dtype'] == 'subjects'){
+	$data_subjects = R::getAll('SELECT * FROM subjects');
+	$data = ["data"=>$data_subjects];
+	echo json_encode($data); die();
+}else if($_GET['dtype'] == 'rooms'){
+	$data_rooms = R::getAll('SELECT * FROM rooms');
+	$data = ["data"=>$data_rooms];
 	echo json_encode($data); die();
 }
 

@@ -120,6 +120,49 @@ function auto_save($data_json_auto)
 	}		
 }
 
+function addNewTeacher($data)
+{
+
+	 $db_t = R::dispense('teachers');
+     $db_t->name = $data['name'];
+     R::store($db_t);
+
+     $new_teacher_id = R::getInsertID();
+      foreach ($data['subjects'] as $sub) {
+         R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)', [$new_teacher_id, $sub]);
+      } 
+}
+
+function addNewSubject($data)
+{
+
+	 $db_s = R::dispense('subjects');
+   $db_s->name= $data['name'];
+	 $db_s->short_name= $data['short_name'];
+	 $db_s->default_room_id = empty($data['aud']) ? null : $data['aud'];
+	 R::store($db_s);
+}
+function addNewRoom($data)
+{
+
+	 $db_a = R::dispense('rooms');
+   $db_a->name = $data['number'];
+   $db_a->capacity = $data['capacity'];
+   R::store($db_a);
+}
+
+function editTeacher($data){
+	if (trim($data['name']) != '') {
+        $update_name =R::load('teachers', $data['id']);
+        $update_name->name = $data['name'];
+        R::store($update_name);
+      }
+      R::exec('DELETE FROM teacher_subjects WHERE teacher_id = ?', [$data['id']]);
+      foreach ($data['subjects'] as $edit_sub_id) {
+          R::exec('INSERT INTO teacher_subjects (teacher_id, subject_id) values(?,?)',[$data['id'], $edit_sub_id] );
+      }
+}
+
 const DAY_NAMES = array('', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье');
 
 class WeekEditModel {

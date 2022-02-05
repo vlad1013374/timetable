@@ -1,7 +1,6 @@
 
 
 $("#teachers-table").on("click",".teacher-row",function() {
-	
 
 	const tpl = $("#tpl").text();
 	const tpl_sub = $("#tpl-sub").text();
@@ -46,8 +45,33 @@ $("#teachers-table").on("click",".teacher-row",function() {
 
 })
 
+$(".add-subject-block").on("click", "#add-subject", function () {
+	let name = $("#new-subject-name").val()
+	let short_name = $("#new-subject-short-name").val()
+	let default_audithory = $("#new-default-auditory").val()
+
+	let dt = {name: name, short_name : short_name, aud : default_audithory}
+
+	$.post("data-set-control.php", {newSubject:dt})
+		.done(function (ev) {
+			$('#subjects-table').DataTable().ajax.reload()
+			$(".btn-close").click()
+		})
+})
 
 
+$(".add-room-block").on("click", "#add-room", function () {
+	let number = $("#number-new-room").val()
+	let capacity = $("#capacity").val()
+
+	let dt = {number: number, capacity:capacity}
+
+	$.post("data-set-control.php", {newRoom:dt})
+		.done(function (ev) {
+			$('#rooms-table').DataTable().ajax.reload()
+			$(".btn-close").click()
+		})
+})
 
 $(".add-teacher-block").on("click", "#add-teacher",function () {
 	let name = $("#new-teacher-name").val()

@@ -56,9 +56,6 @@
 	.add-week-block form > div {
 		margin-bottom:15px;
 	}
-	.add-teacher-block .dropdown > div {
-		margin-bottom:15px;
-	}
 	
 	.t-subs > div > div {display:inline-block;}
 	#teachers .offcanvas-start {width:450px;}
@@ -110,7 +107,58 @@
             }
 
         } );
-        $('tbody tr').addClass('teacher-row');
+        
+        $('#subjects-table').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "data-set-control.php?dtype=subjects",
+                "type": "post"
+            }, 
+            "columns": [
+                { "data": "name" },
+                { "data": "short_name" },
+                { "data": "default_room_id"}
+
+            ],
+
+            
+            paging: false,
+            searching: false,
+            ordering : false,
+            info:false,
+            "stripeClasses": ["subject-row"],
+            createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            }
+            
+        } );
+
+        $('#rooms-table').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "data-set-control.php?dtype=rooms",
+                "type": "post"
+            }, 
+            "columns": [
+                { "data": "name" },
+                { "data": "capacity" },
+                
+
+            ],
+
+            paging: false,
+            searching: false,
+            ordering : false,
+            info:false,
+            "stripeClasses": ["audithory-row"],
+            createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            }
+            
+        } );
+
     } );
   </script>
 </head>
@@ -152,7 +200,7 @@
       <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
         <?php add_header('предмет', 'subject');?>
         <?php add_sub();?>
-        <table class="table">
+        <table id="subjects-table" class="display table" style="width:100%">
           <thead>
             <tr>
               <th scope="col">Название</th>
@@ -160,32 +208,20 @@
               <th scope="col">Аудитория по умолчанию</th>
             </tr>
           </thead>
-          <?php foreach ($subjects as $subject): ?>
-            <tr  data-id="<?= $subject['id']?>">
-              <td><div class="subject"><?= $subject['name']?></div></td>
-              <td><div class="subject"><?= $subject['short_name']?></div></td>
-              <td><div class="subject"><?= $subject['default_room_id']?></div></td>
-            </tr>
-          <?php endforeach ?>
+          
         </table>
       </div>
       <div class="tab-pane fade" id="auds" role="tabpanel" aria-labelledby="auds-tab">
         <?php add_header('аудиторию', 'aud');?>
         <?php add_room();?>
-        <table class="table" >
+        <table id="rooms-table" class="display table" style="width:100%">
           <thead>
             <tr>
               <th scope="col">Номер</th>
               <th scope="col">Вместимость</th>
+              
             </tr>
           </thead>
-        <?php foreach ($auds as $aud): ?>
-            <tr data-id="<?= $aud['id']?>">
-              <td><div class="aud" ><?= $aud['name']?></div></td>
-              <td><div class="aud" ><?= $aud['capacity']?></div></td>
-            </tr>
-         
-          <?php endforeach ?>
           </table>
       </div>
 
@@ -239,7 +275,7 @@
    <script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.11.4/datatables.min.js"></script>
     
 	<script>
-    
+  
 		$("#teacher-subject-select").kendoMultiSelect();
 		$("#new-default-auditory").kendoDropDownList();
 		$("#capacity").kendoNumericTextBox();
