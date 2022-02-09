@@ -275,6 +275,7 @@
 			   color:white;
 				border:1px solid black;
 		   }
+			a {color:#af2a28/*3b5998*/;}
 		   
 		   .day-space {
 			   border-left:1px solid white;
@@ -300,7 +301,7 @@
 		   span.flag-color-16 {color:#d51923;}
 		   span.flag-color-32 {color:#ff5c1a;}
 		   
-		   td.flag-color-1 {background-color:rgba(3, 169, 244,0.2);}
+		   td.flag-color-1 {background-color:#caf0ff/*c5e8f6*//*rgba(3, 169, 244,0.2)*/;}
 		   td.flag-color-2 {color:green;}
 		   td.flag-color-4 {color:purple;}
 		   td.flag-color-8 {color:#016e7f;}

@@ -182,16 +182,17 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 	}
 	
 	$il = $("#il_" + id);
+	$id = $("#id_" + id);
 	$il.change(function(){
 		createNewItemIfNeed(day, lessonId, classId, id);
 		timetable_hash[day][lessonId][classId][id]['link'] = this.value;
 	})
 	if(link && (link.length > 0)){
-		$il.parent().show();
+		$id.parent().show();
 		$il.val(link);
 	}
 	
-	$id = $("#id_" + id);
+	
 	$id.change(function(){
 		createNewItemIfNeed(day, lessonId, classId, id);
 		timetable_hash[day][lessonId][classId][id]['code'] = this.value;
