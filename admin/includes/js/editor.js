@@ -52,12 +52,12 @@ function init(){
 			for(let id in timetable_hash[day][lessonId][classId]){
 				const tt = timetable_hash[day][lessonId][classId][id];
 				$el.append(tpl.replaceAll("{no}",id));
-				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags, tt.comment);
+				initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags, tt.comment, tt.link, tt.code);
 			}
 		} else {
 			let defaultId = getDefaultId();
 			$el.append(tpl.replaceAll("{no}",defaultId));
-			initItem(defaultId, null, null, null, classId, lessonId, day, 0, null);				
+			initItem(defaultId, null, null, null, classId, lessonId, day, 0, null, null, null);				
 		}
 		
 		
@@ -81,7 +81,7 @@ function init(){
 	}).data("kendoNotification");
 }
 
-function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flags, comment){
+function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flags, comment, link, code){
 
 	var $subj = $("#is_" + id);
 	var $it = $("#it_" + id);
@@ -175,9 +175,30 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 		createNewItemIfNeed(day, lessonId, classId, id);
 		timetable_hash[day][lessonId][classId][id]['comment'] = this.value;
 	})
+	
 	if(comment && (comment.length > 0)){
 		$ic.parent().show();
 		$ic.val(comment);
+	}
+	
+	$il = $("#il_" + id);
+	$il.change(function(){
+		createNewItemIfNeed(day, lessonId, classId, id);
+		timetable_hash[day][lessonId][classId][id]['link'] = this.value;
+	})
+	if(link && (link.length > 0)){
+		$il.parent().show();
+		$il.val(link);
+	}
+	
+	$id = $("#id_" + id);
+	$id.change(function(){
+		createNewItemIfNeed(day, lessonId, classId, id);
+		timetable_hash[day][lessonId][classId][id]['code'] = this.value;
+	})
+	if(code && (code.length > 0)){
+		$id.parent().show();
+		$id.val(code);
 	}
 
 	let f = parseInt(flags);
@@ -236,6 +257,28 @@ function addOrRemoveComment(block){
 		$ic.val("");
 		if(timetable_hash[day] && timetable_hash[day][lessonId] && timetable_hash[day][lessonId][classId] && timetable_hash[day][lessonId][classId][id]){
 			timetable_hash[day][lessonId][classId][id]['comment'] = null;
+		}
+	} else {
+		$icp.show();
+	}
+}
+
+function addOrRemoveLink(block){
+	const $td = block.parent();
+	const classId = $td.data("class-id");
+	const lessonId = $td.data("lesson-id");
+	const day = $td.data("day");
+	const id = block.data("item-id");
+	const $il = $("#il_" + id);
+	const $id = $("#id_" + id);
+	const $icp = $id.parent();
+	if($icp.is(":visible")){
+		$icp.hide();
+		$il.val("");
+		$id.val("");
+		if(timetable_hash[day] && timetable_hash[day][lessonId] && timetable_hash[day][lessonId][classId] && timetable_hash[day][lessonId][classId][id]){
+			timetable_hash[day][lessonId][classId][id]['link'] = null;
+			timetable_hash[day][lessonId][classId][id]['code'] = null;
 		}
 	} else {
 		$icp.show();
@@ -324,7 +367,7 @@ function addSubject($td){
 	var defaultId = getDefaultId();
 	
 	$td.append(tpl.replaceAll("{no}",defaultId));
-	initItem(defaultId, null, null, null, classId, lessonId, day, 0, null);	
+	initItem(defaultId, null, null, null, classId, lessonId, day, 0, null, null, null);	
 }
 
 function deleteSubject($block){
@@ -384,7 +427,7 @@ function copy($td, isfromright){
 		}
 		
 		$td.append(tpl.replaceAll("{no}",defaultId));
-		initItem(defaultId, null, null, null, classId, lessonId, day, flags, $("#ic_" + sid).val());		
+		initItem(defaultId, null, null, null, classId, lessonId, day, flags, $("#ic_" + sid).val(), $("#il_" + sid).val(), $("#id_" + sid).val());		
 		
 		$("#is_" + defaultId).data("kendoComboBox").value($("#is_" + sid).data("kendoComboBox").value());
 		$("#ir_" + defaultId).data("kendoComboBox").value($("#ir_" + sid).data("kendoComboBox").value());
@@ -408,6 +451,7 @@ function initContextMenu(){
 				case 'copy:left': copy($(e.target).parent()); break;
 				case 'copy:right': copy($(e.target).parent(), true); break;
 				case 'comment': addOrRemoveComment($(e.target)); break;
+				case 'link': addOrRemoveLink($(e.target)); break;
 				case 'mark:online': addOrRemoveFlag($(e.target), flagList.online); break;
 				case 'mark:optional': addOrRemoveFlag($(e.target), flagList.optional); break;
 				case 'mark:olimp': addOrRemoveFlag($(e.target), flagList.olimp); break;

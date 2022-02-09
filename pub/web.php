@@ -33,7 +33,14 @@
 			$str = "";
 			$delimeter = '';
 			foreach($this->items as $v){
-				$str .= $delimeter.$v['sname2'];
+				$cm = empty($v['comment']) ? '' : "(".$v['comment'].")";
+									
+				if(!empty($v['link'])){
+					$code = empty($v['code']) ? '' : (', код: '.$v['code']);
+					$cm .=", <span class='multi-comment-link'><a href='".$v['link']."' target='_blank'>cсылка</a>".$code."</span>";
+				}
+				
+				$str .= $delimeter.$v['sname2'].$cm;
 				
 				if($isIncludeFlags){
 					$text = getFlagsString($v['flags']);
@@ -209,6 +216,11 @@
 				border-collapse:collapse;
 			}
 			
+			.multi-comment-link {
+				font-size:14px;
+				font-weight:normal;
+			}
+			
 			table td { overflow: hidden; }
 			
 			.table-main {
@@ -288,7 +300,7 @@
 		   span.flag-color-16 {color:#d51923;}
 		   span.flag-color-32 {color:#ff5c1a;}
 		   
-		   td.flag-color-1 {background-color:rgba(3, 169, 244,0.5);}
+		   td.flag-color-1 {background-color:rgba(3, 169, 244,0.2);}
 		   td.flag-color-2 {color:green;}
 		   td.flag-color-4 {color:purple;}
 		   td.flag-color-8 {color:#016e7f;}
@@ -397,6 +409,12 @@
 									 
 									$tmp = $tt[$d][$lesson->lessonId][$class['id']]->items[0];
 									$cm = empty($tmp['comment']) ? '' : "<div class='cmt'>(".$tmp['comment'].")</div>";
+									
+									if(!empty($tmp['link'])){
+										$code = empty($tmp['code']) ? '' : (', код: '.$tmp['code']);
+										$cm .="<div class='cmt'><a href='".$tmp['link']."' target='_blank'>ссылка на встречу</a>".$code."</div>";
+									}
+									
 									$flag_text = getFlagsString($tmp['flags']);
 									$flags_cl = getFlagsClasses($tmp['flags']);
 									$tr1 .= '<td'.$align.' data-cl="'.$cur_class.'" data-teach="'.$tmp['tname'].'" class="'.$flags_cl.'" valign=top colspan='.$colspan.'>'.$tmp['sname'].($cm).($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
@@ -411,13 +429,30 @@
 									$flags_cl1 = getFlagsClasses($tmp1['flags']);
 									$flags_cl2 = getFlagsClasses($tmp2['flags']);
 									
-									if(($tmp1['sname'] == $tmp2['sname']) && ($tmp1['flags'] == $tmp2['flags'])){
+									if(($tmp1['sname'] == $tmp2['sname']) && ($tmp1['flags'] == $tmp2['flags']) && ($tmp1['link'] == $tmp2['link'])){
+										$cm = empty($tmp1['comment']) ? '' : "<div class='cmt'>(".$tmp1['comment'].")</div>";
+									
+										if(!empty($tmp1['link'])){
+											$code = empty($tmp1['code']) ? '' : (', код: '.$tmp1['code']);
+											$cm .="<div class='cmt'><a href='".$tmp1['link']."' target='_blank'>ссылка на встречу</a>".$code."</div>";
+										}
+										
 										$flag_text = getFlagsString($tmp1['flags']);
-										$tr1 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].':'.$tmp2['tname'].'" class="'.$flags_cl1.'" valign=top colspan=2>'.$tmp1['sname'].($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
+										$tr1 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].':'.$tmp2['tname'].'" class="'.$flags_cl1.'" valign=top colspan=2>'.$tmp1['sname'].($cm).($flag_text!='' ? '<span class="span-flags">'.$flag_text.'</span>':'').'</td>';
 									} else {
 										$flag_text1 = getFlagsString($tmp1['flags']);
 										$flag_text2 = getFlagsString($tmp2['flags']);
-										$tr1 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].'" class="'.$flags_cl1.'" valign=top>'.$tmp1['sname2'].($flag_text1!='' ? '<span class="span-flags">'.$flag_text1.'</span>':'').'</td><td data-cl="'.$class['id'].'" data-teach="'.$tmp2['tname'].'" class="'.$flags_cl2.'" valign=top>'.$tmp2['sname2'].($flag_text2!='' ? '<span class="span-flags">'.$flag_text2.'</span>':'').'</td>';
+											$cm1 = empty($tmp1['comment']) ? '' : "<div class='cmt'>(".$tmp1['comment'].")</div>";
+											if(!empty($tmp1['link'])){
+												$code = empty($tmp1['code']) ? '' : (', код: '.$tmp1['code']);
+												$cm1 .="<div class='cmt'><a href='".$tmp1['link']."' target='_blank'>ссылка</a>".$code."</div>";
+											}
+											$cm2 = empty($tmp1['comment']) ? '' : "<div class='cmt'>(".$tmp1['comment'].")</div>";
+											if(!empty($tmp2['link'])){
+												$code = empty($tmp2['code']) ? '' : (', код: '.$tmp2['code']);
+												$cm2 .="<div class='cmt'><a href='".$tmp2['link']."' target='_blank'>ссылка</a>".$code."</div>";
+											}
+										$tr1 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].'" class="'.$flags_cl1.'" valign=top>'.$tmp1['sname2'].$cm1.($flag_text1!='' ? '<span class="span-flags">'.$flag_text1.'</span>':'').'</td><td data-cl="'.$class['id'].'" data-teach="'.$tmp2['tname'].'" class="'.$flags_cl2.'" valign=top>'.$tmp2['sname2'].$cm2.($flag_text2!='' ? '<span class="span-flags">'.$flag_text2.'</span>':'').'</td>';
 									}
 									
 									$tr2 .= '<td data-cl="'.$class['id'].'" data-teach="'.$tmp1['tname'].'" class="'.$flags_cl1.'" valign=top>'.($tmp1['rname'] ? $tmp1['rname'].', ' : '').$tmp1['tname'].'</td><td data-cl="'.$class['id'].'" data-teach="'.$tmp2['tname'].'" valign=top class="'.$flags_cl2.'">'.($tmp2['rname'] ? $tmp2['rname'].', ' : '').$tmp2['tname'].'</td>';

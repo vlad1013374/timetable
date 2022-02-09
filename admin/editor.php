@@ -77,6 +77,7 @@
         <li data-command="copy:left">Скопировать слева</li>
         <li data-command="copy:right">Скопировать справа</li>
         <li data-command="comment">Добавить/Удалить комментарий</li>
+        <li data-command="link">Добавить/Удалить ссылку</li>
         <li style="background:#3e80ed;color:white;" data-command="mark:online">Метка: Онлайн</li>
         <li style="background:#55b22d;color:white;" data-command="mark:optional">Метка: Факультатив</li>
         <li style="background:#aa46be;color:white;" data-command="mark:olimp">Метка: Олимпиада</li>
@@ -150,6 +151,7 @@
 			<div style="width:90px; float:right;"><input placeholder="Каб" id="ir_{no}" style="width:90px;" type="text" class="iroom"></div>
 			<div class="dl" style="margin-right:95px;"><input id="it_{no}" placeholder="Преподаватель" style="width:100%;" type="text" class="iteacher"></div>
 			<div class="dl" style="margin-top:5px; display:none;"><input placeholder="Комментарий" id="ic_{no}" style="width:100%;" type="text" class="icomment k-textbox"></div>
+			<div class="dl" style="margin-top:5px; display:none;"><input placeholder="Пароль" id="id_{no}" style="width:65px;float:right;" type="text" class="ilink k-textbox"><div style="margin-right:70px;"><input placeholder="Ссылка" id="il_{no}" style="width:100%; " type="text" class="icode k-textbox"></div></div>
 		</div>
 	</script>
 	

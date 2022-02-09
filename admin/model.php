@@ -90,6 +90,8 @@ function save($data_json)
 			$timetable->room_id = $data->room_id;
 			$timetable->teacher_id = $data->teacher_id;
 			$timetable->comment = $data->comment;
+			$timetable->link = $data->link;
+			$timetable->code = $data->code;
 			$timetable->flags = $data->flags;
 			R::store($timetable);
 			
@@ -105,6 +107,7 @@ function auto_save($data_json_auto)
 	$log->data = $data_json_auto;
 	$log->type = 'auto';
 	R::store($log); 
+	return;
 	foreach ($datas as $data) {		
 		$timetable = R::dispense('autosave');		
 		$timetable->week_id = $data->week_id;
@@ -115,6 +118,8 @@ function auto_save($data_json_auto)
 		$timetable->room_id = $data->room_id;
 		$timetable->teacher_id = $data->teacher_id;
 		$timetable->comment = $data->comment;
+		$timetable->link = $data->link;
+		$timetable->code = $data->code;
 		$timetable->flags = $data->flags;
 		R::store($timetable);		
 	}		
