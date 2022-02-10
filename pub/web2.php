@@ -297,7 +297,7 @@
 		   span.flag-color-16 {color:#d51923;}
 		   span.flag-color-32 {color:#ff5c1a;}
 		   
-		   td.flag-color-1 {background-color:rgba(3, 169, 244,0.5);}
+		   td.flag-color-1 {background-color:#caf0ff;}
 		   td.flag-color-2 {color:green;}
 		   td.flag-color-4 {color:purple;}
 		   td.flag-color-8 {color:#016e7f;}
