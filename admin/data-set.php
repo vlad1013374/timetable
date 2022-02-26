@@ -2,28 +2,20 @@
     require '../connection/db.php';
     require 'model.php';
     require 'data-set-plugs.php'; 	
-    
-    if(isset($_POST['add-aud'])){
-      $db_a = R::dispense('rooms');
-      $db_a->name = $_POST['aud'];
-      $db_a->capacity = $_POST['capacity'];
-      R::store($db_a);
-	  header("Location: data-set.php"); die();
-    }
 
-    if(isset($_POST['add_subject'])){
-      $db_s = R::dispense('subjects');
-      $db_s->name= $_POST['new-subject-name'];
-      $db_s->short_name= $_POST['new-subject-short-name'];
-      $db_s->default_room_id = empty($_POST['new-default-auditory']) ? null : $_POST['new-default-auditory'];
-      R::store($db_s);
-	  header("Location: data-set.php");  die();
-    }
+    
+    
 	
 	  $teachers = R::getAll('SELECT * FROM teachers order by name ASC');
     $subjects = R::getAll('SELECT * FROM subjects order by name ASC');
     $auds = R::getAll('SELECT * FROM rooms order by name ASC');	
+    $classes = R::getAll('SELECT * FROM classes');
+    $lessons = R::getAll('SELECT * FROM lessons');
     
+
+    const DAYS =  array("Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота");
+
+  
     
 ?>
 
@@ -62,6 +54,11 @@
   .add-teacher-block .dropdown > div {
     margin-bottom:15px;
   }
+  .setting-item > div:first-child {
+    display:inline-block;
+    width:250px;
+    margin:20px;
+  }
 	
 	.t-subs > div > div {display:inline-block;}
 	#teachers .offcanvas-start {width:450px;}
@@ -74,7 +71,7 @@
 
   <link rel="stylesheet" href="includes/js/bootstrap.min.css">
   <script src="includes/js/bootstrap.bundle.min.js"></script>
-
+  
   <link rel=stylesheet href="includes/menu.css">
   <script src="includes/kendo/kendo.all.min.js"></script>
 	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
@@ -127,8 +124,13 @@
                 { "data": "default_room_id"}
 
             ],
-
-            
+            columnDefs: [
+                {
+                    "targets": 3,
+                    "data": null,
+                    "defaultContent": '<button id="button" style="float:right;" type="button" data-role="button" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-delete k-button-icon"></span></button>'
+                },
+            ],
             paging: false,
             searching: false,
             ordering : false,
@@ -153,7 +155,13 @@
                 
 
             ],
-
+            columnDefs: [
+                {
+                    "targets": 2,
+                    "data": null,
+                    "defaultContent": '<button id="button" style="float:right;" type="button" data-role="button" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-delete k-button-icon"></span></button>'
+                },
+            ], 
             paging: false,
             searching: false,
             ordering : false,
@@ -161,6 +169,41 @@
             "stripeClasses": ["audithory-row"],
             createdRow: function (row, data, dataIndex) {
                 $(row).attr('data-id', data.id);
+            }
+            
+        } );
+
+        $('#links-table').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "data-set-control.php?dtype=links",
+                "type": "post"
+            }, 
+            "columns": [
+                { "data": "t_name" },
+                { "data": "s_name" },
+                { "data": "c_name" },
+                { "data": "lesson_id" },
+                { "data": "week_day" },
+            ],
+            columnDefs: [
+                {
+                    "targets": 5,
+                    "data": null,
+                    "defaultContent": '<button id="delete-link" style="float:right;" type="button" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base"><span class="k-icon k-i-delete k-button-icon"></span></button>'
+                },
+            ],
+            
+            paging: false,
+            searching: false,
+            ordering : false,
+            info:false,
+            "stripeClasses": ["link-row"],
+            createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-t-id', data.teacher_id);
+                $(row).attr('data-s-id', data.subject_id);
+                $(row).attr('data-c-id', data.class_id)
             }
             
         } );
@@ -183,6 +226,9 @@
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="links-tab" data-bs-toggle="tab" data-bs-target="#links" type="button" role="tab" aria-controls="links" aria-selected="false">Связки</button>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -212,6 +258,7 @@
               <th scope="col">Название</th>
               <th scope="col">Короткое название</th>
               <th scope="col">Аудитория по умолчанию</th>
+              <th scope="col" style="width:15px;"></th>
             </tr>
           </thead>
           
@@ -225,15 +272,32 @@
             <tr>
               <th scope="col">Номер</th>
               <th scope="col">Вместимость</th>
-              
-            </tr>
+              <th scope="col" style="width:15px;"></th>
+            </tr >
           </thead>
-          </table>
+        </table>
       </div>
 
 
       <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
         <?php require 'settings.php';?>
+        
+      </div>
+      <div class="tab-pane fade" id="links" role="tabpanel" aria-labelledby="links-tab">
+        <?php add_header('связь', 'links');?>
+        <table id="links-table" class="display table" style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">Преподаватель</th>
+              <th scope="col">Предмет</th>
+              <th scope="col">Класс</th>
+              <th scope="col">Номер пары</th>
+              <th scope="col">День недели</th>
+              <th scope="col" style="width:15px;"></th>
+            </tr >
+          </thead>
+        </table>
+        <?php require 'links.php';?>
         
       </div>
       
@@ -283,8 +347,16 @@
 	<script>
   
 		$("#teacher-subject-select").kendoMultiSelect();
+    $("#links-teacher-select").kendoDropDownList();
+    $("#links-subject-select").kendoDropDownList();
+    $("#links-class-select").kendoDropDownList();
+    $("#links-lesson-select").kendoDropDownList();
+    $("#links-week-day-select").kendoDropDownList();
 		$("#new-default-auditory").kendoDropDownList();
 		$("#capacity").kendoNumericTextBox();
+    $("#button").kendoButton({
+        icon: "cancel"
+    });
 	</script>
     
     
