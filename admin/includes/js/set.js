@@ -1,14 +1,14 @@
 
 
-$("#teachers-table").on("click",".teacher-row",function() {
+$("#teachers-table").on("click","#edit-teacher",function() {
 
 	const tpl = $("#tpl").text();
 	const tpl_sub = $("#tpl-sub").text();
 
-	let id = $(this).attr('data-id');
-	let name = $('#teachers-table').DataTable().row( this ).data().name_teach
-	let subjects_ids = $('#teachers-table').DataTable().row( this ).data().sub_id
-	let subjects = $('#teachers-table').DataTable().row( this ).data().name_sub
+	let id = $(this).parents("tr").attr('data-id');
+	let name = $('#teachers-table').DataTable().row( $(this).parents("tr") ).data().name_teach
+	let subjects_ids = $('#teachers-table').DataTable().row( $(this).parents("tr") ).data().sub_id
+	let subjects = $('#teachers-table').DataTable().row( $(this).parents("tr") ).data().name_sub
 	let re = /\s*,\s*/;
 	let sub_ids = subjects_ids.split(re);
 	let subs = subjects.split(re);

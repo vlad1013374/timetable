@@ -36,10 +36,7 @@
     .add{
       float:right;
     }
-    .teacher-row:hover{
-      background: #E9ECEF;
-      cursor: pointer;
-    }
+    
 	.w-label {
 		display:inline-block;
 		width:160px;
@@ -94,7 +91,13 @@
                 { "data": "name_sub" },
 
             ],
-
+            columnDefs: [
+                {
+                    "targets": 2,
+                    "data": null,
+                    "defaultContent": '<button id="edit-teacher" data-bs-toggle="offcanvas" data-bs-target="#offcanvaseditteacher" aria-controls="offcanvaseditteacher" style="float:right;" type="button" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base"><span class="k-icon k-i-track-changes-enable k-button-icon"></span></button>'
+                },
+            ],
             
             paging: false,
             searching: false,
@@ -104,9 +107,7 @@
             createdRow: function (row, data, dataIndex) {
                 $(row).attr('data-id', data.id);
                 $(row).attr('data-sub-ids', data.sub_id);
-                $(row).attr('data-bs-toggle', "offcanvas");
-                $(row).attr('data-bs-target', "#offcanvaseditteacher");
-                $(row).attr('aria-controls', "offcanvaseditteacher");
+                
             }
 
         } );
@@ -242,7 +243,7 @@
               <tr>
                   <th>Имя</th>
                   <th>Предметы</th>
-                  
+                  <th style="width:15px;"></th>
               </tr>
           </thead>
           
