@@ -37,9 +37,11 @@ function add_teacher()
                  <div class="t-subs">
                   <div>
                     <div class="w-label">Предмет:</div> 
-                    <select style="width:250px;" multiple="multiple" id="teacher-subject-select" name="sub-add-teacher">
-                    
-                    </select>
+                    <select style="width:250px;" multiple="multiple" id="teacher-subject-select" name="sub-add-teacher">';
+                      foreach ($subjects as $subject) {
+                        echo '<option value="'.$subject['id'].'">'.$subject['name'].'</option>';
+                      }
+                    echo'</select>
                   </div>
                  </div>
                  <div>

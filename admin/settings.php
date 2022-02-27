@@ -28,20 +28,8 @@ if(isset($_POST['save-settings'])){
 	header("Location: settings.php"); die();
 }
 ?>
-	<link rel="stylesheet" href="includes/kendo/kendo.common.min.css">
-	<link rel="stylesheet" href="includes/kendo/kendo.custom.css">
-	<script src="includes/js/jquery-3.6.0.js"></script>
-	<script src="includes/kendo/kendo.all.min.js"></script>
-	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
-	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
-	<script>kendo.culture("ru-RU");</script>
-	<style>
-		.setting-item > div:first-child {
-			display:inline-block;
-			width:250px;
-			margin:20px;
-		}
-	</style>
+	
+	
 
 
 
@@ -74,6 +62,6 @@ foreach ($v as $config) {
 echo '<br><br>';
 }
 ?>
-<div class="setting-item"><div></div> <input type="submit" name="save-settings" class="k-button" value="Сохранить" />
+<div class="setting-item"> <input type="submit" name="save-settings" class="k-button" value="Сохранить" /></div>
 
 </form>

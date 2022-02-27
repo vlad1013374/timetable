@@ -93,8 +93,6 @@ function save($data_json)
 			$timetable->room_id = $data->room_id;
 			$timetable->teacher_id = $data->teacher_id;
 			$timetable->comment = $data->comment;
-			$timetable->link = $data->link;
-			$timetable->code = $data->code;
 			$timetable->flags = $data->flags;
 			R::store($timetable);
 			
@@ -110,7 +108,6 @@ function auto_save($data_json_auto)
 	$log->data = $data_json_auto;
 	$log->type = 'auto';
 	R::store($log); 
-	return;
 	foreach ($datas as $data) {		
 		$timetable = R::dispense('autosave');		
 		$timetable->week_id = $data->week_id;
@@ -121,8 +118,6 @@ function auto_save($data_json_auto)
 		$timetable->room_id = $data->room_id;
 		$timetable->teacher_id = $data->teacher_id;
 		$timetable->comment = $data->comment;
-		$timetable->link = $data->link;
-		$timetable->code = $data->code;
 		$timetable->flags = $data->flags;
 		R::store($timetable);		
 	}		
@@ -158,6 +153,19 @@ function addNewRoom($data)
    $db_a->capacity = $data['capacity'];
    R::store($db_a);
 }
+function addNewLink($data)
+{
+	 $data['lesson'] == ''? $data['lesson'] = null : $data['lesson'] = $data['lesson'] ;
+	 $data['weekDay'] == ''? $data['weekDay'] = null : $data['weekDay']=$data['weekDay'];
+	 $datas = array($data['teacher'], $data['subject'], $data['class'], $data['lesson'], $data['weekDay']);
+      R::exec('INSERT INTO links (`teacher_id`,`subject_id`,`class_id`,`lesson_id`,`week_day`) values(? , ?, ?, ?, ?)
+        ', $datas);
+}
+function removeLink($data)
+{
+	R::exec('DELETE FROM links WHERE teacher_id =? and subject_id =? and class_id =?', [$data['teacher'], $data['subject'], $data['class']]);
+}
+
 
 function editTeacher($data){
 	if (trim($data['name']) != '') {

@@ -1,21 +1,21 @@
 
 
-$("#teachers-table").on("click",".teacher-row",function() {
+$("#teachers-table").on("click","#edit-teacher",function() {
 
 	const tpl = $("#tpl").text();
 	const tpl_sub = $("#tpl-sub").text();
 
-	var id = $(this).attr('data-id');
-	var name = $('#teachers-table').DataTable().row( this ).data().name_teach
-	var subjects_ids = $('#teachers-table').DataTable().row( this ).data().sub_id
-	var subjects = $('#teachers-table').DataTable().row( this ).data().name_sub
-	var re = /\s*,\s*/;
-	var sub_ids = subjects_ids.split(re);
-	var subs = subjects.split(re);
-	
-	var tsub =[]
+	let id = $(this).parents("tr").attr('data-id');
+	let name = $('#teachers-table').DataTable().row( $(this).parents("tr") ).data().name_teach
+	let subjects_ids = $('#teachers-table').DataTable().row( $(this).parents("tr") ).data().sub_id
+	let subjects = $('#teachers-table').DataTable().row( $(this).parents("tr") ).data().name_sub
+	let re = /\s*,\s*/;
+	let sub_ids = subjects_ids.split(re);
+	let subs = subjects.split(re);
+	console.log(name)
+	let tsub =[]
 
-	for (var i = 0; i < subs.length; i++) {
+	for (let i = 0; i < subs.length; i++) {
 		let id_sub = sub_ids[i]
 		let name_sub = subs[i]
 		tsub.push({id:id_sub, name:name_sub})
@@ -23,16 +23,17 @@ $("#teachers-table").on("click",".teacher-row",function() {
 
 	$("#offcanvaseditteacher").children(".offcanvas-body").remove()
 	$('#offcanvaseditteacher').append(tpl.replaceAll("{name}",name)); 
-	for (var i = 0 ; i < tsub.length; i++) {
+	for (let i = 0 ; i < tsub.length; i++) {
 		$("select[name='sub-edit-teacher']").append(tpl_sub.replaceAll("{subName}", tsub[i].name).replaceAll("{subId}",tsub[i].id));
 	}
 
-	var t_sub_select = $("#t-sub-select").kendoMultiSelect().data("kendoMultiSelect");
+	let t_sub_select = $("#t-sub-select").kendoMultiSelect().data("kendoMultiSelect");
 	
 	$("#edit-teach-save").click(function () {
-		let subjects = t_sub_select.value()
-		
+		let subjects = t_sub_select.value();
+		let name = $("input[name ='edit-teacher-name']").val();
 		let dt = {id:id, name: name, subjects: subjects}
+	
 		$.post("data-set-control.php", {editTeacher: dt} )
 			.done(function () {
 				$('#teachers-table').DataTable().ajax.reload()
@@ -82,6 +83,50 @@ $(".add-teacher-block").on("click", "#add-teacher",function () {
 			$('#teachers-table').DataTable().ajax.reload()
 			$(".btn-close").click()
 		})
+})
+
+$(".add-links-block").on("click", "#add-link", function () {
+	let teacher = $("#links-teacher-select").val();
+	let subject = $("#links-subject-select").val();
+	let classID = $("#links-class-select").val();
+	let lesson = $("#links-lesson-select").val() ;
+	let weekDay = $("#links-week-day-select").val();
+	let dt = {teacher: teacher[0], subject:subject[0], class: classID[0], lesson : lesson[0], weekDay: weekDay[0]};
+	$.post("data-set-control.php", {newLink:dt})
+		.done(function (ev) {
+			$('#links-table').DataTable().ajax.reload()
+			$(".btn-close").click()
+
+		})
+
+})
+
+
+$("#rooms-table").on("click", "#delete-room", function () {
+	let id = $(this).parents("tr").attr("data-id");
+	if(!confirm("Удалить предмет?")){
+		return;
+	}
+    $.post("data-set-control.php", {removeRoom:id})
+		.done(function (ev) {
+			$('#rooms-table').DataTable().ajax.reload()
+		})  
+})
+
+$("#links-table").on("click", "#delete-link", function () {
+	let teacher = $(this).parents("tr").attr("data-t-id");
+	let subject = $(this).parents("tr").attr("data-s-id");
+	let classID = $(this).parents("tr").attr("data-c-id");
+	let dt = {teacher: teacher, subject: subject, class: classID};
+	console.log(dt);
+	if(!confirm("Удалить связку?")){
+		return;
+	}
+    $.post("data-set-control.php", {removeLink:dt})
+		.done(function (ev) {
+			$('#links-table').DataTable().ajax.reload()
+		})  
+	
 })
 
 
