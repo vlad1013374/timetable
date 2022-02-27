@@ -125,13 +125,7 @@
                 { "data": "default_room_id"}
 
             ],
-            columnDefs: [
-                {
-                    "targets": 3,
-                    "data": null,
-                    "defaultContent": '<button id="button" style="float:right;" type="button" data-role="button" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-delete k-button-icon"></span></button>'
-                },
-            ],
+            
             paging: false,
             searching: false,
             ordering : false,
@@ -156,13 +150,7 @@
                 
 
             ],
-            columnDefs: [
-                {
-                    "targets": 2,
-                    "data": null,
-                    "defaultContent": '<button id="button" style="float:right;" type="button" data-role="button" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-delete k-button-icon"></span></button>'
-                },
-            ], 
+            
             paging: false,
             searching: false,
             ordering : false,
@@ -259,7 +247,7 @@
               <th scope="col">Название</th>
               <th scope="col">Короткое название</th>
               <th scope="col">Аудитория по умолчанию</th>
-              <th scope="col" style="width:15px;"></th>
+              
             </tr>
           </thead>
           
@@ -273,7 +261,7 @@
             <tr>
               <th scope="col">Номер</th>
               <th scope="col">Вместимость</th>
-              <th scope="col" style="width:15px;"></th>
+              
             </tr >
           </thead>
         </table>
@@ -320,7 +308,7 @@
          
             
             <div class="w-label">Преподаватель:</div>
-            <input type="text" value="{name}" name="edit-teacher-name">
+            <input type="text" value="{name}" type="text" class="k-textbox" name="edit-teacher-name">
             
             <div class="content-add-teacher">
                 <div class="sub-selects">

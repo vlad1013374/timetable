@@ -12,7 +12,7 @@ $("#teachers-table").on("click","#edit-teacher",function() {
 	let re = /\s*,\s*/;
 	let sub_ids = subjects_ids.split(re);
 	let subs = subjects.split(re);
-	
+	console.log(name)
 	let tsub =[]
 
 	for (let i = 0; i < subs.length; i++) {
@@ -30,9 +30,10 @@ $("#teachers-table").on("click","#edit-teacher",function() {
 	let t_sub_select = $("#t-sub-select").kendoMultiSelect().data("kendoMultiSelect");
 	
 	$("#edit-teach-save").click(function () {
-		let subjects = t_sub_select.value()
-		
+		let subjects = t_sub_select.value();
+		let name = $("input[name ='edit-teacher-name']").val();
 		let dt = {id:id, name: name, subjects: subjects}
+	
 		$.post("data-set-control.php", {editTeacher: dt} )
 			.done(function () {
 				$('#teachers-table').DataTable().ajax.reload()
@@ -100,6 +101,18 @@ $(".add-links-block").on("click", "#add-link", function () {
 
 })
 
+
+$("#rooms-table").on("click", "#delete-room", function () {
+	let id = $(this).parents("tr").attr("data-id");
+	if(!confirm("Удалить предмет?")){
+		return;
+	}
+    $.post("data-set-control.php", {removeRoom:id})
+		.done(function (ev) {
+			$('#rooms-table').DataTable().ajax.reload()
+		})  
+})
+
 $("#links-table").on("click", "#delete-link", function () {
 	let teacher = $(this).parents("tr").attr("data-t-id");
 	let subject = $(this).parents("tr").attr("data-s-id");
@@ -112,10 +125,7 @@ $("#links-table").on("click", "#delete-link", function () {
     $.post("data-set-control.php", {removeLink:dt})
 		.done(function (ev) {
 			$('#links-table').DataTable().ajax.reload()
-		})
-            
-        
-        
+		})  
 	
 })
 

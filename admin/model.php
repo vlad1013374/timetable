@@ -163,6 +163,7 @@ function removeLink($data)
 	R::exec('DELETE FROM links WHERE teacher_id =? and subject_id =? and class_id =?', [$data['teacher'], $data['subject'], $data['class']]);
 }
 
+
 function editTeacher($data){
 	if (trim($data['name']) != '') {
         $update_name =R::load('teachers', $data['id']);
