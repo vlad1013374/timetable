@@ -8,6 +8,8 @@ const emptyItem = {
 	"room_id": null,
 	"teacher_id": null,
 	"comment":null,
+	"link":null,
+	"code":null,
 	"flags":"0"
 };
 
@@ -40,7 +42,6 @@ function getDefaultId(){
 function init(){
 	window.globalId = Math.round(new Date().getTime() / 100) - 16100000000;	
 	const tpl = $("#tpl").text();
-	const tpl2 = $("#tpl-flags").text();
 	
 	$("td.subject").each(function(){
 		const $el = $(this);
@@ -263,6 +264,95 @@ function addOrRemoveComment(block){
 		$icp.show();
 	}
 }
+var dragged;
+function initDragAndDrop(){
+	
+
+  document.addEventListener("drag", function( event ) {
+
+  }, false);
+
+  document.addEventListener("dragstart", function( event ) {
+      dragged = event.target;
+  }, false);
+
+  document.addEventListener("dragend", function( event ) {
+
+  }, false);
+  
+    document.addEventListener("dragover", function( event ) {
+      // prevent default to allow drop
+      event.preventDefault();
+  }, false);
+
+  document.addEventListener("dragenter", function( event ) {
+      if ( event.target.className == "dropzone" ) {
+          event.target.style.background = "purple";
+      }
+
+  }, false);
+
+  document.addEventListener("dragleave", function( event ) {
+      // reset background of potential drop target when the draggable element leaves it
+      if ( event.target.className == "dropzone" ) {
+          event.target.style.background = "";
+      }
+
+  }, false);
+
+  document.addEventListener("drop", function( event ) {
+      event.preventDefault();
+      // move dragged elem to the selected drop target
+	  $td = $(event.target);
+	  if(!$td.is("td")){
+		  $td = $(event.target).parents("td");
+	  }
+	  
+	  
+	  const d = $(dragged);
+	  
+	  if($td.prop('id') == d.parent().prop('id')){
+		  console.log("skip");
+		  return;
+	  }
+	  
+	  const dd = d.parent().data();
+	  
+      if ( $td.hasClass("dropzone")){		  
+			
+			const classId = $td.data("class-id");
+			const lessonId = $td.data("lesson-id");
+			const day = $td.data("day");
+			const id = getDefaultId();
+			const tpl = $("#tpl").text();
+			createNewItemIfNeed(day, lessonId, classId, id);			
+			$td.append(tpl.replaceAll("{no}",id));
+
+			
+			if(	timetable_hash[dd['day']] && 
+				timetable_hash[dd['day']][dd['lessonId']] && 
+				timetable_hash[dd['day']][dd['lessonId']][dd['classId']] && 
+				timetable_hash[dd['day']][dd['lessonId']][dd['classId']][dragged.dataset.itemId]){
+					const tt = timetable_hash[dd['day']][dd['lessonId']][dd['classId']][dragged.dataset.itemId];
+					let nn = timetable_hash[day][lessonId][classId][id];
+					nn.subject_id = tt.subject_id;
+					nn.teacher_id = tt.teacher_id;
+					nn.room_id = tt.room_id;
+					nn.flags = tt.flags;
+					nn.comment = tt.comment;
+					nn.link = tt.link;
+					nn.code = tt.code;
+					initItem(id, tt.subject_id, tt.teacher_id, tt.room_id, classId, lessonId, day, tt.flags, tt.comment, tt.link, tt.code);
+			} else {
+				initItem(id, null, null, null, classId, lessonId, day, 0, null, null, null);
+			}
+			
+			dragged.parentNode.removeChild( dragged );
+			deleteSubject(d);
+      }
+    
+  }, false);
+}
 
 function addOrRemoveLink(block){
 	const $td = block.parent();
@@ -383,10 +473,14 @@ function deleteSubject($block){
 	$block.remove()
 }
 
-function copy($td, isfromright){
+function copy($td, direction){
 	let $from;
-	if(isfromright)
+	if(direction == 1)
+		$from = $td.parent().prev().find("td:eq("+$td.index()+")");
+	else if(direction == 2)
 		$from = $td.next();
+	else if(direction == 3)
+		$from = $td.parent().next().find("td:eq("+$td.index()+")");
 	else
 		$from = $td.prev();
 	
@@ -446,11 +540,12 @@ function initContextMenu(){
 			duration: 500
 		},
 		select: function(e, t) {
-			console.log(e)
 			switch(e.item.getAttribute("data-command")){
 				case 'add': addSubject($(e.target).parent()); break;
-				case 'copy:left': copy($(e.target).parent()); break;
-				case 'copy:right': copy($(e.target).parent(), true); break;
+				case 'copy:left':  copy($(e.target).parent(), 4); break;
+				case 'copy:right': copy($(e.target).parent(), 2); break;
+				case 'copy:top':  copy($(e.target).parent(), 1); break;
+				case 'copy:bottom': copy($(e.target).parent(), 3); break;
 				case 'comment': addOrRemoveComment($(e.target)); break;
 				case 'link': addOrRemoveLink($(e.target)); break;
 				case 'mark:online': addOrRemoveFlag($(e.target), flagList.online); break;
@@ -471,11 +566,13 @@ function initContextMenu(){
 			duration: 500
 		},
 		select: function(e, t) {
-			console.log(e)
+			//console.log(e)
 			switch(e.item.getAttribute("data-command")){
 				case 'add': addSubject($(e.target)); break;
-				case 'copy:left': copy($(e.target)); break;
-				case 'copy:right': copy($(e.target), true); break;				
+				case 'copy:left':  copy($(e.target), 4); break;
+				case 'copy:right': copy($(e.target), 2); break;
+				case 'copy:top':  copy($(e.target), 1); break;
+				case 'copy:bottom': copy($(e.target), 3); break;				
 			}
 		}
 	});
@@ -593,7 +690,6 @@ function checkTeachers(isChane, str){
 	for(let i=0; i< timetable.length; i++){
 		let el = timetable[i];
 		if(el['subject_id'] && !el['teacher_id']){
-			console.log(el);
 			let d = new Date(el['day']);
 			ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
 			$("#it_" + el['id']).prev().addClass("back-error");
@@ -661,7 +757,6 @@ function checkRooms(isChane, str){
 	for(let i=0; i< timetable.length; i++){
 		let el = timetable[i];
 		if(el['subject_id'] && !el['room_id'] && el['subject_id'] != '8'){
-			console.log(el);
 			let d = new Date(el['day']);
 			ret.push($("#is_" + el['id']).parent().find("input").val() + " ("+ d.getDayOfWeek() + ", " + el['lesson_id'] + ' пара, ' + class_hash[el['class_id']] + ")");
 			$("#ir_" + el['id']).prev().addClass("back-error");

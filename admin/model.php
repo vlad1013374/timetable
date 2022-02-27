@@ -80,7 +80,7 @@ function save($data_json)
 	$log->type = 'manual';
 	R::store($log);
 	R::exec( 'delete from timetables where week_id = ?', [$datas[0]->week_id] );
-	R::debug( TRUE );
+	//R::debug( TRUE );
 	if(count($datas) > 0)	
 		foreach ($datas as $data) {			
 			

@@ -31,6 +31,8 @@
 	<script src="includes/kendo/kendo.culture.ru-RU.min.js"></script>
 	<script src="includes/kendo/kendo.messages.ru-RU.min.js"></script>
 	<script>kendo.culture("ru-RU");</script>
+	
+
 	<style>
 		<?php if ($config['isActiveRowHover'] == 1) { ?>
 		.tr-row:hover td{
@@ -73,9 +75,15 @@
 	</script>
 
 	<ul style="display:none;" id="menu">
-        <li data-command="add">Добавить еще предмет</li>
-        <li data-command="copy:left">Скопировать слева</li>
-        <li data-command="copy:right">Скопировать справа</li>
+        <li data-command="add">Добавить предмет</li>
+        <li data-command="ввв"> Скопировать
+			<ul>
+			<li data-command="copy:left">Cлева</li>
+			<li data-command="copy:right">Cправа</li>
+			<li data-command="copy:top">Сверху</li>
+			<li data-command="copy:bottom">Снизу</li>
+			</ul>
+		</li>
         <li data-command="comment">Добавить/Удалить комментарий</li>
         <li data-command="link">Добавить/Удалить ссылку</li>
         <li style="background:#3e80ed;color:white;" data-command="mark:online">Метка: Онлайн</li>
@@ -87,9 +95,16 @@
         <li data-command="delete">Удалить</li>
 	</ul>
 	<ul style="display:none;" id="menutd">
-        <li data-command="add">Добавить еще предмет</li>
-        <li data-command="copy:left">Скопировать слева</li>
-        <li data-command="copy:right">Скопировать справа</li>
+        <li data-command="add">Добавить предмет</li>
+		<li data-command="ввв"> Скопировать
+			<ul>
+			<li data-command="copy:left">Cлева</li>
+			<li data-command="copy:right">Cправа</li>
+			<li data-command="copy:top">Сверху</li>
+			<li data-command="copy:bottom">Снизу</li>
+			</ul>
+		</li>
+        
 	</ul>
 	<span style="display:none;" id="note"></span>
 	
@@ -114,6 +129,7 @@
 			
 			
 		<?php
+			$z = 1;
 			foreach ($week_model->days as $day_index => $day) {
 		?>
 				<tr>
@@ -126,7 +142,7 @@
 					<td class="time time-col"><?= substr($lesson->start,0,5).' - '.substr($lesson->stop,0,5) ?></td>
 					
 					<?php foreach($classes as $class) { ?> 
-						<td valign="top" data-class-id="<?= $class['id'] ?>" data-lesson-id="<?= $lesson->lessonId ?>" data-day="<?= $day->date->format("Y-m-d") ?>" class="subject">							
+						<td id="z<?= ++$z ?>" valign="top" data-class-id="<?= $class['id'] ?>" data-lesson-id="<?= $lesson->lessonId ?>" data-day="<?= $day->date->format("Y-m-d") ?>" class="subject dropzone">							
 						</td>
 					
 					<?php } ?>
@@ -137,7 +153,7 @@
 
 	</table>
 	<script id="tpl" type="text/x-template">
-		<div class="subject-block" data-item-id="{no}">
+		<div class="subject-block" draggable="true" data-item-id="{no}">
 					
 			<div style="display:none;" class="flags-block">
 				<div style="display:none;" title="Online" class="flg f-online"><?= $config['positionFlagsLeft'] == "1" ? 'On':'Online' ?></div>
@@ -265,7 +281,9 @@
 			initContextMenu();
 			paint(localStorage.getItem("color_type"));	
 			window.timetable_hash = JSON.stringify(timetable);
+			initDragAndDrop();
 			$("#loader").hide();
+			
 		},10);
 		
 		$(".day-border").click(function(){
@@ -302,7 +320,6 @@
 		
 		$("td.time").click(function(){
 			let tr = $(this).parent();
-			console.log(tr);
 			if(tr.hasClass("row-active")){
 				tr.removeClass("row-active");
 			} else {
