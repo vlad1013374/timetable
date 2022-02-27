@@ -186,7 +186,7 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 	$il.change(function(){
 		createNewItemIfNeed(day, lessonId, classId, id);
 		timetable_hash[day][lessonId][classId][id]['link'] = this.value;
-	})
+	}).contextmenu(function(e){e.stopPropagation();});
 	if(link && (link.length > 0)){
 		$id.parent().show();
 		$il.val(link);
@@ -196,7 +196,7 @@ function initItem(id, subjectId, teacherId, roomId, classId, lessonId, day, flag
 	$id.change(function(){
 		createNewItemIfNeed(day, lessonId, classId, id);
 		timetable_hash[day][lessonId][classId][id]['code'] = this.value;
-	})
+	}).contextmenu(function(e){e.stopPropagation();});
 	if(code && (code.length > 0)){
 		$id.parent().show();
 		$id.val(code);

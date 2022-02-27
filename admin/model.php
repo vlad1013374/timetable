@@ -38,6 +38,8 @@ function add_week($week_json)
 				$timetable->teacher_id = $copy_week_data['teacher_id'];
 				$timetable->comment = $copy_week_data['comment'];
 				$timetable->flags = $copy_week_data['flags'];
+				$timetable->link = $copy_week_data['link'];
+				$timetable->code = $copy_week_data['code'];
 				R::store($timetable);
 			}
 		}
@@ -78,6 +80,7 @@ function save($data_json)
 	$log->type = 'manual';
 	R::store($log);
 	R::exec( 'delete from timetables where week_id = ?', [$datas[0]->week_id] );
+	R::debug( TRUE );
 	if(count($datas) > 0)	
 		foreach ($datas as $data) {			
 			
