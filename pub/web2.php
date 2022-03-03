@@ -169,7 +169,9 @@
 		if(($f & FL_EXTRA) === FL_EXTRA)
 			array_push($ret, 'flag-color-'.FL_EXTRA);
 		return implode(' ', $ret);
-	}		
+	}	
+
+	$dayofweek = date('N');	
 ?>
 
 
@@ -322,6 +324,16 @@
 		   }
 		   
 		   .table-subj {min-height:29px;}
+		   
+		   .table-header td:nth-child(<?= $dayofweek ?>) {
+			   background: #169fe6;
+		   }
+		   
+		   .table-subj td:nth-child(<?= $dayofweek ?>) {
+			   border-left:1px solid #169fe6;
+			   border-right:1px solid #169fe6;
+		   }
+		   
 		
 		</style>
 	</head>
